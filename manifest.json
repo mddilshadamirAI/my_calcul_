@@ -1,6 +1,11 @@
 {
-  "short_name": "DilshadCalc",
-  "name": "Dilshad's Calculator",
+  "name": "Dilshad's Calculator Pro",
+  "short_name": "Dilshad Calc",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "my_logo.png",
@@ -12,9 +17,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#f0f2f5",
-  "background_color": "#ffffff"
+  ]
 }
