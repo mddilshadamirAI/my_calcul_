@@ -5,61 +5,196 @@
     <link rel="icon" type="image/png" href="my_logo.png">
     <link rel="apple-touch-icon" href="my_logo.png">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilshad's Calc</title>
+    <title>Dilshad's Calc Pro</title>
     <style>
-        /* This is the CSS - The "Beauty" of your app */
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; }
-        .calc-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 300px; }
-        .logo { width: 60px; height: 60px; margin-bottom: 10px; border-radius: 50%; }
-        h2 { margin: 5px 0; color: #333; font-size: 18px; }
-        #display { width: 100%; height: 50px; font-size: 24px; text-align: right; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 10px; padding: 5px; box-sizing: border-box; }
-        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        button { padding: 15px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; background: #e4e6eb; transition: 0.2s; }
-        button:hover { background: #d8dadf; }
-        .operator { background: #007bff; color: white; }
-        .equal { background: #28a745; color: white; grid-column: span 2; }
+        /* Modern Dark Cyberpunk Aesthetic */
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background: #0f172a; 
+        }
+
+        .calc-card { 
+            background: #1e293b; 
+            padding: 24px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            text-align: center; 
+            width: 320px; 
+            border: 1px solid #334155;
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .logo { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            border: 2px solid #38bdf8;
+        }
+
+        h2 { 
+            margin: 0; 
+            color: #f8fafc; 
+            font-size: 18px; 
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Upgraded Interactive Display Box */
+        .display-container {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        #display { 
+            width: 100%; 
+            height: 50px; 
+            font-size: 32px; 
+            text-align: right; 
+            background: transparent;
+            color: #38bdf8;
+            border: none;
+            outline: none;
+            font-family: monospace;
+        }
+
+        /* Perfectly Proportioned Responsive Button Grid */
+        .buttons { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 12px; 
+        }
+
+        button { 
+            padding: 18px; 
+            font-size: 20px; 
+            font-weight: bold;
+            border: none; 
+            border-radius: 14px; 
+            cursor: pointer; 
+            background: #334155; 
+            color: #f8fafc;
+            transition: all 0.1s ease; 
+        }
+
+        button:active { 
+            transform: scale(0.93);
+        }
+
+        .btn-action {
+            background: #475569;
+            color: #cbd5e1;
+        }
+
+        .btn-action:hover { background: #64748b; }
+
+        .operator { 
+            background: #0284c7; 
+            color: white; 
+        }
+        .operator:hover { background: #0ea5e9; }
+
+        .equal { 
+            background: #16a34a; 
+            color: white; 
+        }
+        .equal:hover { background: #22c55e; }
+
+        button:hover { background: #475569; }
     </style>
 </head>
 <body>
 
 <div class="calc-card">
-    <img src="My_logo.png" alt="Logo" class="logo">
-    <h2>Dilshad's Calculator</h2>
-    <input type="text" id="display" disabled>
+    <div class="header-section">
+        <h2>Dilshad's Calc Pro</h2>
+        <img src="my_logo.png" alt="Logo" class="logo">
+    </div>
+    
+    <div class="display-container">
+        <input type="text" id="display" readonly placeholder="0">
+    </div>
+
     <div class="buttons">
-        <button onclick="clearDisplay()">C</button>
-        <button onclick="appendToDisplay('/')">/</button>
-        <button onclick="appendToDisplay('*')">×</button>
-        <button onclick="deleteLast()">DEL</button>
+        <button class="btn-action" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="appendOperator('/')">/</button>
+        <button class="operator" onclick="appendOperator('*')">×</button>
+        <button class="btn-action" onclick="deleteLast()">DEL</button>
         
-        <button onclick="appendToDisplay('7')">7</button>
-        <button onclick="appendToDisplay('8')">8</button>
-        <button onclick="appendToDisplay('9')">9</button>
-        <button onclick="appendToDisplay('-')">-</button>
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button class="operator" onclick="appendOperator('-')">-</button>
         
-        <button onclick="appendToDisplay('4')">4</button>
-        <button onclick="appendToDisplay('5')">5</button>
-        <button onclick="appendToDisplay('6')">6</button>
-        <button onclick="appendToDisplay('+')">+</button>
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button class="operator" onclick="appendOperator('+')">+</button>
         
-        <button onclick="appendToDisplay('1')">1</button>
-        <button onclick="appendToDisplay('2')">2</button>
-        <button onclick="appendToDisplay('3')">3</button>
-        <button onclick="calculate()">=</button>
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button class="equal" onclick="calculate()">=</button>
         
-        <button onclick="appendToDisplay('0')" style="grid-column: span 2;">0</button>
-        <button onclick="appendToDisplay('.')">.</button>
+        <button onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+        <button onclick="appendNumber('.')">.</button>
     </div>
 </div>
 
 <script>
-    /* This is the JavaScript - The "Brain" that works OFFLINE */
     let display = document.getElementById('display');
+    let clearOnNextInput = false;
 
-    function appendToDisplay(value) {
+    function appendNumber(value) {
+        if (clearOnNextInput) {
+            display.value = '';
+            clearOnNextInput = false;
+        }
+        // Prevent multiple decimals in a single number chunk
+        if (value === '.') {
+            const parts = display.value.split(/[\+\-\*\/]/);
+            const currentPart = parts[parts.length - 1];
+            if (currentPart.includes('.')) return;
+        }
         display.value += value;
+    }
+
+    function appendOperator(op) {
+        if (clearOnNextInput) {
+            clearOnNextInput = false;
+        }
+        
+        // Prevent starting with an operator except minus
+        if (display.value === '') {
+            if (op === '-') display.value += op;
+            return;
+        }
+
+        // SMART CHECK: Fixes the multiple math signs error
+        let lastChar = display.value.slice(-1);
+        if (['+', '-', '*', '/'].includes(lastChar)) {
+            // Swap the old sign out for the newly pressed sign instead of crashing
+            display.value = display.value.slice(0, -1) + op;
+        } else {
+            display.value += op;
+        }
     }
 
     function clearDisplay() {
@@ -71,10 +206,28 @@
     }
 
     function calculate() {
+        if (display.value === '') return;
+        
+        let lastChar = display.value.slice(-1);
+        // Clean up lingering operators at the very end before executing math
+        if (['+', '-', '*', '/'].includes(lastChar)) {
+            display.value = display.value.slice(0, -1);
+        }
+
         try {
-            display.value = eval(display.value);
+            // Secure basic execution evaluation
+            let result = eval(display.value);
+            
+            // Handle precision decimals neatly (e.g., 0.1 + 0.2)
+            if (result % 1 !== 0) {
+                result = parseFloat(result.toFixed(8));
+            }
+            
+            display.value = result;
+            clearOnNextInput = true;
         } catch (error) {
             display.value = "Error";
+            clearOnNextInput = true;
         }
     }
 </script>
