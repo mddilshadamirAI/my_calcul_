@@ -54,7 +54,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Upgraded Interactive Display Box */
         .display-container {
             background: #0f172a;
             border-radius: 16px;
@@ -75,7 +74,6 @@
             font-family: monospace;
         }
 
-        /* Perfectly Proportioned Responsive Button Grid */
         .buttons { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
@@ -155,6 +153,7 @@
         
         <button onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
         <button onclick="appendNumber('.')">.</button>
+        <button class="operator" onclick="appendOperator('%')">rem</button>
     </div>
 </div>
 
@@ -167,9 +166,8 @@
             display.value = '';
             clearOnNextInput = false;
         }
-        // Prevent multiple decimals in a single number chunk
         if (value === '.') {
-            const parts = display.value.split(/[\+\-\*\/]/);
+            const parts = display.value.split(/[\+\-\*\/%]/);
             const currentPart = parts[parts.length - 1];
             if (currentPart.includes('.')) return;
         }
@@ -181,16 +179,13 @@
             clearOnNextInput = false;
         }
         
-        // Prevent starting with an operator except minus
         if (display.value === '') {
             if (op === '-') display.value += op;
             return;
         }
 
-        // SMART CHECK: Fixes the multiple math signs error
         let lastChar = display.value.slice(-1);
-        if (['+', '-', '*', '/'].includes(lastChar)) {
-            // Swap the old sign out for the newly pressed sign instead of crashing
+        if (['+', '-', '*', '/', '%'].includes(lastChar)) {
             display.value = display.value.slice(0, -1) + op;
         } else {
             display.value += op;
@@ -209,16 +204,14 @@
         if (display.value === '') return;
         
         let lastChar = display.value.slice(-1);
-        // Clean up lingering operators at the very end before executing math
-        if (['+', '-', '*', '/'].includes(lastChar)) {
+        if (['+', '-', '*', '/', '%'].includes(lastChar)) {
             display.value = display.value.slice(0, -1);
         }
 
         try {
-            // Secure basic execution evaluation
             let result = eval(display.value);
             
-            // Handle precision decimals neatly (e.g., 0.1 + 0.2)
+            // Keeps clean floating decimal structures readable without long binary overflow tails
             if (result % 1 !== 0) {
                 result = parseFloat(result.toFixed(8));
             }
