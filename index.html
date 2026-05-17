@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilshad's Calc Pro</title>
+    <title>Dilshad's Calc Pro Vault</title>
     <style>
         /* Deep Premium Gradient Background */
         body { 
@@ -33,6 +33,7 @@
             text-align: center; 
             width: 320px; 
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
         .header-section {
@@ -84,20 +85,13 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
         }
 
-        /* Premium Answer Animation Class Triggered by JS */
         .animate-pop {
             animation: answerPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes answerPop {
-            0% {
-                transform: translateY(10px) scale(0.9);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
+            0% { transform: translateY(10px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         /* Exact Layout Grid */
@@ -107,7 +101,6 @@
             gap: 12px; 
         }
 
-        /* Base Glass Button with Smooth Animations */
         button { 
             padding: 18px; 
             font-size: 20px; 
@@ -123,7 +116,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ACTIVE GLOW EFFECT ON TAP */
         button:active { 
             transform: scale(0.92);
             background: rgba(56, 189, 248, 0.25) !important;
@@ -133,7 +125,6 @@
             text-shadow: 0 0 8px #fff;
         }
 
-        /* Color Styles for Key Roles */
         .btn-action {
             background: rgba(148, 163, 184, 0.1);
             color: #cbd5e1;
@@ -161,7 +152,101 @@
             border-color: #4ade80 !important;
         }
 
-        /* Desktop Hover Enhancements */
+        /* --- HIDDEN VAULT SCREEN (GLASSMORPHISM OVERLAY) --- */
+        .vault-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .vault-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .vault-content {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 24px;
+            width: 85%;
+            max-width: 450px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .vault-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .close-vault-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 10px;
+        }
+
+        .file-upload-label {
+            display: block;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 2px dashed rgba(56, 189, 248, 0.4);
+            padding: 20px;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-item-btn {
+            position: absolute;
+            top: 4px; right: 4px;
+            background: rgba(239, 68, 68, 0.8);
+            border: none; color: white;
+            border-radius: 50%; width: 22px; height: 22px;
+            font-size: 12px; padding: 0; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+
         @media (hover: hover) {
             button:hover { background: rgba(255, 255, 255, 0.08); }
             .btn-action:hover { background: rgba(148, 163, 184, 0.2); }
@@ -174,7 +259,7 @@
 
 <div class="calc-card">
     <div class="header-section">
-        <h2>Dilshad's Calc Pro</h2>
+        <h2 id="calc-title">Dilshad's Calc Pro</h2>
         <img src="my_logo.png" alt="Logo" class="logo">
     </div>
     
@@ -209,14 +294,40 @@
     </div>
 </div>
 
+<div id="vaultOverlay" class="vault-overlay">
+    <div class="vault-content">
+        <div class="vault-header">
+            <h3>🔒 Dilshad's Secure Vault</h3>
+            <button class="close-vault-btn" onclick="closeVault()">Lock Vault</button>
+        </div>
+        
+        <label class="file-upload-label">
+            📁 Tap to Hide Image/Video
+            <input type="file" id="vaultInput" accept="image/*,video/*" multiple style="display: none;" onchange="handleFileSelect(event)">
+        </label>
+
+        <div id="galleryGrid" class="gallery-grid"></div>
+    </div>
+</div>
+
 <script>
     let display = document.getElementById('display');
+    let calcTitle = document.getElementById('calc-title');
     let clearOnNextInput = false;
 
-    function appendNumber(value) {
-        // Remove animation class so next numbers look normal
-        display.classList.remove('animate-pop');
+    // Vault State Trackers
+    let vaultCode = localStorage.getItem('vaultCode') || null;
+    let equalClickCount = 0;
+    let lastCalculatedValue = "";
 
+    // Show setup info if no code exists
+    if (!vaultCode) {
+        calcTitle.innerText = "Set Vault Code & Press =";
+        calcTitle.style.color = "#38bdf8";
+    }
+
+    function appendNumber(value) {
+        display.classList.remove('animate-pop');
         if (clearOnNextInput) {
             display.value = '';
             clearOnNextInput = false;
@@ -227,49 +338,71 @@
             if (currentPart.includes('.')) return;
         }
         display.value += value;
+        equalClickCount = 0; // Reset tracking if a standard key is hit
     }
 
     function appendOperator(op) {
         display.classList.remove('animate-pop');
-
-        if (clearOnNextInput) {
-            clearOnNextInput = false;
-        }
-        
+        if (clearOnNextInput) {clearOnNextInput = false;}
         if (display.value === '') {
             if (op === '-') display.value += op;
             return;
         }
-
         let lastChar = display.value.slice(-1);
         if (['+', '-', '*', '/', '%'].includes(lastChar)) {
             display.value = display.value.slice(0, -1) + op;
         } else {
             display.value += op;
         }
+        equalClickCount = 0;
     }
 
     function clearDisplay() {
         display.classList.remove('animate-pop');
         display.value = '';
+        equalClickCount = 0;
     }
 
     function deleteLast() {
         display.classList.remove('animate-pop');
         display.value = display.value.slice(0, -1);
+        equalClickCount = 0;
     }
 
     function calculate() {
         if (display.value === '') return;
         
-        let lastChar = display.value.slice(-1);
+        let currentInput = display.value;
+        let lastChar = currentInput.slice(-1);
         if (['+', '-', '*', '/', '%'].includes(lastChar)) {
-            display.value = display.value.slice(0, -1);
+            currentInput = currentInput.slice(0, -1);
+        }
+
+        // Setup Passcode Logic
+        if (!vaultCode && !isNaN(currentInput)) {
+            vaultCode = currentInput;
+            localStorage.setItem('vaultCode', vaultCode);
+            display.value = "Code Setted";
+            clearOnNextInput = true;
+            calcTitle.innerText = "Dilshad's Calc Pro";
+            calcTitle.style.color = "rgba(255, 255, 255, 0.9)";
+            return;
+        }
+
+        // Vault Open Detection Check (Double Equal Trigger)
+        if (vaultCode && currentInput === vaultCode) {
+            equalClickCount++;
+            if (equalClickCount === 2) {
+                openVault();
+                clearDisplay();
+                return;
+            }
+        } else {
+            equalClickCount = 1;
         }
 
         try {
-            let result = eval(display.value);
-            
+            let result = eval(currentInput);
             if (result % 1 !== 0) {
                 result = parseFloat(result.toFixed(8));
             }
@@ -277,16 +410,80 @@
             display.value = result;
             clearOnNextInput = true;
 
-            // Trigger the premium pop animation for the answer
             display.classList.remove('animate-pop');
-            void display.offsetWidth; // DOM Reflow trick to restart CSS animation cleanly
+            void display.offsetWidth; 
             display.classList.add('animate-pop');
-
         } catch (error) {
             display.value = "Error";
             clearOnNextInput = true;
             display.classList.add('animate-pop');
         }
+    }
+
+    /* --- VAULT UTILITIES --- */
+    function openVault() {
+        document.getElementById('vaultOverlay').classList.add('active');
+        renderGallery();
+    }
+
+    function closeVault() {
+        document.getElementById('vaultOverlay').classList.remove('active');
+        equalClickCount = 0;
+    }
+
+    function handleFileSelect(event) {
+        const files = event.target.files;
+        let vaultItems = JSON.parse(localStorage.getItem('vaultItems')) || [];
+
+        for (let file of files) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                vaultItems.push({
+                    type: file.type.startsWith('video') ? 'video' : 'image',
+                    data: e.target.result
+                });
+                localStorage.setItem('vaultItems', JSON.stringify(vaultItems));
+                renderGallery();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function renderGallery() {
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = '';
+        let vaultItems = JSON.parse(localStorage.getItem('vaultItems')) || [];
+
+        vaultItems.forEach((item, index) => {
+            const container = document.createElement('div');
+            container.className = 'gallery-item';
+
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.src = item.data;
+                video.controls = true;
+                container.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = item.data;
+                container.appendChild(img);
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-item-btn';
+            deleteBtn.innerHTML = '×';
+            deleteBtn.onclick = () => deleteVaultItem(index);
+            container.appendChild(deleteBtn);
+
+            grid.appendChild(container);
+        });
+    }
+
+    function deleteVaultItem(index) {
+        let vaultItems = JSON.parse(localStorage.getItem('vaultItems')) || [];
+        vaultItems.splice(index, 1);
+        localStorage.setItem('vaultItems', JSON.stringify(vaultItems));
+        renderGallery();
     }
 </script>
 
