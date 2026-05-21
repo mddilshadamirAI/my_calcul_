@@ -31,7 +31,7 @@
             border-radius: 28px; 
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); 
             text-align: center; 
-            width: 320px; 
+            width: 340px; 
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -41,6 +41,7 @@
             justify-content: space-between;
             margin-bottom: 24px;
             padding: 0 4px;
+            gap: 8px;
         }
 
         .logo { 
@@ -52,8 +53,34 @@
         h2 { 
             margin: 0; 
             color: #ffffff; 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 600;
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        /* 🔥 NEW: PREMIUM REVISE AUDIO INTERFACE BUTTON */
+        .btn-revise {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-revise:hover {
+            background: #38bdf8;
+            color: #0d1527;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+        
+        .btn-revise:active {
+            transform: scale(0.95);
         }
 
         /* Display Panel matching the Screenshot */
@@ -231,6 +258,7 @@
 <div class="calc-card">
     <div class="header-section">
         <h2 id="calc-title">Dilshad's Calc Pro</h2>
+        <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
         <img src="my_logo.png" alt="Logo" class="logo">
     </div>
     
@@ -284,6 +312,10 @@
     let calcTitle = document.getElementById('calc-title');
     let clearOnNextInput = false;
 
+    // AUDIO STRUCT MATRIX
+    let lastActiveFormula = ""; 
+    let finalCalculationResult = "";
+
     let vaultCode = localStorage.getItem('vaultCode') || null;
     let equalClickCount = 0;
 
@@ -325,6 +357,8 @@
     function clearDisplay() {
         display.classList.remove('animate-pop');
         display.value = '';
+        lastActiveFormula = "";
+        finalCalculationResult = "";
         equalClickCount = 0;
     }
 
@@ -364,11 +398,15 @@
         }
 
         try {
+            // Store current math sequence context prior to structural alteration
+            lastActiveFormula = currentInput;
+            
             let result = eval(currentInput);
             if (result % 1 !== 0) {
                 result = parseFloat(result.toFixed(8));
             }
             
+            finalCalculationResult = result;
             display.value = result;
             clearOnNextInput = true;
 
@@ -377,9 +415,46 @@
             display.classList.add('animate-pop');
         } catch (error) {
             display.value = "Error";
+            lastActiveFormula = "";
+            finalCalculationResult = "";
             clearOnNextInput = true;
             display.classList.add('animate-pop');
         }
+    }
+
+    // 🔥 NEW: TEXT TO SPEECH REVISE ENGINE MODULE
+    function reviseCalculation() {
+        // Halt existing speech patterns before initiating new audio track
+        window.speechSynthesis.cancel();
+
+        let contextToSpeak = "";
+
+        // Determine if calculation array has run or if screen contains incomplete chain
+        if (lastActiveFormula !== "") {
+            contextToSpeak = lastActiveFormula + " equals " + finalCalculationResult;
+        } else if (display.value !== "" && display.value !== "Error" && display.value !== "Code Set!") {
+            contextToSpeak = display.value;
+        } else {
+            contextToSpeak = "Zero";
+        }
+
+        // Clean mapping conversion for seamless phonetic articulation
+        let audioString = contextToSpeak
+            .replaceAll('+', ' plus ')
+            .replaceAll('-', ' minus ')
+            .replaceAll('*', ' multiplied by ')
+            .replaceAll('/', ' divided by ')
+            .replaceAll('%', ' percent ')
+            .replaceAll('.', ' point ');
+
+        // Audio instantiation assembly loop
+        let voiceUtterance = new SpeechSynthesisUtterance(audioString);
+        
+        // Custom configuration calibration metrics
+        voiceUtterance.rate = 0.95; // Natural clear cadence pace
+        voiceUtterance.pitch = 1.0; // Clear tone presentation
+        
+        window.speechSynthesis.speak(voiceUtterance);
     }
 
     function openVault() {
