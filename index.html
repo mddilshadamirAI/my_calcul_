@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="my_logo.png">
+    <link class="js-meta-icon" rel="icon" type="image/png" href="my_logo.png">
     <link rel="apple-touch-icon" href="my_logo.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -39,9 +39,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             padding: 0 4px;
-            gap: 6px;
         }
 
         .logo { 
@@ -53,55 +52,50 @@
         h2 { 
             margin: 0; 
             color: #ffffff; 
-            font-size: 16px; 
+            font-size: 18px; 
             font-weight: 600;
             text-align: left;
-            flex-grow: 1;
         }
 
-        /* ACTIONS HEADER LAYOUT */
-        .header-actions {
-            display: flex;
-            gap: 6px;
+        /* MULTI-BUTTON UTILITY ROW FOR PERFECT MOBILE SPACING */
+        .action-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
-        .btn-revise, .btn-toggle-sci {
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 6px 10px;
+        .action-row button {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 0;
             border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
         }
 
-        .btn-revise {
-            background: rgba(56, 189, 248, 0.12);
-            color: #38bdf8;
-        }
-
         .btn-toggle-sci {
             background: rgba(168, 85, 247, 0.15);
-            border-color: rgba(168, 85, 247, 0.4);
+            border-color: rgba(168, 85, 247, 0.3);
             color: #c084fc;
         }
+        .btn-toggle-sci:hover { background: #a855f7; color: #0d1527; }
 
-        .btn-revise:hover {
-            background: #38bdf8;
-            color: #0d1527;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        .btn-toggle-hist {
+            background: rgba(234, 179, 8, 0.12);
+            border-color: rgba(234, 179, 8, 0.3);
+            color: #facc15;
         }
+        .btn-toggle-hist:hover { background: #eab308; color: #0d1527; }
 
-        .btn-toggle-sci:hover {
-            background: #a855f7;
-            color: #0d1527;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+        .btn-revise {
+            background: rgba(56, 189, 248, 0.12);
+            border-color: rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
         }
-        
-        .btn-revise:active, .btn-toggle-sci:active {
-            transform: scale(0.95);
-        }
+        .btn-revise:hover { background: #38bdf8; color: #0d1527; }
 
         /* Display Panel matching the Screenshot */
         .display-container {
@@ -143,12 +137,12 @@
             gap: 10px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.35s ease;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
             margin-bottom: 0;
         }
 
         .scientific-panel.open {
-            max-height: 300px; /* Provides depth clearings for rows */
+            max-height: 240px;
             margin-bottom: 20px;
         }
 
@@ -156,13 +150,93 @@
             background: rgba(30, 41, 59, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.03);
             color: #cbd5e1;
-            font-size: 15px;
-            padding: 12px 0;
+            font-size: 14px;
+            padding: 10px 0;
             border-radius: 12px;
         }
 
-        .btn-sci:active {
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        /* 📜 HISTORY COMPONENT LOG PANEL DRAWER */
+        .history-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
+            margin-bottom: 0;
+            background: rgba(9, 15, 29, 0.6);
+            border-radius: 16px;
+            text-align: left;
+        }
+
+        .history-panel.open {
+            max-height: 180px;
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .history-header span {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .clear-hist-btn {
+            background: transparent;
+            border: none;
+            color: #f87171;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+
+        .history-list {
+            max-height: 130px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(234, 179, 8, 0.2);
+        }
+
+        .history-formula {
+            color: #94a3b8;
+            font-size: 11px;
+            word-break: break-all;
+        }
+
+        .history-result {
+            color: #facc15;
+            font-weight: 600;
+        }
+
+        .empty-history {
+            color: #475569;
+            font-size: 12px;
+            text-align: center;
+            padding: 20px 0;
         }
 
         /* 4-Column Grid for All Rows */
@@ -307,15 +381,25 @@
 <div class="calc-card">
     <div class="header-section">
         <h2 id="calc-title">Dilshad's Calc Pro</h2>
-        <div class="header-actions">
-            <button class="btn-toggle-sci" onclick="toggleScientificPanel()">🔬 Mode</button>
-            <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
-        </div>
         <img src="my_logo.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="action-row">
+        <button class="btn-toggle-sci" onclick="toggleScientificPanel()">🔬 Mode</button>
+        <button class="btn-toggle-hist" onclick="toggleHistoryPanel()">📜 History</button>
+        <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
     </div>
     
     <div class="display-container">
         <input type="text" id="display" readonly placeholder="0">
+    </div>
+
+    <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+            <span>Previous Logs (Max 100)</span>
+            <button class="clear-hist-btn" onclick="clearHistory()">Clear All</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
     </div>
 
     <div class="scientific-panel" id="scientificPanel">
@@ -390,12 +474,14 @@
     let lastActiveFormula = ""; 
     let finalCalculationResult = "";
 
+    // LOCAL DATA LOG MATRIX
+    let historyLog = JSON.parse(localStorage.getItem('calcHistory')) || [];
+
     let vaultCode = localStorage.getItem('vaultCode') || null;
     let equalClickCount = 0;
 
-    // 🔬 ADVANCED MATHEMATICAL EXPANSION MATRIX FOR EVAL ENGINE
-    // Converts input strings into calculations using the browser's built-in Math object
-    const sin = (deg) => Math.sin(deg * Math.PI / 180); // Built standard for student degree alignment
+    // 🔬 ADVANCED MATHEMATICAL EXECUTIONS FOR EVAL ENGINE
+    const sin = (deg) => Math.sin(deg * Math.PI / 180);
     const cos = (deg) => Math.cos(deg * Math.PI / 180);
     const tan = (deg) => Math.tan(deg * Math.PI / 180);
     const log = (x) => Math.log10(x);
@@ -409,14 +495,21 @@
         return r;
     };
 
+    // Initialize layout setup configurations
     if (!vaultCode) {
         calcTitle.innerText = "Set Passcode & Press =";
     }
+    renderHistory(); // Populate history on start
 
-    // 🔬 Toggle Scientific Section Visibility Tray
-    type= "text/javascript"
+    // 🔬 Drawer Panel Controls
     function toggleScientificPanel() {
+        document.getElementById('historyPanel').classList.remove('open'); // Close history if open
         document.getElementById('scientificPanel').classList.toggle('open');
+    }
+
+    function toggleHistoryPanel() {
+        document.getElementById('scientificPanel').classList.remove('open'); // Close scientific if open
+        document.getElementById('historyPanel').classList.toggle('open');
     }
 
     function appendScientific(val) {
@@ -506,14 +599,13 @@
         try {
             lastActiveFormula = currentInput;
             
-            // 🧠 PARSER SYSTEM FOR EXECUTING EXPONENT/PI ELEMENTS INSIDE EVAL
             let executableExpression = currentInput
                 .replaceAll('×', '*')
                 .replaceAll('÷', '/')
                 .replaceAll('π', 'Math.PI')
                 .replaceAll('e^(', 'Math.exp(')
                 .replaceAll('e', 'Math.E')
-                .replaceAll('^', '**'); // Converts human a^x string syntax into standard structural JS Exponent loops
+                .replaceAll('^', '**');
 
             let result = eval(executableExpression);
             
@@ -524,6 +616,9 @@
             finalCalculationResult = result;
             display.value = result;
             clearOnNextInput = true;
+
+            // 📜 SAVE SUCCESSFUL RUN INTO HISTORY MATRIX ARRAY
+            saveToHistory(lastActiveFormula, finalCalculationResult);
 
             display.classList.remove('animate-pop');
             void display.offsetWidth; 
@@ -537,7 +632,57 @@
         }
     }
 
-    // 🔊 EXPANDED TEXT TO SPEECH AUDIO INTERACTION ENGINE
+    // 📜 HISTORY MATRIX CORE UTILITIES
+    function saveToHistory(formula, result) {
+        // Prevent duplicate consecutive entries
+        if(historyLog.length > 0 && historyLog[0].formula === formula) return;
+
+        historyLog.unshift({ formula: formula, result: result });
+        
+        if (historyLog.length > 100) {
+            historyLog.pop(); // Cap length at 100 rows strict maximum
+        }
+        
+        localStorage.setItem('calcHistory', JSON.stringify(historyLog));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const listContainer = document.getElementById('historyList');
+        listContainer.innerHTML = '';
+
+        if (historyLog.length === 0) {
+            listContainer.innerHTML = '<div class="empty-history">No history records yet</div>';
+            return;
+        }
+
+        historyLog.forEach((item) => {
+            const row = document.createElement('div');
+            row.className = 'history-item';
+            row.onclick = () => loadHistoryItem(item.result);
+            
+            row.innerHTML = `
+                <div class="history-formula">${item.formula} =</div>
+                <div class="history-result">${item.result}</div>
+            `;
+            listContainer.appendChild(row);
+        });
+    }
+
+    function loadHistoryItem(value) {
+        display.value = value;
+        finalCalculationResult = value;
+        lastActiveFormula = "";
+        clearOnNextInput = false; // Lets them write equations using the loaded result
+    }
+
+    function clearHistory() {
+        historyLog = [];
+        localStorage.removeItem('calcHistory');
+        renderHistory();
+    }
+
+    // 🔊 AUDIO ENGINE PRE-PROCESSING INTERFACES
     function reviseCalculation() {
         window.speechSynthesis.cancel();
         let contextToSpeak = "";
@@ -550,7 +695,6 @@
             contextToSpeak = "Zero";
         }
 
-        // Clean mapping expansion for standard phonetic student output sequences
         let audioString = contextToSpeak
             .replaceAll('+', ' plus ')
             .replaceAll('-', ' minus ')
@@ -576,10 +720,10 @@
 
         let voiceUtterance = new SpeechSynthesisUtterance(audioString);
         voiceUtterance.rate = 0.95; 
-        voiceUtterance.pitch = 1.0; 
         window.speechSynthesis.speak(voiceUtterance);
     }
 
+    // 🔒 Vault Controls
     function openVault() {
         document.getElementById('vaultOverlay').classList.add('active');
         renderGallery();
