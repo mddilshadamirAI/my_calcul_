@@ -39,38 +39,52 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             padding: 0 4px;
-            gap: 8px;
+            gap: 6px;
         }
 
         .logo { 
-            width: 44px; 
-            height: 44px; 
+            width: 40px; 
+            height: 40px; 
             border-radius: 50%; 
         }
 
         h2 { 
             margin: 0; 
             color: #ffffff; 
-            font-size: 18px; 
+            font-size: 16px; 
             font-weight: 600;
             text-align: left;
             flex-grow: 1;
         }
 
-        /* 🔥 NEW: PREMIUM REVISE AUDIO INTERFACE BUTTON */
-        .btn-revise {
-            background: rgba(56, 189, 248, 0.12);
+        /* ACTIONS HEADER LAYOUT */
+        .header-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-revise, .btn-toggle-sci {
             border: 1px solid rgba(56, 189, 248, 0.3);
-            color: #38bdf8;
-            padding: 6px 14px;
+            padding: 6px 10px;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
+        }
+
+        .btn-revise {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+        }
+
+        .btn-toggle-sci {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.4);
+            color: #c084fc;
         }
 
         .btn-revise:hover {
@@ -78,8 +92,14 @@
             color: #0d1527;
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
         }
+
+        .btn-toggle-sci:hover {
+            background: #a855f7;
+            color: #0d1527;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+        }
         
-        .btn-revise:active {
+        .btn-revise:active, .btn-toggle-sci:active {
             transform: scale(0.95);
         }
 
@@ -88,7 +108,7 @@
             background: rgba(9, 15, 29, 0.7);
             border-radius: 18px;
             padding: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             min-height: 50px;
             display: flex;
             align-items: center;
@@ -97,7 +117,7 @@
 
         #display { 
             width: 100%; 
-            font-size: 38px; 
+            font-size: 34px; 
             text-align: right; 
             background: transparent;
             color: #38bdf8;
@@ -114,6 +134,35 @@
         @keyframes answerPop {
             0% { transform: scale(0.95); opacity: 0.7; }
             100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* 🔬 EXPANDABLE SCIENTIFIC EXTENSION PANEL */
+        .scientific-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.35s ease;
+            margin-bottom: 0;
+        }
+
+        .scientific-panel.open {
+            max-height: 300px; /* Provides depth clearings for rows */
+            margin-bottom: 20px;
+        }
+
+        .btn-sci {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: #cbd5e1;
+            font-size: 15px;
+            padding: 12px 0;
+            border-radius: 12px;
+        }
+
+        .btn-sci:active {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
         }
 
         /* 4-Column Grid for All Rows */
@@ -258,12 +307,37 @@
 <div class="calc-card">
     <div class="header-section">
         <h2 id="calc-title">Dilshad's Calc Pro</h2>
-        <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
+        <div class="header-actions">
+            <button class="btn-toggle-sci" onclick="toggleScientificPanel()">🔬 Mode</button>
+            <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
+        </div>
         <img src="my_logo.png" alt="Logo" class="logo">
     </div>
     
     <div class="display-container">
         <input type="text" id="display" readonly placeholder="0">
+    </div>
+
+    <div class="scientific-panel" id="scientificPanel">
+        <button class="btn-sci" onclick="appendScientific('sin(')">sin</button>
+        <button class="btn-sci" onclick="appendScientific('cos(')">cos</button>
+        <button class="btn-sci" onclick="appendScientific('tan(')">tan</button>
+        <button class="btn-sci" onclick="appendScientific('sqrt(')">√</button>
+        
+        <button class="btn-sci" onclick="appendScientific('log(')">log</button>
+        <button class="btn-sci" onclick="appendScientific('ln(')">ln</button>
+        <button class="btn-sci" onclick="appendScientific('^')">a^x</button>
+        <button class="btn-sci" onclick="appendScientific('fact(')">x!</button>
+        
+        <button class="btn-sci" onclick="appendScientific('e^(')">e^x</button>
+        <button class="btn-sci" onclick="appendScientific('1/(')">inv</button>
+        <button class="btn-sci" onclick="appendScientific('π')">π</button>
+        <button class="btn-sci" onclick="appendScientific('e')">e</button>
+
+        <button class="btn-sci" onclick="appendScientific('(')" style="background: rgba(255,255,255,0.05);">(</button>
+        <button class="btn-sci" onclick="appendScientific(')')" style="background: rgba(255,255,255,0.05);">)</button>
+        <button class="btn-sci" onclick="appendScientific(',')" style="background: rgba(255,255,255,0.05);">,</button>
+        <button class="btn-sci" style="visibility: hidden;"></button>
     </div>
 
     <div class="buttons">
@@ -312,15 +386,47 @@
     let calcTitle = document.getElementById('calc-title');
     let clearOnNextInput = false;
 
-    // AUDIO STRUCT MATRIX
+    // AUDIO & MATH TRACKERS
     let lastActiveFormula = ""; 
     let finalCalculationResult = "";
 
     let vaultCode = localStorage.getItem('vaultCode') || null;
     let equalClickCount = 0;
 
+    // 🔬 ADVANCED MATHEMATICAL EXPANSION MATRIX FOR EVAL ENGINE
+    // Converts input strings into calculations using the browser's built-in Math object
+    const sin = (deg) => Math.sin(deg * Math.PI / 180); // Built standard for student degree alignment
+    const cos = (deg) => Math.cos(deg * Math.PI / 180);
+    const tan = (deg) => Math.tan(deg * Math.PI / 180);
+    const log = (x) => Math.log10(x);
+    const ln = (x) => Math.log(x);
+    const sqrt = (x) => Math.sqrt(x);
+    const fact = (n) => {
+        if (n < 0 || !Number.isInteger(n)) return NaN;
+        if (n === 0 || n === 1) return 1;
+        let r = 1;
+        for (let i = 2; i <= n; i++) r *= i;
+        return r;
+    };
+
     if (!vaultCode) {
         calcTitle.innerText = "Set Passcode & Press =";
+    }
+
+    // 🔬 Toggle Scientific Section Visibility Tray
+    type= "text/javascript"
+    function toggleScientificPanel() {
+        document.getElementById('scientificPanel').classList.toggle('open');
+    }
+
+    function appendScientific(val) {
+        display.classList.remove('animate-pop');
+        if (clearOnNextInput) {
+            display.value = '';
+            clearOnNextInput = false;
+        }
+        display.value += val;
+        equalClickCount = 0;
     }
 
     function appendNumber(value) {
@@ -330,7 +436,7 @@
             clearOnNextInput = false;
         }
         if (value === '.') {
-            const parts = display.value.split(/[\+\-\*\/%]/);
+            const parts = display.value.split(/[\+\-\*\/%^,()]/);
             const currentPart = parts[parts.length - 1];
             if (currentPart.includes('.')) return;
         }
@@ -398,10 +504,19 @@
         }
 
         try {
-            // Store current math sequence context prior to structural alteration
             lastActiveFormula = currentInput;
             
-            let result = eval(currentInput);
+            // 🧠 PARSER SYSTEM FOR EXECUTING EXPONENT/PI ELEMENTS INSIDE EVAL
+            let executableExpression = currentInput
+                .replaceAll('×', '*')
+                .replaceAll('÷', '/')
+                .replaceAll('π', 'Math.PI')
+                .replaceAll('e^(', 'Math.exp(')
+                .replaceAll('e', 'Math.E')
+                .replaceAll('^', '**'); // Converts human a^x string syntax into standard structural JS Exponent loops
+
+            let result = eval(executableExpression);
+            
             if (result % 1 !== 0) {
                 result = parseFloat(result.toFixed(8));
             }
@@ -422,14 +537,11 @@
         }
     }
 
-    // 🔥 NEW: TEXT TO SPEECH REVISE ENGINE MODULE
+    // 🔊 EXPANDED TEXT TO SPEECH AUDIO INTERACTION ENGINE
     function reviseCalculation() {
-        // Halt existing speech patterns before initiating new audio track
         window.speechSynthesis.cancel();
-
         let contextToSpeak = "";
 
-        // Determine if calculation array has run or if screen contains incomplete chain
         if (lastActiveFormula !== "") {
             contextToSpeak = lastActiveFormula + " equals " + finalCalculationResult;
         } else if (display.value !== "" && display.value !== "Error" && display.value !== "Code Set!") {
@@ -438,22 +550,33 @@
             contextToSpeak = "Zero";
         }
 
-        // Clean mapping conversion for seamless phonetic articulation
+        // Clean mapping expansion for standard phonetic student output sequences
         let audioString = contextToSpeak
             .replaceAll('+', ' plus ')
             .replaceAll('-', ' minus ')
             .replaceAll('*', ' multiplied by ')
             .replaceAll('/', ' divided by ')
+            .replaceAll('×', ' multiplied by ')
+            .replaceAll('÷', ' divided by ')
             .replaceAll('%', ' percent ')
-            .replaceAll('.', ' point ');
+            .replaceAll('.', ' point ')
+            .replaceAll('sin(', ' sine of ')
+            .replaceAll('cos(', ' cosine of ')
+            .replaceAll('tan(', ' tangent of ')
+            .replaceAll('log(', ' log base ten of ')
+            .replaceAll('ln(', ' natural log of ')
+            .replaceAll('sqrt(', ' square root of ')
+            .replaceAll('fact(', ' factorial of ')
+            .replaceAll('e^(', ' e to the power of ')
+            .replaceAll('1/(', ' inverse of ')
+            .replaceAll('^', ' to the power of ')
+            .replaceAll('π', ' pi ')
+            .replaceAll('(', ' open bracket ')
+            .replaceAll(')', ' close bracket ');
 
-        // Audio instantiation assembly loop
         let voiceUtterance = new SpeechSynthesisUtterance(audioString);
-        
-        // Custom configuration calibration metrics
-        voiceUtterance.rate = 0.95; // Natural clear cadence pace
-        voiceUtterance.pitch = 1.0; // Clear tone presentation
-        
+        voiceUtterance.rate = 0.95; 
+        voiceUtterance.pitch = 1.0; 
         window.speechSynthesis.speak(voiceUtterance);
     }
 
