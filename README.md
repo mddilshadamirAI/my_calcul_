@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧮 DILSHAD'S CALC PRO
+# 🧮 DILSHAD'S CALCULATOR PRO
 ### Next-Gen Scientific Computing | PWA-Ready | Secure Media Vault
 
 ---
