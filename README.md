@@ -3,6 +3,7 @@
 # 🧮 DILSHAD'S CALCULATOR PRO
 ### Next-Gen Scientific Computing | PWA-Ready | Secure Media Vault
 
+[**Launch Live App**](https://mddilshadamirai.github.io/my_calcul_/)
 ---
 
 ### 🌐 OVERVIEW
