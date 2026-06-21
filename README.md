@@ -1,6 +1,7 @@
 <div align="center">
 
-# 🧮 DILSHAD'S CALC PRO
+# 🧮 DILSHAD'S CALCULATOR
+
 ### Scientific Precision | Stealth Security | Progressive Web Architecture
 
 [**Launch Live App**](https://mddilshadamirai.github.io/my_calcul_) • [**View Source Code**](https://github.com/mddilshadamirAI/my_calcul_)
