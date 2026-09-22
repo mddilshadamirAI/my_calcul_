@@ -10,15 +10,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dilshad's Calc Pro</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh; 
+            min-height: 100vh; 
             margin: 0; 
             background: #0d1527;
-            overflow: hidden;
+            overflow-x: hidden;
+            padding: 20px 0;
         }
 
         .calc-card { 
@@ -29,7 +34,8 @@
             border-radius: 28px; 
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); 
             text-align: center; 
-            width: 340px; 
+            width: 360px; 
+            max-width: 95vw;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -45,20 +51,21 @@
             width: 40px; 
             height: 40px; 
             border-radius: 50%; 
+            object-fit: cover;
         }
 
         h2 { 
-            margin: 0; 
-            color: #ffffff; 
             font-size: 18px; 
             font-weight: 600;
             text-align: left;
+            color: #ffffff;
+            margin: 0;
         }
 
         .action-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-bottom: 20px;
         }
 
@@ -66,7 +73,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 8px 0;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -86,6 +93,13 @@
             color: #facc15;
         }
         .btn-toggle-hist:hover { background: #eab308; color: #0d1527; }
+
+        .btn-toggle-tools {
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.3);
+            color: #34d399;
+        }
+        .btn-toggle-tools:hover { background: #34d399; color: #0d1527; }
 
         .btn-revise {
             background: rgba(56, 189, 248, 0.12);
@@ -157,6 +171,7 @@
             font-size: 14px;
             padding: 10px 0;
             border-radius: 12px;
+            cursor: pointer;
         }
 
         .history-panel {
@@ -240,6 +255,110 @@
             font-size: 12px;
             text-align: center;
             padding: 20px 0;
+        }
+
+        /* Converter Tools Panel Styles */
+        .tools-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
+            margin-bottom: 0;
+            background: rgba(9, 15, 29, 0.8);
+            border-radius: 18px;
+            text-align: left;
+            padding: 0 14px;
+        }
+
+        .tools-panel.open {
+            max-height: 420px;
+            margin-bottom: 20px;
+            padding: 14px;
+            overflow-y: auto;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .tool-selector {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            background: #1e293b;
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            font-weight: 600;
+            margin-bottom: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .tool-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tool-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tool-group label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .tool-input, .tool-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .tool-input:focus, .tool-select:focus {
+            border-color: #34d399;
+        }
+
+        .tool-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tool-row > * {
+            flex: 1;
+        }
+
+        .btn-calc-tool {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-calc-tool:hover {
+            background: #059669;
+        }
+
+        .tool-result-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px dashed rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            word-break: break-all;
+            margin-top: 4px;
         }
 
         .buttons { 
@@ -371,6 +490,7 @@
             border: none; color: white;
             border-radius: 50%; width: 20px; height: 20px;
             font-size: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
     </style>
 </head>
@@ -385,6 +505,7 @@
     <div class="action-row">
         <button class="btn-toggle-sci" onclick="toggleScientificPanel()">🔬 Mode</button>
         <button class="btn-toggle-hist" onclick="toggleHistoryPanel()">📜 History</button>
+        <button class="btn-toggle-tools" onclick="toggleToolsPanel()">📐 Tools</button>
         <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
     </div>
     
@@ -398,6 +519,24 @@
             <button class="clear-hist-btn" onclick="clearHistory()">Clear All</button>
         </div>
         <div class="history-list" id="historyList"></div>
+    </div>
+
+    <div class="tools-panel" id="toolsPanel">
+        <select class="tool-selector" id="toolTypeSelect" onchange="switchToolSegment()">
+            <option value="age">🎂 Exact Age Calculator</option>
+            <option value="bmi">⚖️ BMI Calculator</option>
+            <option value="distance">📏 Distance Converter</option>
+            <option value="area">🗺️ Area Converter</option>
+            <option value="data">💾 Data Storage Converter</option>
+            <option value="date">📅 Date Difference</option>
+            <option value="discount">🏷️ Discount Calculator</option>
+            <option value="mass">🏋️ Mass / Weight Converter</option>
+            <option value="speed">🚀 Speed Converter</option>
+            <option value="temp">🌡️ Temperature Converter</option>
+            <option value="time">⏱️ Time Converter</option>
+            <option value="volume">🧪 Volume Converter</option>
+        </select>
+        <div class="tool-body" id="toolBody"></div>
     </div>
 
     <div class="scientific-panel" id="scientificPanel">
@@ -493,6 +632,7 @@
         calcTitle.innerText = "Set Passcode & Press =";
     }
     renderHistory();
+    switchToolSegment();
 
     function updateDisplayValue(newValue) {
         display.innerText = newValue === '' ? '0' : newValue;
@@ -501,12 +641,20 @@
 
     function toggleScientificPanel() {
         document.getElementById('historyPanel').classList.remove('open');
+        document.getElementById('toolsPanel').classList.remove('open');
         document.getElementById('scientificPanel').classList.toggle('open');
     }
 
     function toggleHistoryPanel() {
         document.getElementById('scientificPanel').classList.remove('open');
+        document.getElementById('toolsPanel').classList.remove('open');
         document.getElementById('historyPanel').classList.toggle('open');
+    }
+
+    function toggleToolsPanel() {
+        document.getElementById('scientificPanel').classList.remove('open');
+        document.getElementById('historyPanel').classList.remove('open');
+        document.getElementById('toolsPanel').classList.toggle('open');
     }
 
     function appendScientific(val) {
@@ -711,7 +859,6 @@
             .replaceAll('e^(', ' e to the power of ')
             .replaceAll('1/(', ' inverse of ')
             .replaceAll('^', ' to the power of ')
-            .replaceAll('π', ' pi ')
             .replaceAll('(', ' open bracket ')
             .replaceAll(')', ' close bracket ');
 
@@ -771,14 +918,260 @@
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'delete-item-btn';
             deleteBtn.innerHTML = '×';
+
             deleteBtn.onclick = () => {
                 vaultItems.splice(index, 1);
                 localStorage.setItem('vaultItems', JSON.stringify(vaultItems));
                 renderGallery();
             };
+
             container.appendChild(deleteBtn);
             grid.appendChild(container);
         });
+    }
+
+    /* --- CONVERTERS & TOOLS SYSTEM --- */
+    function switchToolSegment() {
+        const type = document.getElementById('toolTypeSelect').value;
+        const body = document.getElementById('toolBody');
+        body.innerHTML = '';
+
+        if (type === 'age') {
+            body.innerHTML = `
+                <div class="tool-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="dobInput" class="tool-input">
+                </div>
+                <div class="tool-group">
+                    <label>Target Date</label>
+                    <input type="date" id="targetDateInput" class="tool-input" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+                <button class="btn-calc-tool" onclick="calcAge()">Calculate Age</button>
+                <div class="tool-result-box" id="toolResult">Select DOB to calculate</div>
+            `;
+        } else if (type === 'bmi') {
+            body.innerHTML = `
+                <div class="tool-row">
+                    <div class="tool-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="bmiWeight" class="tool-input" placeholder="e.g. 70">
+                    </div>
+                    <div class="tool-group">
+                        <label>Height (cm)</label>
+                        <input type="number" id="bmiHeight" class="tool-input" placeholder="e.g. 175">
+                    </div>
+                </div>
+                <button class="btn-calc-tool" onclick="calcBMI()">Calculate BMI</button>
+                <div class="tool-result-box" id="toolResult">Enter details</div>
+            `;
+        } else if (type === 'discount') {
+            body.innerHTML = `
+                <div class="tool-row">
+                    <div class="tool-group">
+                        <label>Original Price</label>
+                        <input type="number" id="discPrice" class="tool-input" placeholder="Price">
+                    </div>
+                    <div class="tool-group">
+                        <label>Discount (%)</label>
+                        <input type="number" id="discPercent" class="tool-input" placeholder="%">
+                    </div>
+                </div>
+                <button class="btn-calc-tool" onclick="calcDiscount()">Calculate Discount</button>
+                <div class="tool-result-box" id="toolResult">Enter price and discount</div>
+            `;
+        } else if (type === 'date') {
+            body.innerHTML = `
+                <div class="tool-group">
+                    <label>Start Date</label>
+                    <input type="date" id="dateStart" class="tool-input">
+                </div>
+                <div class="tool-group">
+                    <label>End Date</label>
+                    <input type="date" id="dateEnd" class="tool-input" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+                <button class="btn-calc-tool" onclick="calcDateDiff()">Calculate Difference</button>
+                <div class="tool-result-box" id="toolResult">Select dates</div>
+            `;
+        } else {
+            // General Unit Converters
+            const units = {
+                distance: ['Meters', 'Kilometers', 'Centimeters', 'Miles', 'Feet', 'Inches', 'Yards'],
+                area: ['Square Meters', 'Square Kilometers', 'Square Feet', 'Acres', 'Hectares'],
+                data: ['Bytes', 'KB', 'MB', 'GB', 'TB'],
+                mass: ['Kilograms', 'Grams', 'Milligrams', 'Pounds', 'Ounces'],
+                speed: ['km/h', 'm/s', 'mph', 'Knots'],
+                temp: ['Celsius', 'Fahrenheit', 'Kelvin'],
+                time: ['Seconds', 'Minutes', 'Hours', 'Days', 'Weeks'],
+                volume: ['Liters', 'Milliliters', 'Gallons (US)', 'Cubic Meters']
+            };
+
+            const selectedUnits = units[type];
+            let options = selectedUnits.map(u => `<option value="${u}">${u}</option>`).join('');
+
+            body.innerHTML = `
+                <div class="tool-group">
+                    <label>Value</label>
+                    <input type="number" id="unitVal" class="tool-input" placeholder="Enter value" oninput="convertUnits('${type}')">
+                </div>
+                <div class="tool-row">
+                    <div class="tool-group">
+                        <label>From</label>
+                        <select id="unitFrom" class="tool-select" onchange="convertUnits('${type}')">${options}</select>
+                    </div>
+                    <div class="tool-group">
+                        <label>To</label>
+                        <select id="unitTo" class="tool-select" onchange="convertUnits('${type}')">${options}</select>
+                    </div>
+                </div>
+                <div class="tool-result-box" id="toolResult" style="margin-top:10px;">Result will appear here</div>
+            `;
+            if (selectedUnits.length > 1) {
+                document.getElementById('unitTo').selectedIndex = 1;
+            }
+        }
+    }
+
+    function calcAge() {
+        const dobVal = document.getElementById('dobInput').value;
+        const targetVal = document.getElementById('targetDateInput').value;
+        if (!dobVal) {
+            document.getElementById('toolResult').innerText = "Please select Date of Birth";
+            return;
+        }
+        let birth = new Date(dobVal);
+        let target = targetVal ? new Date(targetVal) : new Date();
+
+        if (birth > target) {
+            document.getElementById('toolResult').innerText = "DOB cannot be in the future";
+            return;
+        }
+
+        let years = target.getFullYear() - birth.getFullYear();
+        let months = target.getMonth() - birth.getMonth();
+        let days = target.getDate() - birth.getDate();
+
+        if (days < 0) {
+            months--;
+            let prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
+            days += prevMonth.getDate();
+        }
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        document.getElementById('toolResult').innerText = `${years} Years, ${months} Months, ${days} Days`;
+    }
+
+    function calcBMI() {
+        const w = parseFloat(document.getElementById('bmiWeight').value);
+        const h = parseFloat(document.getElementById('bmiHeight').value);
+
+        if (!w || !h || w <= 0 || h <= 0) {
+            document.getElementById('toolResult').innerText = "Enter valid positive values";
+            return;
+        }
+
+        const bmi = (w / ((h / 100) * (h / 100))).toFixed(2);
+        let cat = "";
+        if (bmi < 18.5) cat = "Underweight";
+        else if (bmi < 24.9) cat = "Normal weight";
+        else if (bmi < 29.9) cat = "Overweight";
+        else cat = "Obese";
+
+        document.getElementById('toolResult').innerText = `BMI: ${bmi} (${cat})`;
+    }
+
+    function calcDiscount() {
+        const p = parseFloat(document.getElementById('discPrice').value);
+        const d = parseFloat(document.getElementById('discPercent').value);
+
+        if (isNaN(p) || isNaN(d) || p < 0 || d < 0) {
+            document.getElementById('toolResult').innerText = "Enter valid numbers";
+            return;
+        }
+
+        const saved = (p * (d / 100)).toFixed(2);
+        const finalP = (p - saved).toFixed(2);
+
+        document.getElementById('toolResult').innerText = `Final Price: ${finalP} (Saved: ${saved})`;
+    }
+
+    function calcDateDiff() {
+        const d1 = document.getElementById('dateStart').value;
+        const d2 = document.getElementById('dateEnd').value;
+
+        if (!d1 || !d2) {
+            document.getElementById('toolResult').innerText = "Select both dates";
+            return;
+        }
+
+        const date1 = new Date(d1);
+        const date2 = new Date(d2);
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const weeks = Math.floor(diffDays / 7);
+        const remDays = diffDays % 7;
+
+        document.getElementById('toolResult').innerText = `${diffDays} Days (${weeks} Weeks, ${remDays} Days)`;
+    }
+
+    function convertUnits(type) {
+        const val = parseFloat(document.getElementById('unitVal').value);
+        const from = document.getElementById('unitFrom').value;
+        const to = document.getElementById('unitTo').value;
+        const resBox = document.getElementById('toolResult');
+
+        if (isNaN(val)) {
+            resBox.innerText = "Enter a valid value";
+            return;
+        }
+
+        let baseVal = val;
+        let res = 0;
+
+        if (type === 'distance') {
+            const toMeters = { Meters: 1, Kilometers: 1000, Centimeters: 0.01, Miles: 1609.34, Feet: 0.3048, Inches: 0.0254, Yards: 0.9144 };
+            baseVal = val * toMeters[from];
+            res = baseVal / toMeters[to];
+        } else if (type === 'area') {
+            const toSqM = { 'Square Meters': 1, 'Square Kilometers': 1e6, 'Square Feet': 0.092903, Acres: 4046.86, Hectares: 10000 };
+            baseVal = val * toSqM[from];
+            res = baseVal / toSqM[to];
+        } else if (type === 'data') {
+            const toBytes = { Bytes: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 };
+            baseVal = val * toBytes[from];
+            res = baseVal / toBytes[to];
+        } else if (type === 'mass') {
+            const toKg = { Kilograms: 1, Grams: 0.001, Milligrams: 0.000001, Pounds: 0.453592, Ounces: 0.0283495 };
+            baseVal = val * toKg[from];
+            res = baseVal / toKg[to];
+        } else if (type === 'speed') {
+            const toMs = { 'm/s': 1, 'km/h': 0.277778, mph: 0.44704, Knots: 0.514444 };
+            baseVal = val * toMs[from];
+            res = baseVal / toMs[to];
+        } else if (type === 'temp') {
+            if (from === to) res = val;
+            else if (from === 'Celsius') res = to === 'Fahrenheit' ? (val * 9/5) + 32 : val + 273.15;
+            else if (from === 'Fahrenheit') res = to === 'Celsius' ? (val - 32) * 5/9 : ((val - 32) * 5/9) + 273.15;
+            else if (from === 'Kelvin') res = to === 'Celsius' ? val - 273.15 : ((val - 273.15) * 9/5) + 32;
+        } else if (type === 'time') {
+            const toSec = { Seconds: 1, Minutes: 60, Hours: 3600, Days: 86400, Weeks: 604800 };
+            baseVal = val * toSec[from];
+            res = baseVal / toSec[to];
+        } else if (type === 'volume') {
+            const toLiters = { Liters: 1, Milliliters: 0.001, 'Gallons (US)': 3.78541, 'Cubic Meters': 1000 };
+            baseVal = val * toLiters[from];
+            res = baseVal / toLiters[to];
+        }
+
+        if (type !== 'temp') {
+            res = parseFloat(res.toFixed(6));
+        } else {
+            res = parseFloat(res.toFixed(2));
+        }
+
+        resBox.innerText = `${val} ${from} = ${res} ${to}`;
     }
 </script>
 </body>
