@@ -1,505 +1,721 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link class="js-meta-icon" rel="icon" type="image/png" href="my_logo.png">
-    <link rel="apple-touch-icon" href="my_logo.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilshad's Calc Pro</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
 
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            background: #0d1527;
-            overflow-x: hidden;
-            padding: 20px 0;
-        }
+<link rel="icon" type="image/png" href="my_logo.png">
+<link rel="apple-touch-icon" href="my_logo.png">
+<link rel="manifest" href="manifest.json">
 
-        .calc-card { 
-            background: rgba(21, 32, 54, 0.6); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 24px; 
-            border-radius: 28px; 
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); 
-            text-align: center; 
-            width: 360px; 
-            max-width: 95vw;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#07111f">
 
-        .header-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            padding: 0 4px;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dilshad's Calc Pro</title>
 
-        .logo { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            object-fit: cover;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
 
-        h2 { 
-            font-size: 18px; 
-            font-weight: 600;
-            text-align: left;
-            color: #ffffff;
-            margin: 0;
-        }
+:root {
+    --bg: #050b14;
+    --card: rgba(14, 24, 40, 0.78);
+    --card2: rgba(20, 32, 52, 0.72);
+    --border: rgba(255,255,255,0.08);
+    --text: #f8fafc;
+    --muted: #8fa1b8;
+    --blue: #38bdf8;
+    --blue2: #2563eb;
+    --green: #22c55e;
+    --purple: #a855f7;
+    --yellow: #facc15;
+    --red: #ef4444;
+}
 
-        .action-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 20px;
-        }
+html {
+    min-height: 100%;
+    background: var(--bg);
+}
 
-        .action-row button {
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px 0;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 15% 10%, rgba(37,99,235,.20), transparent 32%),
+        radial-gradient(circle at 85% 20%, rgba(168,85,247,.16), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(34,197,94,.08), transparent 35%),
+        #050b14;
+    overflow-x: hidden;
+}
 
-        .btn-toggle-sci {
-            background: rgba(168, 85, 247, 0.15);
-            border-color: rgba(168, 85, 247, 0.3);
-            color: #c084fc;
-        }
-        .btn-toggle-sci:hover { background: #a855f7; color: #0d1527; }
+/* Ambient background */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: .15;
+    pointer-events: none;
+    z-index: -1;
+}
 
-        .btn-toggle-hist {
-            background: rgba(234, 179, 8, 0.12);
-            border-color: rgba(234, 179, 8, 0.3);
-            color: #facc15;
-        }
-        .btn-toggle-hist:hover { background: #eab308; color: #0d1527; }
+body::before {
+    background: #0ea5e9;
+    top: -100px;
+    left: -100px;
+}
 
-        .btn-toggle-tools {
-            background: rgba(52, 211, 153, 0.12);
-            border-color: rgba(52, 211, 153, 0.3);
-            color: #34d399;
-        }
-        .btn-toggle-tools:hover { background: #34d399; color: #0d1527; }
+body::after {
+    background: #9333ea;
+    bottom: -120px;
+    right: -100px;
+}
 
-        .btn-revise {
-            background: rgba(56, 189, 248, 0.12);
-            border-color: rgba(56, 189, 248, 0.3);
-            color: #38bdf8;
-        }
-        .btn-revise:hover { background: #38bdf8; color: #0d1527; }
+/* Main Card */
+.calc-card {
+    width: 390px;
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 30px;
+    background: linear-gradient(
+        145deg,
+        rgba(19,32,52,.88),
+        rgba(7,15,28,.92)
+    );
+    border: 1px solid var(--border);
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    position: relative;
+    overflow: hidden;
+}
 
-        .display-container {
-            background: rgba(9, 15, 29, 0.7);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            overflow: hidden;
-            position: relative;
-        }
+.calc-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(56,189,248,.7),
+        transparent
+    );
+}
 
-        .calc-display {
-            width: 100%;
-            font-size: 34px;
-            text-align: right;
-            background: transparent;
-            color: #38bdf8;
-            border: none;
-            outline: none;
-            font-family: 'Segoe UI', sans-serif;
-            white-space: nowrap;
-            overflow-x: auto;
-            scrollbar-width: none;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
+/* Header */
+.header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding: 2px 2px 0;
+}
 
-        .calc-display::-webkit-scrollbar {
-            display: none;
-        }
+.brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
 
-        .animate-pop {
-            animation: answerPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
-        }
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
 
-        @keyframes answerPop {
-            0% { transform: scale(0.95); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+.brand-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
 
-        .scientific-panel {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
-            margin-bottom: 0;
-        }
+h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 750;
+    letter-spacing: -.3px;
+}
 
-        .scientific-panel.open {
-            max-height: 240px;
-            margin-bottom: 20px;
-        }
+.brand-subtitle {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
 
-        .btn-sci {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            color: #cbd5e1;
-            font-size: 14px;
-            padding: 10px 0;
-            border-radius: 12px;
-            cursor: pointer;
-        }
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 12px rgba(34,197,94,.8);
+}
 
-        .history-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
-            margin-bottom: 0;
-            background: rgba(9, 15, 29, 0.6);
-            border-radius: 16px;
-            text-align: left;
-        }
+/* Quick Actions */
+.action-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 14px;
+}
 
-        .history-panel.open {
-            max-height: 180px;
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
+.action-row button {
+    border: 1px solid rgba(255,255,255,.07);
+    min-height: 39px;
+    padding: 7px 3px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+    color: #dbeafe;
+    background: rgba(255,255,255,.035);
+}
 
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+.action-row button:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.08);
+}
 
-        .history-header span {
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 600;
-        }
+.action-row button:active {
+    transform: scale(.96);
+}
 
-        .clear-hist-btn {
-            background: transparent;
-            border: none;
-            color: #f87171;
-            font-size: 11px;
-            cursor: pointer;
-            padding: 2px 6px;
-        }
+.btn-toggle-sci {
+    color: #c084fc !important;
+    border-color: rgba(168,85,247,.2) !important;
+}
 
-        .history-list {
-            max-height: 130px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+.btn-toggle-hist {
+    color: #facc15 !important;
+    border-color: rgba(250,204,21,.2) !important;
+}
 
-        .history-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 8px 10px;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            border: 1px solid transparent;
-            transition: all 0.15s ease;
-        }
+.btn-toggle-tools {
+    color: #34d399 !important;
+    border-color: rgba(52,211,153,.2) !important;
+}
 
-        .history-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(234, 179, 8, 0.2);
-        }
+.btn-revise {
+    color: #38bdf8 !important;
+    border-color: rgba(56,189,248,.2) !important;
+}
 
-        .history-formula {
-            color: #94a3b8;
-            font-size: 11px;
-            word-break: break-all;
-        }
+/* Display */
+.display-container {
+    min-height: 126px;
+    margin-bottom: 15px;
+    padding: 20px 18px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(2,8,18,.88),
+            rgba(9,20,36,.82)
+        );
+    border: 1px solid rgba(255,255,255,.055);
+    box-shadow:
+        inset 0 2px 18px rgba(0,0,0,.35),
+        0 10px 35px rgba(0,0,0,.18);
+    overflow: hidden;
+}
 
-        .history-result {
-            color: #facc15;
-            font-weight: 600;
-        }
+.calc-display {
+    width: 100%;
+    color: #e0f2fe;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.8px;
+    text-align: right;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    text-shadow: 0 0 20px rgba(56,189,248,.15);
+}
 
-        .empty-history {
-            color: #475569;
-            font-size: 12px;
-            text-align: center;
-            padding: 20px 0;
-        }
+.calc-display::-webkit-scrollbar {
+    display: none;
+}
 
-        /* Converter Tools Panel Styles */
-        .tools-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.3s ease;
-            margin-bottom: 0;
-            background: rgba(9, 15, 29, 0.8);
-            border-radius: 18px;
-            text-align: left;
-            padding: 0 14px;
-        }
+.animate-pop {
+    animation: answerPop .28s cubic-bezier(.175,.885,.32,1.2);
+}
 
-        .tools-panel.open {
-            max-height: 420px;
-            margin-bottom: 20px;
-            padding: 14px;
-            overflow-y: auto;
-            border: 1px solid rgba(52, 211, 153, 0.2);
-        }
+@keyframes answerPop {
+    0% {
+        transform: scale(.94);
+        opacity: .5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 
-        .tool-selector {
-            width: 100%;
-            padding: 10px;
-            border-radius: 12px;
-            background: #1e293b;
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            font-weight: 600;
-            margin-bottom: 12px;
-            outline: none;
-            cursor: pointer;
-        }
+/* Panels */
+.scientific-panel,
+.history-panel,
+.tools-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+    transition:
+        max-height .35s ease,
+        opacity .25s ease,
+        margin-bottom .3s ease,
+        padding .3s ease;
+}
 
-        .tool-body {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+.scientific-panel.open {
+    max-height: 300px;
+    opacity: 1;
+    margin-bottom: 15px;
+}
 
-        .tool-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+.scientific-panel {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+}
 
-        .tool-group label {
-            font-size: 11px;
-            color: #94a3b8;
-            font-weight: 600;
-        }
+.btn-sci {
+    padding: 11px 4px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.06);
+    background: rgba(255,255,255,.035);
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: .2s;
+}
 
-        .tool-input, .tool-select {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 13px;
-            outline: none;
-        }
+.btn-sci:hover {
+    background: rgba(168,85,247,.13);
+    border-color: rgba(168,85,247,.25);
+    color: #e9d5ff;
+}
 
-        .tool-input:focus, .tool-select:focus {
-            border-color: #34d399;
-        }
+.history-panel,
+.tools-panel {
+    background: rgba(2,8,18,.65);
+    border-radius: 18px;
+    text-align: left;
+}
 
-        .tool-row {
-            display: flex;
-            gap: 8px;
-        }
+.history-panel.open {
+    max-height: 230px;
+    opacity: 1;
+    margin-bottom: 15px;
+    padding: 13px;
+    border: 1px solid rgba(250,204,21,.12);
+}
 
-        .tool-row > * {
-            flex: 1;
-        }
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+}
 
-        .btn-calc-tool {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: background 0.2s;
-        }
+.history-header span {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 700;
+}
 
-        .btn-calc-tool:hover {
-            background: #059669;
-        }
+.clear-hist-btn {
+    border: none;
+    background: transparent;
+    color: #f87171;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
 
-        .tool-result-box {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px dashed rgba(16, 185, 129, 0.3);
-            color: #34d399;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            word-break: break-all;
-            margin-top: 4px;
-        }
+.history-list {
+    max-height: 165px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
 
-        .buttons { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 12px; 
-        }
+.history-item {
+    padding: 9px 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: right;
+    transition: .2s;
+}
 
-        button { 
-            padding: 16px 0;
-            font-size: 22px; 
-            font-weight: 600;
-            border: none; 
-            border-radius: 16px; 
-            cursor: pointer; 
-            background: #2b3344; 
-            color: #ffffff;
-            transition: all 0.15s ease; 
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+.history-item:hover {
+    background: rgba(255,255,255,.065);
+    border-color: rgba(250,204,21,.18);
+}
 
-        button:active { 
-            transform: scale(0.92);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-        }
+.history-formula {
+    color: #7f8ea3;
+    font-size: 10px;
+}
 
-        .btn-action {
-            background: #2e3648;
-            color: #ffffff;
-        }
+.history-result {
+    color: #facc15;
+    font-size: 13px;
+    font-weight: 700;
+}
 
-        .operator { 
-            background: #2563eb; 
-            color: #ffffff;
-        }
+.empty-history {
+    padding: 20px 0;
+    text-align: center;
+    color: #475569;
+    font-size: 11px;
+}
 
-        .equal { 
-            background: #16a34a; 
-            color: #ffffff;
-        }
-        .equal:active {
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
-        }
+/* Tools */
+.tools-panel.open {
+    max-height: 460px;
+    opacity: 1;
+    margin-bottom: 15px;
+    padding: 14px;
+    border: 1px solid rgba(52,211,153,.15);
+    overflow-y: auto;
+}
 
-        .vault-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(9, 15, 29, 0.95);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+.tool-selector,
+.tool-input,
+.tool-select {
+    width: 100%;
+    outline: none;
+    border-radius: 11px;
+    background: #111d30;
+    border: 1px solid rgba(255,255,255,.08);
+    color: #e2e8f0;
+}
 
-        .vault-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+.tool-selector {
+    padding: 10px;
+    color: #34d399;
+    font-weight: 700;
+    margin-bottom: 11px;
+}
 
-        .vault-content {
-            background: #152036;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 24px;
-            border-radius: 24px;
-            width: 85%;
-            max-width: 400px;
-            color: white;
-        }
+.tool-body {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
 
-        .vault-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+.tool-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
 
-        .close-vault-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+.tool-group label {
+    color: #8191a7;
+    font-size: 10px;
+    font-weight: 700;
+}
 
-        .file-upload-label {
-            display: block;
-            background: rgba(37, 99, 235, 0.2);
-            color: #3b82f6;
-            border: 2px dashed #2563eb;
-            padding: 20px;
-            border-radius: 14px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-        }
+.tool-input,
+.tool-select {
+    padding: 9px 10px;
+    font-size: 12px;
+}
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
+.tool-input:focus,
+.tool-select:focus,
+.tool-selector:focus {
+    border-color: rgba(52,211,153,.5);
+    box-shadow: 0 0 0 3px rgba(52,211,153,.06);
+}
 
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+.tool-row {
+    display: flex;
+    gap: 8px;
+}
 
-        .gallery-item img, .gallery-item video {
-            width: 100%; height: 100%; object-fit: cover;
-        }
+.tool-row > * {
+    flex: 1;
+}
 
-        .delete-item-btn {
-            position: absolute;
-            top: 2px; right: 2px;
-            background: #ef4444;
-            border: none; color: white;
-            border-radius: 50%; width: 20px; height: 20px;
-            font-size: 12px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-    </style>
+.btn-calc-tool {
+    border: none;
+    padding: 10px;
+    border-radius: 11px;
+    background: linear-gradient(135deg,#10b981,#059669);
+    color: white;
+    font-weight: 750;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.tool-result-box {
+    padding: 10px;
+    border-radius: 11px;
+    text-align: center;
+    background: rgba(16,185,129,.08);
+    border: 1px dashed rgba(52,211,153,.25);
+    color: #34d399;
+    font-size: 12px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+/* Calculator Buttons */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 9px;
+}
+
+.buttons button {
+    height: 60px;
+    border: 1px solid rgba(255,255,255,.045);
+    border-radius: 17px;
+    background: linear-gradient(
+        145deg,
+        rgba(43,54,72,.95),
+        rgba(27,37,53,.95)
+    );
+    color: #f8fafc;
+    font-size: 20px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+        transform .12s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+    box-shadow:
+        0 5px 10px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.buttons button:hover {
+    background: linear-gradient(
+        145deg,
+        rgba(55,68,89,.98),
+        rgba(34,47,66,.98)
+    );
+    transform: translateY(-1px);
+}
+
+.buttons button:active {
+    transform: scale(.93);
+}
+
+.btn-action {
+    color: #cbd5e1 !important;
+}
+
+.operator {
+    background: linear-gradient(145deg,#2563eb,#1d4ed8) !important;
+    box-shadow: 0 8px 20px rgba(37,99,235,.22) !important;
+}
+
+.equal {
+    background: linear-gradient(145deg,#22c55e,#15803d) !important;
+    box-shadow: 0 8px 22px rgba(34,197,94,.22) !important;
+}
+
+.buttons button:nth-child(1) {
+    color: #f87171;
+}
+
+/* Vault */
+.vault-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(2,6,15,.88);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+.vault-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.vault-content {
+    width: 100%;
+    max-width: 410px;
+    padding: 22px;
+    border-radius: 25px;
+    background: linear-gradient(145deg,#15243a,#091321);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 30px 90px rgba(0,0,0,.6);
+}
+
+.vault-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.vault-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-vault-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 13px;
+    background: #ef4444;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: block;
+    padding: 22px;
+    text-align: center;
+    border: 1px dashed rgba(56,189,248,.45);
+    border-radius: 15px;
+    color: #38bdf8;
+    background: rgba(56,189,248,.06);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 17px;
+    max-height: 230px;
+    overflow-y: auto;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #020617;
+}
+
+.gallery-item img,
+.gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.delete-item-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 21px !important;
+    height: 21px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 50% !important;
+    background: #ef4444 !important;
+    color: white;
+    font-size: 12px !important;
+}
+
+/* Mobile */
+@media (max-width: 430px) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 15px;
+    }
+
+    .calc-card {
+        padding: 16px;
+        border-radius: 26px;
+    }
+
+    .display-container {
+        min-height: 115px;
+    }
+
+    .calc-display {
+        font-size: 34px;
+    }
+
+    .buttons {
+        gap: 8px;
+    }
+
+    .buttons button {
+        height: 57px;
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 340px) {
+    .action-row button {
+        font-size: 9px;
+    }
+
+    .buttons button {
+        height: 53px;
+        font-size: 18px;
+    }
+}
+</style>
 </head>
+
 <body>
 
 <div class="calc-card">
+
     <div class="header-section">
-        <h2 id="calc-title">Dilshad's Calc Pro</h2>
-        <img src="my_logo.png" alt="Logo" class="logo">
+        <div class="brand-wrap">
+            <img src="my_logo.png" alt="Logo" class="logo">
+
+            <div class="brand-title">
+                <h2 id="calc-title">Dilshad's Calc Pro</h2>
+                <span class="brand-subtitle">Smart Calculator</span>
+            </div>
+        </div>
+
+        <span class="status-dot"></span>
     </div>
 
     <div class="action-row">
@@ -508,20 +724,24 @@
         <button class="btn-toggle-tools" onclick="toggleToolsPanel()">📐 Tools</button>
         <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
     </div>
-    
-    <div class="display-container" id="displayContainer">
+
+    <div class="display-container">
         <div id="display" class="calc-display">0</div>
     </div>
 
+    <!-- HISTORY -->
     <div class="history-panel" id="historyPanel">
         <div class="history-header">
-            <span>Previous Logs (Max 100)</span>
+            <span>Previous Logs · Max 100</span>
             <button class="clear-hist-btn" onclick="clearHistory()">Clear All</button>
         </div>
+
         <div class="history-list" id="historyList"></div>
     </div>
 
+    <!-- TOOLS -->
     <div class="tools-panel" id="toolsPanel">
+
         <select class="tool-selector" id="toolTypeSelect" onchange="switchToolSegment()">
             <option value="age">🎂 Exact Age Calculator</option>
             <option value="bmi">⚖️ BMI Calculator</option>
@@ -536,643 +756,1343 @@
             <option value="time">⏱️ Time Converter</option>
             <option value="volume">🧪 Volume Converter</option>
         </select>
+
         <div class="tool-body" id="toolBody"></div>
     </div>
 
+    <!-- SCIENTIFIC -->
     <div class="scientific-panel" id="scientificPanel">
+
         <button class="btn-sci" onclick="appendScientific('sin(')">sin</button>
         <button class="btn-sci" onclick="appendScientific('cos(')">cos</button>
         <button class="btn-sci" onclick="appendScientific('tan(')">tan</button>
         <button class="btn-sci" onclick="appendScientific('sqrt(')">√</button>
-        
+
         <button class="btn-sci" onclick="appendScientific('log(')">log</button>
         <button class="btn-sci" onclick="appendScientific('ln(')">ln</button>
-        <button class="btn-sci" onclick="appendScientific('^')">a^x</button>
+        <button class="btn-sci" onclick="appendScientific('^')">aˣ</button>
         <button class="btn-sci" onclick="appendScientific('fact(')">x!</button>
-        
-        <button class="btn-sci" onclick="appendScientific('e^(')">e^x</button>
+
+        <button class="btn-sci" onclick="appendScientific('e^(')">eˣ</button>
         <button class="btn-sci" onclick="appendScientific('1/(')">inv</button>
         <button class="btn-sci" onclick="appendScientific('π')">π</button>
         <button class="btn-sci" onclick="appendScientific('e')">e</button>
 
-        <button class="btn-sci" onclick="appendScientific('(')" style="background: rgba(255,255,255,0.05);">(</button>
-        <button class="btn-sci" onclick="appendScientific(')')" style="background: rgba(255,255,255,0.05);">)</button>
-        <button class="btn-sci" onclick="appendScientific(',')" style="background: rgba(255,255,255,0.05);">,</button>
-        <button class="btn-sci" style="visibility: hidden;"></button>
+        <button class="btn-sci" onclick="appendScientific('(')">(</button>
+        <button class="btn-sci" onclick="appendScientific(')')">)</button>
+        <button class="btn-sci" onclick="appendScientific(',')">,</button>
     </div>
 
+    <!-- MAIN CALCULATOR -->
     <div class="buttons">
+
         <button class="btn-action" onclick="clearDisplay()">C</button>
         <button class="btn-action" onclick="deleteLast()">DEL</button>
         <button class="btn-action" onclick="appendOperator('%')">%</button>
         <button class="operator" onclick="appendOperator('/')">÷</button>
-        
+
         <button onclick="appendNumber('7')">7</button>
         <button onclick="appendNumber('8')">8</button>
         <button onclick="appendNumber('9')">9</button>
         <button class="operator" onclick="appendOperator('*')">×</button>
-        
+
         <button onclick="appendNumber('4')">4</button>
         <button onclick="appendNumber('5')">5</button>
         <button onclick="appendNumber('6')">6</button>
-        <button class="operator" onclick="appendOperator('-')">-</button>
-        
+        <button class="operator" onclick="appendOperator('-')">−</button>
+
         <button onclick="appendNumber('1')">1</button>
         <button onclick="appendNumber('2')">2</button>
         <button onclick="appendNumber('3')">3</button>
         <button class="operator" onclick="appendOperator('+')">+</button>
-        
+
         <button onclick="appendNumber('0')">0</button>
         <button onclick="appendNumber('.')">.</button>
         <button class="equal" onclick="calculate()" style="grid-column: span 2;">=</button>
+
     </div>
 </div>
 
+<!-- PRIVATE VAULT -->
 <div id="vaultOverlay" class="vault-overlay">
+
     <div class="vault-content">
+
         <div class="vault-header">
             <h3>🔒 Private Vault</h3>
             <button class="close-vault-btn" onclick="closeVault()">Lock</button>
         </div>
+
         <label class="file-upload-label">
             📁 Upload to Hide Media
-            <input type="file" id="vaultInput" accept="image/*,video/*" multiple style="display: none;" onchange="handleFileSelect(event)">
+            <input
+                type="file"
+                id="vaultInput"
+                accept="image/*,video/*"
+                multiple
+                style="display:none"
+                onchange="handleFileSelect(event)"
+            >
         </label>
+
         <div id="galleryGrid" class="gallery-grid"></div>
+
     </div>
 </div>
 
 <script>
-    let display = document.getElementById('display');
-    let calcTitle = document.getElementById('calc-title');
-    let clearOnNextInput = false;
+let display = document.getElementById("display");
+let calcTitle = document.getElementById("calc-title");
 
-    let lastActiveFormula = ""; 
-    let finalCalculationResult = "";
+let clearOnNextInput = false;
+let lastActiveFormula = "";
+let finalCalculationResult = "";
 
-    let historyLog = JSON.parse(localStorage.getItem('calcHistory')) || [];
-    let vaultCode = localStorage.getItem('vaultCode') || null;
-    let equalClickCount = 0;
+let historyLog = JSON.parse(localStorage.getItem("calcHistory")) || [];
+let vaultCode = localStorage.getItem("vaultCode") || null;
+let equalClickCount = 0;
 
-    const sin = (deg) => Math.sin(deg * Math.PI / 180);
-    const cos = (deg) => Math.cos(deg * Math.PI / 180);
-    const tan = (deg) => Math.tan(deg * Math.PI / 180);
-    const log = (x) => Math.log10(x);
-    const ln = (x) => Math.log(x);
-    const sqrt = (x) => Math.sqrt(x);
-    const fact = (n) => {
-        if (n < 0 || !Number.isInteger(n)) return NaN;
-        if (n === 0 || n === 1) return 1;
-        let r = 1;
-        for (let i = 2; i <= n; i++) r *= i;
-        return r;
-    };
+/* Scientific functions */
 
-    if (!vaultCode) {
-        calcTitle.innerText = "Set Passcode & Press =";
-    }
-    renderHistory();
-    switchToolSegment();
+const sin = deg => Math.sin(deg * Math.PI / 180);
+const cos = deg => Math.cos(deg * Math.PI / 180);
+const tan = deg => Math.tan(deg * Math.PI / 180);
+const log = x => Math.log10(x);
+const ln = x => Math.log(x);
+const sqrt = x => Math.sqrt(x);
 
-    function updateDisplayValue(newValue) {
-        display.innerText = newValue === '' ? '0' : newValue;
-        display.scrollLeft = display.scrollWidth;
+const fact = n => {
+    if (n < 0 || !Number.isInteger(n)) return NaN;
+    if (n === 0 || n === 1) return 1;
+
+    let r = 1;
+
+    for (let i = 2; i <= n; i++) {
+        r *= i;
     }
 
-    function toggleScientificPanel() {
-        document.getElementById('historyPanel').classList.remove('open');
-        document.getElementById('toolsPanel').classList.remove('open');
-        document.getElementById('scientificPanel').classList.toggle('open');
+    return r;
+};
+
+if (!vaultCode) {
+    calcTitle.innerText = "Set Passcode & Press =";
+}
+
+renderHistory();
+switchToolSegment();
+
+/* Display */
+
+function updateDisplayValue(value) {
+    display.innerText = value === "" ? "0" : value;
+    display.scrollLeft = display.scrollWidth;
+}
+
+/* Panels */
+
+function closePanels() {
+    document.getElementById("scientificPanel").classList.remove("open");
+    document.getElementById("historyPanel").classList.remove("open");
+    document.getElementById("toolsPanel").classList.remove("open");
+}
+
+function toggleScientificPanel() {
+    const panel = document.getElementById("scientificPanel");
+    const state = panel.classList.contains("open");
+
+    closePanels();
+
+    if (!state) {
+        panel.classList.add("open");
     }
+}
 
-    function toggleHistoryPanel() {
-        document.getElementById('scientificPanel').classList.remove('open');
-        document.getElementById('toolsPanel').classList.remove('open');
-        document.getElementById('historyPanel').classList.toggle('open');
+function toggleHistoryPanel() {
+    const panel = document.getElementById("historyPanel");
+    const state = panel.classList.contains("open");
+
+    closePanels();
+
+    if (!state) {
+        panel.classList.add("open");
     }
+}
 
-    function toggleToolsPanel() {
-        document.getElementById('scientificPanel').classList.remove('open');
-        document.getElementById('historyPanel').classList.remove('open');
-        document.getElementById('toolsPanel').classList.toggle('open');
+function toggleToolsPanel() {
+    const panel = document.getElementById("toolsPanel");
+    const state = panel.classList.contains("open");
+
+    closePanels();
+
+    if (!state) {
+        panel.classList.add("open");
     }
+}
 
-    function appendScientific(val) {
-        display.classList.remove('animate-pop');
-        if (clearOnNextInput) {
-            updateDisplayValue('');
-            clearOnNextInput = false;
-        }
-        let currentText = display.innerText === '0' ? '' : display.innerText;
-        updateDisplayValue(currentText + val);
-        equalClickCount = 0;
-    }
+/* Input */
 
-    function appendNumber(value) {
-        display.classList.remove('animate-pop');
-        if (clearOnNextInput) {
-            updateDisplayValue('');
-            clearOnNextInput = false;
-        }
-        let currentText = display.innerText === '0' ? '' : display.innerText;
-        if (value === '.') {
-            const parts = currentText.split(/[\+\-\*\/%^,()]/);
-            const currentPart = parts[parts.length - 1];
-            if (currentPart.includes('.')) return;
-        }
-        updateDisplayValue(currentText + value);
-        equalClickCount = 0;
-    }
+function appendScientific(value) {
+    display.classList.remove("animate-pop");
 
-    function appendOperator(op) {
-        display.classList.remove('animate-pop');
-        if (clearOnNextInput) clearOnNextInput = false;
-        let currentText = display.innerText === '0' ? '' : display.innerText;
-        if (currentText === '') {
-            if (op === '-') updateDisplayValue(op);
-            return;
-        }
-        let lastChar = currentText.slice(-1);
-        if (['+', '-', '*', '/', '%'].includes(lastChar)) {
-            updateDisplayValue(currentText.slice(0, -1) + op);
-        } else {
-            updateDisplayValue(currentText + op);
-        }
-        equalClickCount = 0;
-    }
-
-    function clearDisplay() {
-        display.classList.remove('animate-pop');
-        updateDisplayValue('');
-        lastActiveFormula = "";
-        finalCalculationResult = "";
-        equalClickCount = 0;
-    }
-
-    function deleteLast() {
-        display.classList.remove('animate-pop');
-        let currentText = display.innerText;
-        updateDisplayValue(currentText.slice(0, -1));
-        equalClickCount = 0;
-    }
-
-    function calculate() {
-        if (display.innerText === '' || display.innerText === '0') return;
-        
-        let currentInput = display.innerText;
-        let lastChar = currentInput.slice(-1);
-        if (['+', '-', '*', '/', '%'].includes(lastChar)) {
-            currentInput = currentInput.slice(0, -1);
-        }
-
-        if (!vaultCode && !isNaN(currentInput)) {
-            vaultCode = currentInput;
-            localStorage.setItem('vaultCode', vaultCode);
-            updateDisplayValue("Code Set!");
-            clearOnNextInput = true;
-            calcTitle.innerText = "Dilshad's Calc Pro";
-            return;
-        }
-
-        if (vaultCode && currentInput === vaultCode) {
-            equalClickCount++;
-            if (equalClickCount === 2) {
-                openVault();
-                clearDisplay();
-                return;
-            }
-        } else {
-            equalClickCount = 1;
-        }
-
-        try {
-            lastActiveFormula = currentInput;
-            
-            let executableExpression = currentInput
-                .replaceAll('×', '*')
-                .replaceAll('÷', '/')
-                .replaceAll('π', 'Math.PI')
-                .replaceAll('e^(', 'Math.exp(')
-                .replaceAll('e', 'Math.E')
-                .replaceAll('^', '**');
-
-            let result = eval(executableExpression);
-            
-            if (result % 1 !== 0) {
-                result = parseFloat(result.toFixed(8));
-            }
-            
-            finalCalculationResult = result;
-            updateDisplayValue(result);
-            clearOnNextInput = true;
-
-            saveToHistory(lastActiveFormula, finalCalculationResult);
-
-            display.classList.remove('animate-pop');
-            void display.offsetWidth; 
-            display.classList.add('animate-pop');
-        } catch (error) {
-            updateDisplayValue("Error");
-            lastActiveFormula = "";
-            finalCalculationResult = "";
-            clearOnNextInput = true;
-            display.classList.add('animate-pop');
-        }
-    }
-
-    function saveToHistory(formula, result) {
-        if(historyLog.length > 0 && historyLog[0].formula === formula) return;
-
-        historyLog.unshift({ formula: formula, result: result });
-        
-        if (historyLog.length > 100) {
-            historyLog.pop();
-        }
-        
-        localStorage.setItem('calcHistory', JSON.stringify(historyLog));
-        renderHistory();
-    }
-
-    function renderHistory() {
-        const listContainer = document.getElementById('historyList');
-        listContainer.innerHTML = '';
-
-        if (historyLog.length === 0) {
-            listContainer.innerHTML = '<div class="empty-history">No history records yet</div>';
-            return;
-        }
-
-        historyLog.forEach((item) => {
-            const row = document.createElement('div');
-            row.className = 'history-item';
-            row.onclick = () => loadHistoryItem(item.result);
-            
-            row.innerHTML = `
-                <div class="history-formula">${item.formula} =</div>
-                <div class="history-result">${item.result}</div>
-            `;
-            listContainer.appendChild(row);
-        });
-    }
-
-    function loadHistoryItem(value) {
-        updateDisplayValue(value);
-        finalCalculationResult = value;
-        lastActiveFormula = "";
+    if (clearOnNextInput) {
+        updateDisplayValue("");
         clearOnNextInput = false;
     }
 
-    function clearHistory() {
-        historyLog = [];
-        localStorage.removeItem('calcHistory');
-        renderHistory();
+    let current =
+        display.innerText === "0"
+            ? ""
+            : display.innerText;
+
+    updateDisplayValue(current + value);
+    equalClickCount = 0;
+}
+
+function appendNumber(value) {
+    display.classList.remove("animate-pop");
+
+    if (clearOnNextInput) {
+        updateDisplayValue("");
+        clearOnNextInput = false;
     }
 
-    function reviseCalculation() {
-        window.speechSynthesis.cancel();
-        let contextToSpeak = "";
+    let current =
+        display.innerText === "0"
+            ? ""
+            : display.innerText;
 
-        if (lastActiveFormula !== "") {
-            contextToSpeak = lastActiveFormula + " equals " + finalCalculationResult;
-        } else if (display.innerText !== "" && display.innerText !== "Error" && display.innerText !== "Code Set!") {
-            contextToSpeak = display.innerText;
-        } else {
-            contextToSpeak = "Zero";
+    if (value === ".") {
+        const parts = current.split(/[\+\-\*\/%^,()]/);
+        const currentPart = parts[parts.length - 1];
+
+        if (currentPart.includes(".")) return;
+    }
+
+    updateDisplayValue(current + value);
+    equalClickCount = 0;
+}
+
+function appendOperator(op) {
+    display.classList.remove("animate-pop");
+
+    if (clearOnNextInput) {
+        clearOnNextInput = false;
+    }
+
+    let current =
+        display.innerText === "0"
+            ? ""
+            : display.innerText;
+
+    if (current === "") {
+        if (op === "-") {
+            updateDisplayValue(op);
         }
 
-        let audioString = contextToSpeak
-            .replaceAll('+', ' plus ')
-            .replaceAll('-', ' minus ')
-            .replaceAll('*', ' multiplied by ')
-            .replaceAll('/', ' divided by ')
-            .replaceAll('×', ' multiplied by ')
-            .replaceAll('÷', ' divided by ')
-            .replaceAll('%', ' percent ')
-            .replaceAll('.', ' point ')
-            .replaceAll('sin(', ' sine of ')
-            .replaceAll('cos(', ' cosine of ')
-            .replaceAll('tan(', ' tangent of ')
-            .replaceAll('log(', ' log base ten of ')
-            .replaceAll('ln(', ' natural log of ')
-            .replaceAll('sqrt(', ' square root of ')
-            .replaceAll('fact(', ' factorial of ')
-            .replaceAll('e^(', ' e to the power of ')
-            .replaceAll('1/(', ' inverse of ')
-            .replaceAll('^', ' to the power of ')
-            .replaceAll('(', ' open bracket ')
-            .replaceAll(')', ' close bracket ');
-
-        let voiceUtterance = new SpeechSynthesisUtterance(audioString);
-        voiceUtterance.rate = 0.95; 
-        window.speechSynthesis.speak(voiceUtterance);
+        return;
     }
 
-    function openVault() {
-        document.getElementById('vaultOverlay').classList.add('active');
-        renderGallery();
+    const last = current.slice(-1);
+
+    if (["+", "-", "*", "/", "%"].includes(last)) {
+        updateDisplayValue(
+            current.slice(0, -1) + op
+        );
+    } else {
+        updateDisplayValue(current + op);
     }
 
-    function closeVault() {
-        document.getElementById('vaultOverlay').classList.remove('active');
-        equalClickCount = 0;
+    equalClickCount = 0;
+}
+
+/* Clear */
+
+function clearDisplay() {
+    display.classList.remove("animate-pop");
+
+    updateDisplayValue("");
+
+    lastActiveFormula = "";
+    finalCalculationResult = "";
+    equalClickCount = 0;
+}
+
+function deleteLast() {
+    display.classList.remove("animate-pop");
+
+    const current = display.innerText;
+
+    updateDisplayValue(
+        current.slice(0, -1)
+    );
+
+    equalClickCount = 0;
+}
+
+/* Calculate */
+
+function calculate() {
+
+    if (
+        display.innerText === "" ||
+        display.innerText === "0"
+    ) {
+        return;
     }
 
-    function handleFileSelect(event) {
-        const files = event.target.files;
-        let vaultItems = JSON.parse(localStorage.getItem('vaultItems')) || [];
+    let currentInput = display.innerText;
 
-        for (let file of files) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                vaultItems.push({
-                    type: file.type.startsWith('video') ? 'video' : 'image',
-                    data: e.target.result
-                });
-                localStorage.setItem('vaultItems', JSON.stringify(vaultItems));
-                renderGallery();
-            };
-            reader.readAsDataURL(file);
+    const lastChar = currentInput.slice(-1);
+
+    if (
+        ["+", "-", "*", "/", "%"].includes(lastChar)
+    ) {
+        currentInput = currentInput.slice(0, -1);
+    }
+
+    /* First numeric calculation sets vault password */
+
+    if (!vaultCode && !isNaN(currentInput)) {
+
+        vaultCode = currentInput;
+
+        localStorage.setItem(
+            "vaultCode",
+            vaultCode
+        );
+
+        updateDisplayValue("Code Set!");
+
+        clearOnNextInput = true;
+
+        calcTitle.innerText =
+            "Dilshad's Calc Pro";
+
+        return;
+    }
+
+    /* Vault */
+
+    if (
+        vaultCode &&
+        currentInput === vaultCode
+    ) {
+
+        equalClickCount++;
+
+        if (equalClickCount === 2) {
+            openVault();
+            clearDisplay();
+            return;
         }
+
+    } else {
+        equalClickCount = 1;
     }
 
-    function renderGallery() {
-        const grid = document.getElementById('galleryGrid');
-        grid.innerHTML = '';
-        let vaultItems = JSON.parse(localStorage.getItem('vaultItems')) || [];
+    try {
 
-        vaultItems.forEach((item, index) => {
-            const container = document.createElement('div');
-            container.className = 'gallery-item';
+        lastActiveFormula = currentInput;
 
-            if (item.type === 'video') {
-                const video = document.createElement('video');
+        let expression = currentInput
+            .replaceAll("×", "*")
+            .replaceAll("÷", "/")
+            .replaceAll("π", "Math.PI")
+            .replaceAll("e^(", "Math.exp(")
+            .replaceAll("e", "Math.E")
+            .replaceAll("^", "**");
+
+        let result = eval(expression);
+
+        if (result % 1 !== 0) {
+            result =
+                parseFloat(
+                    result.toFixed(8)
+                );
+        }
+
+        finalCalculationResult = result;
+
+        updateDisplayValue(result);
+
+        clearOnNextInput = true;
+
+        saveToHistory(
+            lastActiveFormula,
+            finalCalculationResult
+        );
+
+        display.classList.remove(
+            "animate-pop"
+        );
+
+        void display.offsetWidth;
+
+        display.classList.add(
+            "animate-pop"
+        );
+
+    } catch (error) {
+
+        updateDisplayValue("Error");
+
+        lastActiveFormula = "";
+        finalCalculationResult = "";
+
+        clearOnNextInput = true;
+
+        display.classList.add(
+            "animate-pop"
+        );
+    }
+}
+
+/* History */
+
+function saveToHistory(formula, result) {
+
+    if (
+        historyLog.length > 0 &&
+        historyLog[0].formula === formula
+    ) {
+        return;
+    }
+
+    historyLog.unshift({
+        formula: formula,
+        result: result
+    });
+
+    if (historyLog.length > 100) {
+        historyLog.pop();
+    }
+
+    localStorage.setItem(
+        "calcHistory",
+        JSON.stringify(historyLog)
+    );
+
+    renderHistory();
+}
+
+function renderHistory() {
+
+    const container =
+        document.getElementById("historyList");
+
+    container.innerHTML = "";
+
+    if (historyLog.length === 0) {
+
+        container.innerHTML =
+            '<div class="empty-history">No history records yet</div>';
+
+        return;
+    }
+
+    historyLog.forEach(item => {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "history-item";
+
+        row.onclick = () =>
+            loadHistoryItem(item.result);
+
+        row.innerHTML = `
+            <div class="history-formula">
+                ${item.formula} =
+            </div>
+
+            <div class="history-result">
+                ${item.result}
+            </div>
+        `;
+
+        container.appendChild(row);
+    });
+}
+
+function loadHistoryItem(value) {
+
+    updateDisplayValue(value);
+
+    finalCalculationResult = value;
+    lastActiveFormula = "";
+    clearOnNextInput = false;
+}
+
+function clearHistory() {
+
+    historyLog = [];
+
+    localStorage.removeItem(
+        "calcHistory"
+    );
+
+    renderHistory();
+}
+
+/* Voice */
+
+function reviseCalculation() {
+
+    window.speechSynthesis.cancel();
+
+    let text = "";
+
+    if (lastActiveFormula !== "") {
+
+        text =
+            lastActiveFormula +
+            " equals " +
+            finalCalculationResult;
+
+    } else if (
+        display.innerText !== "" &&
+        display.innerText !== "Error" &&
+        display.innerText !== "Code Set!"
+    ) {
+
+        text = display.innerText;
+
+    } else {
+
+        text = "Zero";
+    }
+
+    const spoken =
+        text
+            .replaceAll("+", " plus ")
+            .replaceAll("-", " minus ")
+            .replaceAll("*", " multiplied by ")
+            .replaceAll("/", " divided by ")
+            .replaceAll("×", " multiplied by ")
+            .replaceAll("÷", " divided by ")
+            .replaceAll("%", " percent ")
+            .replaceAll(".", " point ")
+            .replaceAll("sin(", " sine of ")
+            .replaceAll("cos(", " cosine of ")
+            .replaceAll("tan(", " tangent of ")
+            .replaceAll("log(", " log base ten of ")
+            .replaceAll("ln(", " natural log of ")
+            .replaceAll("sqrt(", " square root of ")
+            .replaceAll("fact(", " factorial of ")
+            .replaceAll("e^(", " e to the power of ")
+            .replaceAll("1/(", " inverse of ")
+            .replaceAll("^", " to the power of ")
+            .replaceAll("(", " open bracket ")
+            .replaceAll(")", " close bracket ");
+
+    const utterance =
+        new SpeechSynthesisUtterance(spoken);
+
+    utterance.rate = .95;
+
+    window.speechSynthesis.speak(
+        utterance
+    );
+}
+
+/* Vault */
+
+function openVault() {
+
+    document
+        .getElementById("vaultOverlay")
+        .classList.add("active");
+
+    renderGallery();
+}
+
+function closeVault() {
+
+    document
+        .getElementById("vaultOverlay")
+        .classList.remove("active");
+
+    equalClickCount = 0;
+}
+
+function handleFileSelect(event) {
+
+    const files = event.target.files;
+
+    let vaultItems =
+        JSON.parse(
+            localStorage.getItem("vaultItems")
+        ) || [];
+
+    for (const file of files) {
+
+        const reader =
+            new FileReader();
+
+        reader.onload = function(e) {
+
+            vaultItems.push({
+                type:
+                    file.type.startsWith("video")
+                        ? "video"
+                        : "image",
+
+                data: e.target.result
+            });
+
+            localStorage.setItem(
+                "vaultItems",
+                JSON.stringify(vaultItems)
+            );
+
+            renderGallery();
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
+function renderGallery() {
+
+    const grid =
+        document.getElementById(
+            "galleryGrid"
+        );
+
+    grid.innerHTML = "";
+
+    let vaultItems =
+        JSON.parse(
+            localStorage.getItem("vaultItems")
+        ) || [];
+
+    vaultItems.forEach(
+        (item, index) => {
+
+            const container =
+                document.createElement("div");
+
+            container.className =
+                "gallery-item";
+
+            if (item.type === "video") {
+
+                const video =
+                    document.createElement("video");
+
                 video.src = item.data;
                 video.controls = true;
+
                 container.appendChild(video);
+
             } else {
-                const img = document.createElement('img');
+
+                const img =
+                    document.createElement("img");
+
                 img.src = item.data;
+
                 container.appendChild(img);
             }
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-item-btn';
-            deleteBtn.innerHTML = '×';
+            const deleteBtn =
+                document.createElement("button");
+
+            deleteBtn.className =
+                "delete-item-btn";
+
+            deleteBtn.innerHTML = "×";
 
             deleteBtn.onclick = () => {
+
                 vaultItems.splice(index, 1);
-                localStorage.setItem('vaultItems', JSON.stringify(vaultItems));
+
+                localStorage.setItem(
+                    "vaultItems",
+                    JSON.stringify(vaultItems)
+                );
+
                 renderGallery();
             };
 
-            container.appendChild(deleteBtn);
-            grid.appendChild(container);
-        });
+            container.appendChild(
+                deleteBtn
+            );
+
+            grid.appendChild(
+                container
+            );
+        }
+    );
+}
+
+/* TOOLS */
+
+function switchToolSegment() {
+
+    const type =
+        document.getElementById(
+            "toolTypeSelect"
+        ).value;
+
+    const body =
+        document.getElementById(
+            "toolBody"
+        );
+
+    body.innerHTML = "";
+
+    if (type === "age") {
+
+        body.innerHTML = `
+            <div class="tool-group">
+                <label>Date of Birth</label>
+                <input type="date" id="dobInput" class="tool-input">
+            </div>
+
+            <div class="tool-group">
+                <label>Target Date</label>
+                <input type="date"
+                       id="targetDateInput"
+                       class="tool-input"
+                       value="${new Date().toISOString().split("T")[0]}">
+            </div>
+
+            <button class="btn-calc-tool"
+                    onclick="calcAge()">
+                Calculate Age
+            </button>
+
+            <div class="tool-result-box"
+                 id="toolResult">
+                Select DOB to calculate
+            </div>
+        `;
+
+    } else if (type === "bmi") {
+
+        body.innerHTML = `
+            <div class="tool-row">
+
+                <div class="tool-group">
+                    <label>Weight (kg)</label>
+                    <input type="number"
+                           id="bmiWeight"
+                           class="tool-input"
+                           placeholder="70">
+                </div>
+
+                <div class="tool-group">
+                    <label>Height (cm)</label>
+                    <input type="number"
+                           id="bmiHeight"
+                           class="tool-input"
+                           placeholder="175">
+                </div>
+
+            </div>
+
+            <button class="btn-calc-tool"
+                    onclick="calcBMI()">
+                Calculate BMI
+            </button>
+
+            <div class="tool-result-box"
+                 id="toolResult">
+                Enter details
+            </div>
+        `;
+
+    } else if (type === "discount") {
+
+        body.innerHTML = `
+            <div class="tool-row">
+
+                <div class="tool-group">
+                    <label>Original Price</label>
+                    <input type="number"
+                           id="discPrice"
+                           class="tool-input"
+                           placeholder="Price">
+                </div>
+
+                <div class="tool-group">
+                    <label>Discount (%)</label>
+                    <input type="number"
+                           id="discPercent"
+                           class="tool-input"
+                           placeholder="%">
+                </div>
+
+            </div>
+
+            <button class="btn-calc-tool"
+                    onclick="calcDiscount()">
+                Calculate Discount
+            </button>
+
+            <div class="tool-result-box"
+                 id="toolResult">
+                Enter price and discount
+            </div>
+        `;
+
+    } else if (type === "date") {
+
+        body.innerHTML = `
+            <div class="tool-group">
+                <label>Start Date</label>
+                <input type="date"
+                       id="dateStart"
+                       class="tool-input">
+            </div>
+
+            <div class="tool-group">
+                <label>End Date</label>
+                <input type="date"
+                       id="dateEnd"
+                       class="tool-input"
+                       value="${new Date().toISOString().split("T")[0]}">
+            </div>
+
+            <button class="btn-calc-tool"
+                    onclick="calcDateDiff()">
+                Calculate Difference
+            </button>
+
+            <div class="tool-result-box"
+                 id="toolResult">
+                Select dates
+            </div>
+        `;
+
+    } else {
+
+        const units = {
+
+            distance: [
+                "Meters",
+                "Kilometers",
+                "Centimeters",
+                "Miles",
+                "Feet",
+                "Inches",
+                "Yards"
+            ],
+
+            area: [
+                "Square Meters",
+                "Square Kilometers",
+                "Square Feet",
+                "Acres",
+                "Hectares"
+            ],
+
+            data: [
+                "Bytes",
+                "KB",
+                "MB",
+                "GB",
+                "TB"
+            ],
+
+            mass: [
+                "Kilograms",
+                "Grams",
+                "Milligrams",
+                "Pounds",
+                "Ounces"
+            ],
+
+            speed: [
+                "km/h",
+                "m/s",
+                "mph",
+                "Knots"
+            ],
+
+            temp: [
+                "Celsius",
+                "Fahrenheit",
+                "Kelvin"
+            ],
+
+            time: [
+                "Seconds",
+                "Minutes",
+                "Hours",
+                "Days",
+                "Weeks"
+            ],
+
+            volume: [
+                "Liters",
+                "Milliliters",
+                "Gallons (US)",
+                "Cubic Meters"
+            ]
+        };
+
+        const selectedUnits =
+            units[type];
+
+        const options =
+            selectedUnits
+                .map(
+                    u =>
+                        `<option value="${u}">${u}</option>`
+                )
+                .join("");
+
+        body.innerHTML = `
+
+            <div class="tool-group">
+                <label>Value</label>
+
+                <input type="number"
+                       id="unitVal"
+                       class="tool-input"
+                       placeholder="Enter value"
+                       oninput="convertUnits('${type}')">
+            </div>
+
+            <div class="tool-row">
+
+                <div class="tool-group">
+                    <label>From</label>
+
+                    <select id="unitFrom"
+                            class="tool-select"
+                            onchange="convertUnits('${type}')">
+                        ${options}
+                    </select>
+                </div>
+
+                <div class="tool-group">
+                    <label>To</label>
+
+                    <select id="unitTo"
+                            class="tool-select"
+                            onchange="convertUnits('${type}')">
+                        ${options}
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="tool-result-box"
+                 id="toolResult">
+                Result will appear here
+            </div>
+        `;
+
+        if (selectedUnits.length > 1) {
+            document.getElementById(
+                "unitTo"
+            ).selectedIndex = 1;
+        }
+    }
+}
+
+/* Age */
+
+function calcAge() {
+
+    const dobVal =
+        document.getElementById(
+            "dobInput"
+        ).value;
+
+    const targetVal =
+        document.getElementById(
+            "targetDateInput"
+        ).value;
+
+    const result =
+        document.getElementById(
+            "toolResult"
+        );
+
+    if (!dobVal) {
+        result.innerText =
+            "Please select Date of Birth";
+        return;
     }
 
-    /* --- CONVERTERS & TOOLS SYSTEM --- */
-    function switchToolSegment() {
-        const type = document.getElementById('toolTypeSelect').value;
-        const body = document.getElementById('toolBody');
-        body.innerHTML = '';
+    const birth =
+        new Date(dobVal);
 
-        if (type === 'age') {
-            body.innerHTML = `
-                <div class="tool-group">
-                    <label>Date of Birth</label>
-                    <input type="date" id="dobInput" class="tool-input">
-                </div>
-                <div class="tool-group">
-                    <label>Target Date</label>
-                    <input type="date" id="targetDateInput" class="tool-input" value="${new Date().toISOString().split('T')[0]}">
-                </div>
-                <button class="btn-calc-tool" onclick="calcAge()">Calculate Age</button>
-                <div class="tool-result-box" id="toolResult">Select DOB to calculate</div>
-            `;
-        } else if (type === 'bmi') {
-            body.innerHTML = `
-                <div class="tool-row">
-                    <div class="tool-group">
-                        <label>Weight (kg)</label>
-                        <input type="number" id="bmiWeight" class="tool-input" placeholder="e.g. 70">
-                    </div>
-                    <div class="tool-group">
-                        <label>Height (cm)</label>
-                        <input type="number" id="bmiHeight" class="tool-input" placeholder="e.g. 175">
-                    </div>
-                </div>
-                <button class="btn-calc-tool" onclick="calcBMI()">Calculate BMI</button>
-                <div class="tool-result-box" id="toolResult">Enter details</div>
-            `;
-        } else if (type === 'discount') {
-            body.innerHTML = `
-                <div class="tool-row">
-                    <div class="tool-group">
-                        <label>Original Price</label>
-                        <input type="number" id="discPrice" class="tool-input" placeholder="Price">
-                    </div>
-                    <div class="tool-group">
-                        <label>Discount (%)</label>
-                        <input type="number" id="discPercent" class="tool-input" placeholder="%">
-                    </div>
-                </div>
-                <button class="btn-calc-tool" onclick="calcDiscount()">Calculate Discount</button>
-                <div class="tool-result-box" id="toolResult">Enter price and discount</div>
-            `;
-        } else if (type === 'date') {
-            body.innerHTML = `
-                <div class="tool-group">
-                    <label>Start Date</label>
-                    <input type="date" id="dateStart" class="tool-input">
-                </div>
-                <div class="tool-group">
-                    <label>End Date</label>
-                    <input type="date" id="dateEnd" class="tool-input" value="${new Date().toISOString().split('T')[0]}">
-                </div>
-                <button class="btn-calc-tool" onclick="calcDateDiff()">Calculate Difference</button>
-                <div class="tool-result-box" id="toolResult">Select dates</div>
-            `;
+    const target =
+        targetVal
+            ? new Date(targetVal)
+            : new Date();
+
+    if (birth > target) {
+        result.innerText =
+            "DOB cannot be in the future";
+        return;
+    }
+
+    let years =
+        target.getFullYear() -
+        birth.getFullYear();
+
+    let months =
+        target.getMonth() -
+        birth.getMonth();
+
+    let days =
+        target.getDate() -
+        birth.getDate();
+
+    if (days < 0) {
+
+        months--;
+
+        const previousMonth =
+            new Date(
+                target.getFullYear(),
+                target.getMonth(),
+                0
+            );
+
+        days +=
+            previousMonth.getDate();
+    }
+
+    if (months < 0) {
+
+        years--;
+        months += 12;
+    }
+
+    result.innerText =
+        `${years} Years, ${months} Months, ${days} Days`;
+}
+
+/* BMI */
+
+function calcBMI() {
+
+    const weight =
+        parseFloat(
+            document.getElementById(
+                "bmiWeight"
+            ).value
+        );
+
+    const height =
+        parseFloat(
+            document.getElementById(
+                "bmiHeight"
+            ).value
+        );
+
+    const result =
+        document.getElementById(
+            "toolResult"
+        );
+
+    if (
+        !weight ||
+        !height ||
+        weight <= 0 ||
+        height <= 0
+    ) {
+
+        result.innerText =
+            "Enter valid positive values";
+
+        return;
+    }
+
+    const bmi =
+        (
+            weight /
+            ((height / 100) ** 2)
+        ).toFixed(2);
+
+    let category = "";
+
+    if (bmi < 18.5)
+        category = "Underweight";
+    else if (bmi < 24.9)
+        category = "Normal weight";
+    else if (bmi < 29.9)
+        category = "Overweight";
+    else
+        category = "Obese";
+
+    result.innerText =
+        `BMI: ${bmi} (${category})`;
+}
+
+/* Discount */
+
+function calcDiscount() {
+
+    const price =
+        parseFloat(
+            document.getElementById(
+                "discPrice"
+            ).value
+        );
+
+    const discount =
+        parseFloat(
+            document.getElementById(
+                "discPercent"
+            ).value
+        );
+
+    const result =
+        document.getElementById(
+            "toolResult"
+        );
+
+    if (
+        isNaN(price) ||
+        isNaN(discount) ||
+        price < 0 ||
+        discount < 0
+    ) {
+
+        result.innerText =
+            "Enter valid numbers";
+
+        return;
+    }
+
+    const saved =
+        (price * (discount / 100))
+        .toFixed(2);
+
+    const finalPrice =
+        (price - saved)
+        .toFixed(2);
+
+    result.innerText =
+        `Final Price: ${finalPrice} (Saved: ${saved})`;
+}
+
+/* Date Difference */
+
+function calcDateDiff() {
+
+    const start =
+        document.getElementById(
+            "dateStart"
+        ).value;
+
+    const end =
+        document.getElementById(
+            "dateEnd"
+        ).value;
+
+    const result =
+        document.getElementById(
+            "toolResult"
+        );
+
+    if (!start || !end) {
+
+        result.innerText =
+            "Select both dates";
+
+        return;
+    }
+
+    const date1 =
+        new Date(start);
+
+    const date2 =
+        new Date(end);
+
+    const difference =
+        Math.abs(date2 - date1);
+
+    const days =
+        Math.ceil(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
+
+    const weeks =
+        Math.floor(days / 7);
+
+    const remainingDays =
+        days % 7;
+
+    result.innerText =
+        `${days} Days (${weeks} Weeks, ${remainingDays} Days)`;
+}
+
+/* Unit Converter */
+
+function convertUnits(type) {
+
+    const value =
+        parseFloat(
+            document.getElementById(
+                "unitVal"
+            ).value
+        );
+
+    const from =
+        document.getElementById(
+            "unitFrom"
+        ).value;
+
+    const to =
+        document.getElementById(
+            "unitTo"
+        ).value;
+
+    const resultBox =
+        document.getElementById(
+            "toolResult"
+        );
+
+    if (isNaN(value)) {
+
+        resultBox.innerText =
+            "Enter a valid value";
+
+        return;
+    }
+
+    let base;
+    let result;
+
+    if (type === "distance") {
+
+        const units = {
+            Meters: 1,
+            Kilometers: 1000,
+            Centimeters: .01,
+            Miles: 1609.34,
+            Feet: .3048,
+            Inches: .0254,
+            Yards: .9144
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "area") {
+
+        const units = {
+            "Square Meters": 1,
+            "Square Kilometers": 1e6,
+            "Square Feet": .092903,
+            Acres: 4046.86,
+            Hectares: 10000
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "data") {
+
+        const units = {
+            Bytes: 1,
+            KB: 1024,
+            MB: 1048576,
+            GB: 1073741824,
+            TB: 1099511627776
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "mass") {
+
+        const units = {
+            Kilograms: 1,
+            Grams: .001,
+            Milligrams: .000001,
+            Pounds: .453592,
+            Ounces: .0283495
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "speed") {
+
+        const units = {
+            "m/s": 1,
+            "km/h": .277778,
+            mph: .44704,
+            Knots: .514444
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "temp") {
+
+        if (from === to) {
+            result = value;
+
+        } else if (from === "Celsius") {
+
+            result =
+                to === "Fahrenheit"
+                    ? value * 9 / 5 + 32
+                    : value + 273.15;
+
+        } else if (from === "Fahrenheit") {
+
+            result =
+                to === "Celsius"
+                    ? (value - 32) * 5 / 9
+                    : ((value - 32) * 5 / 9) + 273.15;
+
         } else {
-            // General Unit Converters
-            const units = {
-                distance: ['Meters', 'Kilometers', 'Centimeters', 'Miles', 'Feet', 'Inches', 'Yards'],
-                area: ['Square Meters', 'Square Kilometers', 'Square Feet', 'Acres', 'Hectares'],
-                data: ['Bytes', 'KB', 'MB', 'GB', 'TB'],
-                mass: ['Kilograms', 'Grams', 'Milligrams', 'Pounds', 'Ounces'],
-                speed: ['km/h', 'm/s', 'mph', 'Knots'],
-                temp: ['Celsius', 'Fahrenheit', 'Kelvin'],
-                time: ['Seconds', 'Minutes', 'Hours', 'Days', 'Weeks'],
-                volume: ['Liters', 'Milliliters', 'Gallons (US)', 'Cubic Meters']
-            };
 
-            const selectedUnits = units[type];
-            let options = selectedUnits.map(u => `<option value="${u}">${u}</option>`).join('');
-
-            body.innerHTML = `
-                <div class="tool-group">
-                    <label>Value</label>
-                    <input type="number" id="unitVal" class="tool-input" placeholder="Enter value" oninput="convertUnits('${type}')">
-                </div>
-                <div class="tool-row">
-                    <div class="tool-group">
-                        <label>From</label>
-                        <select id="unitFrom" class="tool-select" onchange="convertUnits('${type}')">${options}</select>
-                    </div>
-                    <div class="tool-group">
-                        <label>To</label>
-                        <select id="unitTo" class="tool-select" onchange="convertUnits('${type}')">${options}</select>
-                    </div>
-                </div>
-                <div class="tool-result-box" id="toolResult" style="margin-top:10px;">Result will appear here</div>
-            `;
-            if (selectedUnits.length > 1) {
-                document.getElementById('unitTo').selectedIndex = 1;
-            }
+            result =
+                to === "Celsius"
+                    ? value - 273.15
+                    : ((value - 273.15) * 9 / 5) + 32;
         }
+
+    } else if (type === "time") {
+
+        const units = {
+            Seconds: 1,
+            Minutes: 60,
+            Hours: 3600,
+            Days: 86400,
+            Weeks: 604800
+        };
+
+        base = value * units[from];
+        result = base / units[to];
+
+    } else if (type === "volume") {
+
+        const units = {
+            Liters: 1,
+            Milliliters: .001,
+            "Gallons (US)": 3.78541,
+            "Cubic Meters": 1000
+        };
+
+        base = value * units[from];
+        result = base / units[to];
     }
 
-    function calcAge() {
-        const dobVal = document.getElementById('dobInput').value;
-        const targetVal = document.getElementById('targetDateInput').value;
-        if (!dobVal) {
-            document.getElementById('toolResult').innerText = "Please select Date of Birth";
-            return;
-        }
-        let birth = new Date(dobVal);
-        let target = targetVal ? new Date(targetVal) : new Date();
+    result =
+        type === "temp"
+            ? parseFloat(result.toFixed(2))
+            : parseFloat(result.toFixed(6));
 
-        if (birth > target) {
-            document.getElementById('toolResult').innerText = "DOB cannot be in the future";
-            return;
-        }
-
-        let years = target.getFullYear() - birth.getFullYear();
-        let months = target.getMonth() - birth.getMonth();
-        let days = target.getDate() - birth.getDate();
-
-        if (days < 0) {
-            months--;
-            let prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
-            days += prevMonth.getDate();
-        }
-        if (months < 0) {
-            years--;
-            months += 12;
-        }
-
-        document.getElementById('toolResult').innerText = `${years} Years, ${months} Months, ${days} Days`;
-    }
-
-    function calcBMI() {
-        const w = parseFloat(document.getElementById('bmiWeight').value);
-        const h = parseFloat(document.getElementById('bmiHeight').value);
-
-        if (!w || !h || w <= 0 || h <= 0) {
-            document.getElementById('toolResult').innerText = "Enter valid positive values";
-            return;
-        }
-
-        const bmi = (w / ((h / 100) * (h / 100))).toFixed(2);
-        let cat = "";
-        if (bmi < 18.5) cat = "Underweight";
-        else if (bmi < 24.9) cat = "Normal weight";
-        else if (bmi < 29.9) cat = "Overweight";
-        else cat = "Obese";
-
-        document.getElementById('toolResult').innerText = `BMI: ${bmi} (${cat})`;
-    }
-
-    function calcDiscount() {
-        const p = parseFloat(document.getElementById('discPrice').value);
-        const d = parseFloat(document.getElementById('discPercent').value);
-
-        if (isNaN(p) || isNaN(d) || p < 0 || d < 0) {
-            document.getElementById('toolResult').innerText = "Enter valid numbers";
-            return;
-        }
-
-        const saved = (p * (d / 100)).toFixed(2);
-        const finalP = (p - saved).toFixed(2);
-
-        document.getElementById('toolResult').innerText = `Final Price: ${finalP} (Saved: ${saved})`;
-    }
-
-    function calcDateDiff() {
-        const d1 = document.getElementById('dateStart').value;
-        const d2 = document.getElementById('dateEnd').value;
-
-        if (!d1 || !d2) {
-            document.getElementById('toolResult').innerText = "Select both dates";
-            return;
-        }
-
-        const date1 = new Date(d1);
-        const date2 = new Date(d2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        const weeks = Math.floor(diffDays / 7);
-        const remDays = diffDays % 7;
-
-        document.getElementById('toolResult').innerText = `${diffDays} Days (${weeks} Weeks, ${remDays} Days)`;
-    }
-
-    function convertUnits(type) {
-        const val = parseFloat(document.getElementById('unitVal').value);
-        const from = document.getElementById('unitFrom').value;
-        const to = document.getElementById('unitTo').value;
-        const resBox = document.getElementById('toolResult');
-
-        if (isNaN(val)) {
-            resBox.innerText = "Enter a valid value";
-            return;
-        }
-
-        let baseVal = val;
-        let res = 0;
-
-        if (type === 'distance') {
-            const toMeters = { Meters: 1, Kilometers: 1000, Centimeters: 0.01, Miles: 1609.34, Feet: 0.3048, Inches: 0.0254, Yards: 0.9144 };
-            baseVal = val * toMeters[from];
-            res = baseVal / toMeters[to];
-        } else if (type === 'area') {
-            const toSqM = { 'Square Meters': 1, 'Square Kilometers': 1e6, 'Square Feet': 0.092903, Acres: 4046.86, Hectares: 10000 };
-            baseVal = val * toSqM[from];
-            res = baseVal / toSqM[to];
-        } else if (type === 'data') {
-            const toBytes = { Bytes: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 };
-            baseVal = val * toBytes[from];
-            res = baseVal / toBytes[to];
-        } else if (type === 'mass') {
-            const toKg = { Kilograms: 1, Grams: 0.001, Milligrams: 0.000001, Pounds: 0.453592, Ounces: 0.0283495 };
-            baseVal = val * toKg[from];
-            res = baseVal / toKg[to];
-        } else if (type === 'speed') {
-            const toMs = { 'm/s': 1, 'km/h': 0.277778, mph: 0.44704, Knots: 0.514444 };
-            baseVal = val * toMs[from];
-            res = baseVal / toMs[to];
-        } else if (type === 'temp') {
-            if (from === to) res = val;
-            else if (from === 'Celsius') res = to === 'Fahrenheit' ? (val * 9/5) + 32 : val + 273.15;
-            else if (from === 'Fahrenheit') res = to === 'Celsius' ? (val - 32) * 5/9 : ((val - 32) * 5/9) + 273.15;
-            else if (from === 'Kelvin') res = to === 'Celsius' ? val - 273.15 : ((val - 273.15) * 9/5) + 32;
-        } else if (type === 'time') {
-            const toSec = { Seconds: 1, Minutes: 60, Hours: 3600, Days: 86400, Weeks: 604800 };
-            baseVal = val * toSec[from];
-            res = baseVal / toSec[to];
-        } else if (type === 'volume') {
-            const toLiters = { Liters: 1, Milliliters: 0.001, 'Gallons (US)': 3.78541, 'Cubic Meters': 1000 };
-            baseVal = val * toLiters[from];
-            res = baseVal / toLiters[to];
-        }
-
-        if (type !== 'temp') {
-            res = parseFloat(res.toFixed(6));
-        } else {
-            res = parseFloat(res.toFixed(2));
-        }
-
-        resBox.innerText = `${val} ${from} = ${res} ${to}`;
-    }
+    resultBox.innerText =
+        `${value} ${from} = ${result} ${to}`;
+}
 </script>
+
 </body>
 </html>
+```
