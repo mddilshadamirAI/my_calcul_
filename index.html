@@ -5,696 +5,1796 @@
 
 <link rel="icon" type="image/png" href="my_logo.png">
 <link rel="apple-touch-icon" href="my_logo.png">
-<link rel="manifest" href="manifest.json">
 
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#07111f">
+<link rel="manifest" href="manifest.json">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+
 <title>Dilshad's Calc Pro</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+/* =========================================================
+   DILSHAD'S CALC PRO — EXTREME PREMIUM UI
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-:root {
-    --bg: #050b14;
-    --card: rgba(14, 24, 40, 0.78);
-    --card2: rgba(20, 32, 52, 0.72);
-    --border: rgba(255,255,255,0.08);
-    --text: #f8fafc;
-    --muted: #8fa1b8;
-    --blue: #38bdf8;
-    --blue2: #2563eb;
-    --green: #22c55e;
-    --purple: #a855f7;
-    --yellow: #facc15;
-    --red: #ef4444;
+:root{
+    --bg:#030712;
+    --bg2:#07111f;
+    --card:rgba(10,18,34,.82);
+    --card2:rgba(15,27,48,.74);
+    --glass:rgba(255,255,255,.045);
+
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --dim:#64748b;
+
+    --accent:#38bdf8;
+    --accent2:#2563eb;
+    --accentRGB:56,189,248;
+
+    --green:#22c55e;
+    --green2:#10b981;
+    --purple:#a855f7;
+    --yellow:#facc15;
+    --red:#ef4444;
+    --orange:#fb923c;
+
+    --border:rgba(255,255,255,.075);
+
+    --shadow:
+        0 40px 100px rgba(0,0,0,.58),
+        0 15px 40px rgba(0,0,0,.30);
+
+    --radius:30px;
 }
 
-html {
-    min-height: 100%;
-    background: var(--bg);
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    padding: 24px 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
-    color: var(--text);
+body{
+    margin:0;
+    min-height:100vh;
+    padding:22px 10px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    color:var(--text);
+
     background:
-        radial-gradient(circle at 15% 10%, rgba(37,99,235,.20), transparent 32%),
-        radial-gradient(circle at 85% 20%, rgba(168,85,247,.16), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(34,197,94,.08), transparent 35%),
-        #050b14;
-    overflow-x: hidden;
+        radial-gradient(
+            circle at 12% 8%,
+            rgba(var(--accentRGB),.16),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 88%,
+            rgba(168,85,247,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(16,185,129,.035),
+            transparent 42%
+        ),
+        linear-gradient(
+            135deg,
+            var(--bg),
+            var(--bg2)
+        );
+
+    overflow-x:hidden;
 }
 
-/* Ambient background */
+/* Ambient lights */
+
 body::before,
-body::after {
-    content: "";
-    position: fixed;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: .15;
-    pointer-events: none;
-    z-index: -1;
+body::after{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    filter:blur(120px);
+    pointer-events:none;
+    z-index:0;
 }
 
-body::before {
-    background: #0ea5e9;
-    top: -100px;
-    left: -100px;
+body::before{
+    left:-240px;
+    top:-240px;
+    background:rgba(var(--accentRGB),.10);
 }
 
-body::after {
-    background: #9333ea;
-    bottom: -120px;
-    right: -100px;
+body::after{
+    right:-240px;
+    bottom:-240px;
+    background:rgba(168,85,247,.08);
 }
 
-/* Main Card */
-.calc-card {
-    width: 390px;
-    max-width: 100%;
-    padding: 20px;
-    border-radius: 30px;
-    background: linear-gradient(
-        145deg,
-        rgba(19,32,52,.88),
-        rgba(7,15,28,.92)
-    );
-    border: 1px solid var(--border);
-    box-shadow:
-        0 30px 90px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(255,255,255,.05);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    position: relative;
-    overflow: hidden;
-}
+/* =========================================================
+   MAIN APP
+========================================================= */
 
-.calc-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(56,189,248,.7),
-        transparent
-    );
-}
+.calc-card{
+    width:min(480px,96vw);
+    position:relative;
+    z-index:2;
 
-/* Header */
-.header-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-    padding: 2px 2px 0;
-}
+    padding:20px;
 
-.brand-wrap {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
+    border-radius:var(--radius);
 
-.logo {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    object-fit: cover;
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 8px 25px rgba(0,0,0,.35);
-}
-
-.brand-title {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-h2 {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 750;
-    letter-spacing: -.3px;
-}
-
-.brand-subtitle {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 12px rgba(34,197,94,.8);
-}
-
-/* Quick Actions */
-.action-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 7px;
-    margin-bottom: 14px;
-}
-
-.action-row button {
-    border: 1px solid rgba(255,255,255,.07);
-    min-height: 39px;
-    padding: 7px 3px;
-    border-radius: 12px;
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: .2s ease;
-    color: #dbeafe;
-    background: rgba(255,255,255,.035);
-}
-
-.action-row button:hover {
-    transform: translateY(-1px);
-    background: rgba(255,255,255,.08);
-}
-
-.action-row button:active {
-    transform: scale(.96);
-}
-
-.btn-toggle-sci {
-    color: #c084fc !important;
-    border-color: rgba(168,85,247,.2) !important;
-}
-
-.btn-toggle-hist {
-    color: #facc15 !important;
-    border-color: rgba(250,204,21,.2) !important;
-}
-
-.btn-toggle-tools {
-    color: #34d399 !important;
-    border-color: rgba(52,211,153,.2) !important;
-}
-
-.btn-revise {
-    color: #38bdf8 !important;
-    border-color: rgba(56,189,248,.2) !important;
-}
-
-/* Display */
-.display-container {
-    min-height: 126px;
-    margin-bottom: 15px;
-    padding: 20px 18px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    border-radius: 22px;
     background:
         linear-gradient(
             145deg,
-            rgba(2,8,18,.88),
-            rgba(9,20,36,.82)
+            rgba(20,34,57,.90),
+            rgba(5,13,26,.91)
         );
-    border: 1px solid rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,255,255,.085);
+
+    backdrop-filter:blur(30px);
+    -webkit-backdrop-filter:blur(30px);
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+    isolation:isolate;
+}
+
+.calc-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:8%;
+    width:84%;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(var(--accentRGB),.9),
+            rgba(168,85,247,.6),
+            transparent
+        );
+
     box-shadow:
-        inset 0 2px 18px rgba(0,0,0,.35),
-        0 10px 35px rgba(0,0,0,.18);
-    overflow: hidden;
+        0 0 25px rgba(var(--accentRGB),.45);
 }
 
-.calc-display {
-    width: 100%;
-    color: #e0f2fe;
-    font-size: 40px;
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -.8px;
-    text-align: right;
-    white-space: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    text-shadow: 0 0 20px rgba(56,189,248,.15);
+.calc-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            125deg,
+            rgba(255,255,255,.025),
+            transparent 25%,
+            transparent 70%,
+            rgba(255,255,255,.018)
+        );
+
+    z-index:-1;
 }
 
-.calc-display::-webkit-scrollbar {
-    display: none;
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header-section{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:17px;
 }
 
-.animate-pop {
-    animation: answerPop .28s cubic-bezier(.175,.885,.32,1.2);
+.brand-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-@keyframes answerPop {
-    0% {
-        transform: scale(.94);
-        opacity: .5;
+.logo-wrap{
+    position:relative;
+}
+
+.logo{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    object-fit:cover;
+
+    border:1px solid rgba(255,255,255,.13);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.4),
+        0 0 25px rgba(var(--accentRGB),.10);
+}
+
+.logo-status{
+    position:absolute;
+    width:9px;
+    height:9px;
+    right:-2px;
+    bottom:-1px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+    border:2px solid #0b1728;
+
+    box-shadow:
+        0 0 12px rgba(34,197,94,.8);
+}
+
+.brand-text{
+    display:flex;
+    flex-direction:column;
+}
+
+.brand-name{
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:-.4px;
+}
+
+.brand-subtitle{
+    margin-top:3px;
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+    color:var(--dim);
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.status-pill{
+    display:flex;
+    align-items:center;
+    gap:5px;
+
+    padding:7px 9px;
+
+    border-radius:999px;
+
+    background:rgba(34,197,94,.07);
+    border:1px solid rgba(34,197,94,.16);
+
+    color:#86efac;
+
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.7px;
+    text-transform:uppercase;
+}
+
+.status-dot{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#22c55e;
+    box-shadow:0 0 8px #22c55e;
+}
+
+/* =========================================================
+   TOP ACTIONS
+========================================================= */
+
+.action-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+    margin-bottom:13px;
+}
+
+.action-row button{
+    min-height:43px;
+
+    border-radius:13px;
+    border:1px solid rgba(255,255,255,.07);
+
+    cursor:pointer;
+
+    font-size:9px;
+    font-weight:800;
+
+    color:#cbd5e1;
+
+    transition:
+        transform .18s ease,
+        background .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.action-row button:hover{
+    transform:translateY(-2px);
+}
+
+.action-row button:active{
+    transform:scale(.94);
+}
+
+.btn-toggle-sci{
+    background:rgba(168,85,247,.10);
+    color:#c084fc !important;
+    border-color:rgba(168,85,247,.25) !important;
+}
+
+.btn-toggle-hist{
+    background:rgba(250,204,21,.075);
+    color:#facc15 !important;
+    border-color:rgba(250,204,21,.22) !important;
+}
+
+.btn-toggle-tools{
+    background:rgba(16,185,129,.08);
+    color:#34d399 !important;
+    border-color:rgba(52,211,153,.22) !important;
+}
+
+.btn-revise{
+    background:rgba(var(--accentRGB),.08);
+    color:var(--accent) !important;
+    border-color:rgba(var(--accentRGB),.23) !important;
+}
+
+/* =========================================================
+   SMART DISPLAY
+========================================================= */
+
+.display-container{
+    position:relative;
+
+    min-height:126px;
+
+    padding:16px 17px 13px;
+
+    margin-bottom:13px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:stretch;
+
+    border-radius:21px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(1,7,17,.94),
+            rgba(7,17,31,.82)
+        );
+
+    border:1px solid rgba(255,255,255,.055);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025),
+        inset 0 -20px 45px rgba(0,0,0,.20);
+
+    overflow:hidden;
+}
+
+.display-container::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(var(--accentRGB),.7),
+            rgba(168,85,247,.5),
+            transparent
+        );
+
+    opacity:.8;
+}
+
+.display-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    min-height:20px;
+    margin-bottom:5px;
+}
+
+.expression-label{
+    color:#475569;
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+
+.display-tools{
+    display:flex;
+    gap:4px;
+}
+
+.mini-btn{
+    width:26px;
+    height:23px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:7px;
+    border:1px solid rgba(255,255,255,.055);
+
+    background:rgba(255,255,255,.035);
+
+    color:#64748b;
+    font-size:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.mini-btn:hover{
+    color:white;
+    background:rgba(255,255,255,.08);
+}
+
+.calc-display{
+    width:100%;
+
+    text-align:right;
+
+    color:var(--accent);
+
+    font-size:37px;
+    font-weight:500;
+
+    line-height:1.2;
+
+    white-space:nowrap;
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+    text-shadow:
+        0 0 25px rgba(var(--accentRGB),.12);
+}
+
+.calc-display::-webkit-scrollbar{
+    display:none;
+}
+
+.live-preview{
+    min-height:17px;
+
+    margin-top:6px;
+
+    text-align:right;
+
+    color:#475569;
+
+    font-size:10px;
+    font-weight:600;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.live-preview strong{
+    color:#64748b;
+}
+
+.animate-pop{
+    animation:
+        answerPop .3s
+        cubic-bezier(.175,.885,.32,1.2);
+}
+
+@keyframes answerPop{
+    0%{
+        transform:scale(.93);
+        opacity:.5;
     }
-    100% {
-        transform: scale(1);
-        opacity: 1;
+    100%{
+        transform:scale(1);
+        opacity:1;
     }
 }
 
-/* Panels */
+/* =========================================================
+   MEMORY BAR
+========================================================= */
+
+.memory-bar{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:5px;
+    margin-bottom:12px;
+}
+
+.memory-btn{
+    min-height:27px;
+
+    border-radius:8px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    background:rgba(255,255,255,.025);
+
+    color:#64748b;
+
+    font-size:8px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.memory-btn:hover{
+    color:white;
+    background:rgba(var(--accentRGB),.07);
+    border-color:rgba(var(--accentRGB),.18);
+}
+
+.memory-value{
+    text-align:center;
+    color:#475569;
+    font-size:8px;
+    margin-top:-7px;
+    margin-bottom:8px;
+}
+
+/* =========================================================
+   COLLAPSIBLE PANELS
+========================================================= */
+
 .scientific-panel,
 .history-panel,
-.tools-panel {
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    margin-bottom: 0;
+.tools-panel{
+    overflow:hidden;
+
+    max-height:0;
+    opacity:0;
+
+    margin-bottom:0;
+
     transition:
-        max-height .35s ease,
+        max-height .4s ease,
         opacity .25s ease,
         margin-bottom .3s ease,
         padding .3s ease;
 }
 
-.scientific-panel.open {
-    max-height: 300px;
-    opacity: 1;
-    margin-bottom: 15px;
+.scientific-panel.open{
+    max-height:340px;
+    opacity:1;
+    margin-bottom:13px;
 }
 
-.scientific-panel {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 8px;
+.history-panel.open{
+    max-height:330px;
+    opacity:1;
+    margin-bottom:13px;
+    padding:13px;
 }
 
-.btn-sci {
-    padding: 11px 4px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.06);
-    background: rgba(255,255,255,.035);
-    color: #cbd5e1;
-    font-size: 13px;
-    font-weight: 650;
-    cursor: pointer;
-    transition: .2s;
+.tools-panel.open{
+    max-height:900px;
+    opacity:1;
+    margin-bottom:13px;
+    padding:14px;
 }
 
-.btn-sci:hover {
-    background: rgba(168,85,247,.13);
-    border-color: rgba(168,85,247,.25);
-    color: #e9d5ff;
+/* =========================================================
+   SCIENTIFIC
+========================================================= */
+
+.scientific-panel{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
 }
 
-.history-panel,
-.tools-panel {
-    background: rgba(2,8,18,.65);
-    border-radius: 18px;
-    text-align: left;
+.sci-toolbar{
+    grid-column:1/-1;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:2px 1px 5px;
 }
 
-.history-panel.open {
-    max-height: 230px;
-    opacity: 1;
-    margin-bottom: 15px;
-    padding: 13px;
-    border: 1px solid rgba(250,204,21,.12);
+.sci-title{
+    color:#a78bfa;
+    font-size:10px;
+    font-weight:800;
 }
 
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 9px;
+.angle-switch{
+    display:flex;
+    gap:3px;
 }
 
-.history-header span {
-    color: #94a3b8;
-    font-size: 11px;
-    font-weight: 700;
+.angle-btn{
+    border:1px solid rgba(168,85,247,.18);
+    background:rgba(168,85,247,.06);
+    color:#8b5cf6;
+    border-radius:6px;
+    padding:4px 7px;
+    font-size:7px;
+    font-weight:800;
+    cursor:pointer;
 }
 
-.clear-hist-btn {
-    border: none;
-    background: transparent;
-    color: #f87171;
-    font-size: 10px;
-    cursor: pointer;
-    font-weight: 700;
+.angle-btn.active{
+    background:rgba(168,85,247,.23);
+    color:#ddd6fe;
 }
 
-.history-list {
-    max-height: 165px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.btn-sci{
+    min-height:39px;
+
+    border-radius:11px;
+
+    border:1px solid rgba(255,255,255,.045);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35,47,67,.72),
+            rgba(23,32,49,.72)
+        );
+
+    color:#cbd5e1;
+
+    font-size:12px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.18s;
 }
 
-.history-item {
-    padding: 9px 10px;
-    border-radius: 10px;
-    background: rgba(255,255,255,.035);
-    border: 1px solid transparent;
-    cursor: pointer;
-    text-align: right;
-    transition: .2s;
+.btn-sci:hover{
+    color:white;
+    background:rgba(168,85,247,.12);
+    border-color:rgba(168,85,247,.24);
 }
 
-.history-item:hover {
-    background: rgba(255,255,255,.065);
-    border-color: rgba(250,204,21,.18);
+.btn-sci:active{
+    transform:scale(.92);
 }
 
-.history-formula {
-    color: #7f8ea3;
-    font-size: 10px;
+/* =========================================================
+   HISTORY
+========================================================= */
+
+.history-panel{
+    background:rgba(3,9,19,.76);
+    border-radius:18px;
+    text-align:left;
 }
 
-.history-result {
-    color: #facc15;
-    font-size: 13px;
-    font-weight: 700;
+.history-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:7px;
+    margin-bottom:9px;
 }
 
-.empty-history {
-    padding: 20px 0;
-    text-align: center;
-    color: #475569;
-    font-size: 11px;
+.history-title{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
 }
 
-/* Tools */
-.tools-panel.open {
-    max-height: 460px;
-    opacity: 1;
-    margin-bottom: 15px;
-    padding: 14px;
-    border: 1px solid rgba(52,211,153,.15);
-    overflow-y: auto;
+.history-title strong{
+    font-size:11px;
 }
 
-.tool-selector,
+.history-title span{
+    font-size:7px;
+    color:#475569;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+.history-actions{
+    display:flex;
+    gap:5px;
+}
+
+.history-small-btn{
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.035);
+    color:#64748b;
+    padding:6px 8px;
+    border-radius:7px;
+    font-size:8px;
+    cursor:pointer;
+}
+
+.history-small-btn:hover{
+    color:white;
+}
+
+.clear-hist-btn{
+    color:#f87171 !important;
+}
+
+.history-search{
+    width:100%;
+    padding:8px 10px;
+    margin-bottom:8px;
+
+    border-radius:9px;
+
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.055);
+
+    color:white;
+    outline:none;
+
+    font-size:9px;
+}
+
+.history-list{
+    max-height:210px;
+    overflow-y:auto;
+
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.history-list::-webkit-scrollbar{
+    width:3px;
+}
+
+.history-list::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:10px;
+}
+
+.history-item{
+    padding:9px 10px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.032);
+    border:1px solid transparent;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    cursor:pointer;
+
+    transition:.18s;
+}
+
+.history-item:hover{
+    background:rgba(250,204,21,.055);
+    border-color:rgba(250,204,21,.15);
+}
+
+.history-item-left{
+    min-width:0;
+}
+
+.history-formula{
+    color:#94a3b8;
+    font-size:9px;
+    word-break:break-all;
+}
+
+.history-result{
+    color:#facc15;
+    font-size:12px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.history-copy{
+    opacity:0;
+    border:0;
+    background:transparent;
+    color:#64748b;
+    cursor:pointer;
+}
+
+.history-item:hover .history-copy{
+    opacity:1;
+}
+
+.empty-history{
+    padding:25px 0;
+    text-align:center;
+    color:#475569;
+    font-size:9px;
+}
+
+/* =========================================================
+   TOOLS HUB
+========================================================= */
+
+.tools-panel{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(3,13,22,.95),
+            rgba(7,19,30,.91)
+        );
+
+    border-radius:20px;
+    text-align:left;
+
+    border:1px solid rgba(52,211,153,.12);
+}
+
+.tools-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:11px;
+}
+
+.tools-title-left{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.tools-icon{
+    width:29px;
+    height:29px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:9px;
+
+    background:rgba(16,185,129,.09);
+    border:1px solid rgba(16,185,129,.18);
+}
+
+.tools-title strong{
+    font-size:12px;
+}
+
+.tools-title span{
+    color:#475569;
+    font-size:7px;
+    font-weight:800;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+
+/* tool segments */
+
+.tool-segments{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+
+    max-height:188px;
+    overflow-y:auto;
+
+    padding-right:2px;
+    margin-bottom:11px;
+}
+
+.tool-segments::-webkit-scrollbar{
+    width:3px;
+}
+
+.tool-segments::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:10px;
+}
+
+.tool-segment{
+    min-height:40px;
+
+    border-radius:10px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    background:rgba(255,255,255,.028);
+
+    color:#64748b;
+
+    font-size:8px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.tool-segment:hover{
+    color:#d1fae5;
+    background:rgba(52,211,153,.07);
+}
+
+.tool-segment.active{
+    color:#34d399;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16,185,129,.22),
+            rgba(16,185,129,.055)
+        );
+
+    border-color:rgba(52,211,153,.38);
+
+    box-shadow:
+        0 0 20px rgba(16,185,129,.06);
+}
+
+/* tool heading */
+
+.tool-heading{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    margin-bottom:9px;
+}
+
+.tool-heading-icon{
+    font-size:20px;
+}
+
+.tool-heading-text{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.tool-heading-text strong{
+    font-size:12px;
+}
+
+.tool-heading-text span{
+    color:#475569;
+    font-size:7px;
+}
+
+/* tool body */
+
+.tool-body{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.tool-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.tool-group label{
+    color:#94a3b8;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.25px;
+}
+
 .tool-input,
-.tool-select {
-    width: 100%;
-    outline: none;
-    border-radius: 11px;
-    background: #111d30;
-    border: 1px solid rgba(255,255,255,.08);
-    color: #e2e8f0;
-}
+.tool-select{
+    width:100%;
 
-.tool-selector {
-    padding: 10px;
-    color: #34d399;
-    font-weight: 700;
-    margin-bottom: 11px;
-}
+    padding:10px 10px;
 
-.tool-body {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-}
+    border-radius:10px;
 
-.tool-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
+    background:rgba(255,255,255,.043);
+    border:1px solid rgba(255,255,255,.075);
 
-.tool-group label {
-    color: #8191a7;
-    font-size: 10px;
-    font-weight: 700;
-}
+    color:white;
+    outline:none;
 
-.tool-input,
-.tool-select {
-    padding: 9px 10px;
-    font-size: 12px;
+    font-size:11px;
+
+    transition:.2s;
 }
 
 .tool-input:focus,
-.tool-select:focus,
-.tool-selector:focus {
-    border-color: rgba(52,211,153,.5);
-    box-shadow: 0 0 0 3px rgba(52,211,153,.06);
+.tool-select:focus{
+    border-color:rgba(52,211,153,.55);
+    background:rgba(52,211,153,.035);
+    box-shadow:0 0 0 3px rgba(52,211,153,.035);
 }
 
-.tool-row {
-    display: flex;
-    gap: 8px;
+.tool-select option{
+    background:#0b1728;
+    color:white;
 }
 
-.tool-row > * {
-    flex: 1;
+.tool-row{
+    display:flex;
+    gap:8px;
 }
 
-.btn-calc-tool {
-    border: none;
-    padding: 10px;
-    border-radius: 11px;
-    background: linear-gradient(135deg,#10b981,#059669);
-    color: white;
-    font-weight: 750;
-    cursor: pointer;
-    margin-top: 4px;
+.tool-row>*{
+    flex:1;
 }
 
-.tool-result-box {
-    padding: 10px;
-    border-radius: 11px;
-    text-align: center;
-    background: rgba(16,185,129,.08);
-    border: 1px dashed rgba(52,211,153,.25);
-    color: #34d399;
-    font-size: 12px;
-    font-weight: 700;
-    word-break: break-word;
+.converter-swap{
+    width:34px;
+    height:34px;
+    flex:0 0 34px !important;
+    align-self:end;
+    margin-bottom:1px;
+
+    border-radius:9px;
+
+    border:1px solid rgba(56,189,248,.18);
+    background:rgba(56,189,248,.07);
+
+    color:#38bdf8;
+
+    cursor:pointer;
+    font-size:14px;
+
+    transition:.2s;
 }
 
-/* Calculator Buttons */
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 9px;
+.converter-swap:hover{
+    background:rgba(56,189,248,.16);
+    transform:rotate(180deg);
 }
 
-.buttons button {
-    height: 60px;
-    border: 1px solid rgba(255,255,255,.045);
-    border-radius: 17px;
-    background: linear-gradient(
-        145deg,
-        rgba(43,54,72,.95),
-        rgba(27,37,53,.95)
-    );
-    color: #f8fafc;
-    font-size: 20px;
-    font-weight: 650;
-    cursor: pointer;
-    transition:
-        transform .12s ease,
-        background .2s ease,
-        box-shadow .2s ease;
+.btn-calc-tool{
+    width:100%;
+
+    border:0;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #10b981,
+            #059669
+        );
+
+    color:white;
+
+    font-size:10px;
+    font-weight:900;
+
+    cursor:pointer;
+
     box-shadow:
-        0 5px 10px rgba(0,0,0,.18),
-        inset 0 1px 0 rgba(255,255,255,.035);
+        0 8px 22px rgba(16,185,129,.12);
+
+    transition:.18s;
 }
 
-.buttons button:hover {
-    background: linear-gradient(
-        145deg,
-        rgba(55,68,89,.98),
-        rgba(34,47,66,.98)
-    );
-    transform: translateY(-1px);
+.btn-calc-tool:hover{
+    transform:translateY(-1px);
+    box-shadow:
+        0 12px 27px rgba(16,185,129,.2);
 }
 
-.buttons button:active {
-    transform: scale(.93);
+.btn-calc-tool:active{
+    transform:scale(.97);
 }
 
-.btn-action {
-    color: #cbd5e1 !important;
+.tool-result-box{
+    min-height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16,185,129,.085),
+            rgba(16,185,129,.025)
+        );
+
+    border:1px dashed rgba(16,185,129,.27);
+
+    color:#34d399;
+
+    font-size:10px;
+    font-weight:800;
+
+    text-align:center;
+    word-break:break-word;
 }
 
-.operator {
-    background: linear-gradient(145deg,#2563eb,#1d4ed8) !important;
-    box-shadow: 0 8px 20px rgba(37,99,235,.22) !important;
+.tool-description{
+    color:#475569;
+    font-size:8px;
+    line-height:1.45;
+    text-align:center;
 }
 
-.equal {
-    background: linear-gradient(145deg,#22c55e,#15803d) !important;
-    box-shadow: 0 8px 22px rgba(34,197,94,.22) !important;
+.quick-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:5px;
 }
 
-.buttons button:nth-child(1) {
-    color: #f87171;
+.quick-stat{
+    padding:7px 5px;
+    text-align:center;
+    border-radius:8px;
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.04);
 }
 
-/* Vault */
-.vault-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: rgba(2,6,15,.88);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s ease;
+.quick-stat strong{
+    display:block;
+    color:#cbd5e1;
+    font-size:10px;
 }
 
-.vault-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
+.quick-stat span{
+    color:#475569;
+    font-size:7px;
 }
 
-.vault-content {
-    width: 100%;
-    max-width: 410px;
-    padding: 22px;
-    border-radius: 25px;
-    background: linear-gradient(145deg,#15243a,#091321);
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow: 0 30px 90px rgba(0,0,0,.6);
+/* =========================================================
+   MAIN KEYPAD
+========================================================= */
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
 }
 
-.vault-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
+.buttons button{
+    min-height:57px;
+
+    border:1px solid rgba(255,255,255,.045);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #303b50,
+            #222c3d
+        );
+
+    color:#f8fafc;
+
+    font-size:20px;
+    font-weight:650;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.025),
+        0 5px 10px rgba(0,0,0,.10);
+
+    transition:
+        transform .1s ease,
+        background .18s ease,
+        box-shadow .18s ease;
 }
 
-.vault-header h3 {
-    margin: 0;
-    font-size: 18px;
+.buttons button:hover{
+    background:
+        linear-gradient(
+            145deg,
+            #3a4860,
+            #293549
+        );
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.18);
 }
 
-.close-vault-btn {
-    border: none;
-    border-radius: 10px;
-    padding: 8px 13px;
-    background: #ef4444;
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
+.buttons button:active{
+    transform:scale(.91);
+
+    box-shadow:
+        0 0 25px rgba(var(--accentRGB),.24);
 }
 
-.file-upload-label {
-    display: block;
-    padding: 22px;
-    text-align: center;
-    border: 1px dashed rgba(56,189,248,.45);
-    border-radius: 15px;
-    color: #38bdf8;
-    background: rgba(56,189,248,.06);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 700;
+.btn-action{
+    background:
+        linear-gradient(
+            145deg,
+            #394458,
+            #293345
+        ) !important;
+
+    color:#cbd5e1 !important;
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 8px;
-    margin-top: 17px;
-    max-height: 230px;
-    overflow-y: auto;
+.operator{
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #1d4ed8
+        ) !important;
+
+    border-color:rgba(96,165,250,.18) !important;
 }
 
-.gallery-item {
-    position: relative;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-radius: 10px;
-    background: #020617;
+.equal{
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #059669
+        ) !important;
+
+    border-color:rgba(74,222,128,.18) !important;
+
+    box-shadow:
+        0 8px 24px rgba(16,185,129,.13) !important;
+}
+
+/* =========================================================
+   BOTTOM STATUS
+========================================================= */
+
+.bottom-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-top:10px;
+    padding:0 3px;
+}
+
+.bottom-hint{
+    color:#334155;
+    font-size:7px;
+    font-weight:700;
+}
+
+.bottom-brand{
+    color:#334155;
+    font-size:7px;
+    font-weight:800;
+    letter-spacing:.7px;
+}
+
+/* =========================================================
+   SETTINGS / THEME POPUP
+========================================================= */
+
+.settings-panel{
+    position:fixed;
+    inset:0;
+    z-index:500;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+
+    padding:14px;
+
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(12px);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+.settings-panel.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.settings-card{
+    width:min(390px,100%);
+
+    padding:18px;
+
+    border-radius:23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #13233a,
+            #091525
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+
+    transform:translateY(30px);
+    transition:.3s;
+}
+
+.settings-panel.active .settings-card{
+    transform:translateY(0);
+}
+
+.settings-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.settings-head strong{
+    font-size:14px;
+}
+
+.settings-close{
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:9px;
+    background:rgba(239,68,68,.10);
+    color:#f87171;
+    cursor:pointer;
+}
+
+.settings-label{
+    color:#64748b;
+    font-size:8px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:7px;
+}
+
+.theme-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+    margin-bottom:15px;
+}
+
+.theme-btn{
+    height:38px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.08);
+    cursor:pointer;
+    color:white;
+    font-size:8px;
+    font-weight:800;
+}
+
+.theme-cyan{background:linear-gradient(135deg,#0284c7,#2563eb);}
+.theme-purple{background:linear-gradient(135deg,#7c3aed,#a855f7);}
+.theme-green{background:linear-gradient(135deg,#059669,#22c55e);}
+.theme-orange{background:linear-gradient(135deg,#ea580c,#f59e0b);}
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:10px 0;
+
+    border-top:1px solid rgba(255,255,255,.045);
+}
+
+.setting-row span{
+    color:#94a3b8;
+    font-size:10px;
+}
+
+.setting-row button{
+    border:1px solid rgba(255,255,255,.07);
+    background:rgba(255,255,255,.04);
+    color:#cbd5e1;
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* =========================================================
+   PRIVATE VAULT
+========================================================= */
+
+.vault-overlay{
+    position:fixed;
+    inset:0;
+    z-index:999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:18px;
+
+    background:rgba(2,6,15,.97);
+
+    backdrop-filter:blur(30px);
+    -webkit-backdrop-filter:blur(30px);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.3s;
+}
+
+.vault-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.vault-content{
+    width:min(420px,100%);
+
+    padding:20px;
+
+    border-radius:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #14263f,
+            #091525
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.7);
+}
+
+.vault-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.vault-title-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.vault-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:11px;
+    background:rgba(168,85,247,.10);
+    border:1px solid rgba(168,85,247,.2);
+}
+
+.vault-header h3{
+    margin:0;
+    font-size:16px;
+}
+
+.vault-subtitle{
+    color:#64748b;
+    font-size:7px;
+    margin-top:2px;
+}
+
+.close-vault-btn{
+    background:rgba(239,68,68,.12);
+    border:1px solid rgba(239,68,68,.2);
+    color:#f87171;
+    padding:8px 12px;
+    border-radius:9px;
+    font-size:9px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.file-upload-label{
+    display:block;
+
+    padding:20px;
+
+    text-align:center;
+
+    border:1px dashed rgba(56,189,248,.45);
+    border-radius:14px;
+
+    background:rgba(56,189,248,.055);
+
+    color:#60a5fa;
+
+    font-size:11px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.file-upload-label:hover{
+    background:rgba(56,189,248,.10);
+}
+
+.vault-info{
+    text-align:center;
+    color:#475569;
+    font-size:7px;
+    margin-top:8px;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:16px;
+
+    max-height:270px;
+    overflow-y:auto;
+}
+
+.gallery-item{
+    position:relative;
+    aspect-ratio:1;
+    overflow:hidden;
+    border-radius:10px;
+    background:#020617;
+    border:1px solid rgba(255,255,255,.06);
 }
 
 .gallery-item img,
-.gallery-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.gallery-item video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-.delete-item-btn {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 21px !important;
-    height: 21px !important;
-    padding: 0 !important;
-    border: none !important;
-    border-radius: 50% !important;
-    background: #ef4444 !important;
-    color: white;
-    font-size: 12px !important;
+.delete-item-btn{
+    position:absolute;
+    top:4px;
+    right:4px;
+
+    width:21px;
+    height:21px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:0;
+    border-radius:50%;
+
+    background:#ef4444;
+    color:white;
+
+    font-size:13px;
+    cursor:pointer;
 }
 
-/* Mobile */
-@media (max-width: 430px) {
-    body {
-        padding: 10px;
-        align-items: flex-start;
-        padding-top: 15px;
+/* =========================================================
+   BIG DISPLAY MODE
+========================================================= */
+
+.big-display-overlay{
+    position:fixed;
+    inset:0;
+    z-index:800;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    background:rgba(1,5,12,.97);
+    backdrop-filter:blur(30px);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+.big-display-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.big-result{
+    width:100%;
+    max-width:1000px;
+
+    text-align:center;
+
+    color:var(--accent);
+
+    font-size:clamp(50px,10vw,130px);
+    font-weight:400;
+
+    word-break:break-word;
+
+    text-shadow:
+        0 0 50px rgba(var(--accentRGB),.18);
+}
+
+.big-close{
+    position:absolute;
+    top:20px;
+    right:20px;
+
+    width:40px;
+    height:40px;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    color:#94a3b8;
+
+    cursor:pointer;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    z-index:1200;
+
+    transform:translate(-50%,20px);
+
+    padding:9px 13px;
+
+    border-radius:999px;
+
+    background:rgba(15,23,42,.94);
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#e2e8f0;
+
+    font-size:9px;
+    font-weight:800;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:430px){
+
+    body{
+        padding:9px 7px;
+        align-items:flex-start;
     }
 
-    .calc-card {
-        padding: 16px;
-        border-radius: 26px;
+    .calc-card{
+        margin-top:4px;
+        padding:15px;
+        border-radius:25px;
     }
 
-    .display-container {
-        min-height: 115px;
+    .logo{
+        width:42px;
+        height:42px;
     }
 
-    .calc-display {
-        font-size: 34px;
+    .brand-name{
+        font-size:15px;
     }
 
-    .buttons {
-        gap: 8px;
+    .status-pill{
+        padding:6px 7px;
     }
 
-    .buttons button {
-        height: 57px;
-        border-radius: 15px;
+    .display-container{
+        min-height:116px;
+    }
+
+    .calc-display{
+        font-size:31px;
+    }
+
+    .buttons{
+        gap:7px;
+    }
+
+    .buttons button{
+        min-height:55px;
+        border-radius:14px;
+        font-size:19px;
+    }
+
+    .tool-segments{
+        grid-template-columns:repeat(3,1fr);
     }
 }
 
-@media (max-width: 340px) {
-    .action-row button {
-        font-size: 9px;
+@media(max-width:350px){
+
+    .calc-card{
+        padding:12px;
     }
 
-    .buttons button {
-        height: 53px;
-        font-size: 18px;
+    .action-row button{
+        font-size:8px;
+    }
+
+    .buttons button{
+        min-height:51px;
+        font-size:17px;
+    }
+
+    .tool-segment{
+        font-size:7px;
+    }
+
+    .calc-display{
+        font-size:28px;
     }
 }
 </style>
@@ -702,128 +1802,861 @@ h2 {
 
 <body>
 
+<!-- =========================================================
+     MAIN APP
+========================================================= -->
+
 <div class="calc-card">
 
-    <div class="header-section">
-        <div class="brand-wrap">
-            <img src="my_logo.png" alt="Logo" class="logo">
+    <!-- HEADER -->
 
-            <div class="brand-title">
-                <h2 id="calc-title">Dilshad's Calc Pro</h2>
-                <span class="brand-subtitle">Smart Calculator</span>
+    <div class="header-section">
+
+        <div class="brand-area">
+
+            <div class="logo-wrap">
+
+                <img
+                    src="my_logo.png"
+                    class="logo"
+                    alt="Dilshad's Calc Pro"
+                >
+
+                <div class="logo-status"></div>
+
             </div>
+
+            <div class="brand-text">
+
+                <div
+                    class="brand-name"
+                    id="calc-title"
+                >
+                    Dilshad's Calc Pro
+                </div>
+
+                <div class="brand-subtitle">
+                    Smart • Scientific • Utility
+                </div>
+
+            </div>
+
         </div>
 
-        <span class="status-dot"></span>
+        <div class="header-right">
+
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                Local
+            </div>
+
+            <button
+                class="mini-btn"
+                onclick="openSettings()"
+                title="Settings"
+            >
+                ⚙
+            </button>
+
+        </div>
+
     </div>
+
+
+    <!-- ACTIONS -->
 
     <div class="action-row">
-        <button class="btn-toggle-sci" onclick="toggleScientificPanel()">🔬 Mode</button>
-        <button class="btn-toggle-hist" onclick="toggleHistoryPanel()">📜 History</button>
-        <button class="btn-toggle-tools" onclick="toggleToolsPanel()">📐 Tools</button>
-        <button class="btn-revise" onclick="reviseCalculation()">🔊 Revise</button>
+
+        <button
+            class="btn-toggle-sci"
+            onclick="toggleScientificPanel()"
+        >
+            🔬 Mode
+        </button>
+
+        <button
+            class="btn-toggle-hist"
+            onclick="toggleHistoryPanel()"
+        >
+            📜 History
+        </button>
+
+        <button
+            class="btn-toggle-tools"
+            onclick="toggleToolsPanel()"
+        >
+            🧰 Tools
+        </button>
+
+        <button
+            class="btn-revise"
+            onclick="reviseCalculation()"
+        >
+            🔊 Revise
+        </button>
+
     </div>
 
-    <div class="display-container">
-        <div id="display" class="calc-display">0</div>
-    </div>
 
-    <!-- HISTORY -->
-    <div class="history-panel" id="historyPanel">
-        <div class="history-header">
-            <span>Previous Logs · Max 100</span>
-            <button class="clear-hist-btn" onclick="clearHistory()">Clear All</button>
+    <!-- DISPLAY -->
+
+    <div
+        class="display-container"
+        id="displayContainer"
+    >
+
+        <div class="display-top">
+
+            <span class="expression-label">
+                Expression
+            </span>
+
+            <div class="display-tools">
+
+                <button
+                    class="mini-btn"
+                    onclick="copyResult()"
+                    title="Copy"
+                >
+                    ⧉
+                </button>
+
+                <button
+                    class="mini-btn"
+                    onclick="openBigDisplay()"
+                    title="Big Display"
+                >
+                    ⛶
+                </button>
+
+            </div>
+
         </div>
 
-        <div class="history-list" id="historyList"></div>
+        <div
+            id="display"
+            class="calc-display"
+        >
+            0
+        </div>
+
+        <div
+            id="livePreview"
+            class="live-preview"
+        >
+            <strong>Ready</strong>
+        </div>
+
     </div>
 
-    <!-- TOOLS -->
-    <div class="tools-panel" id="toolsPanel">
 
-        <select class="tool-selector" id="toolTypeSelect" onchange="switchToolSegment()">
-            <option value="age">🎂 Exact Age Calculator</option>
-            <option value="bmi">⚖️ BMI Calculator</option>
-            <option value="distance">📏 Distance Converter</option>
-            <option value="area">🗺️ Area Converter</option>
-            <option value="data">💾 Data Storage Converter</option>
-            <option value="date">📅 Date Difference</option>
-            <option value="discount">🏷️ Discount Calculator</option>
-            <option value="mass">🏋️ Mass / Weight Converter</option>
-            <option value="speed">🚀 Speed Converter</option>
-            <option value="temp">🌡️ Temperature Converter</option>
-            <option value="time">⏱️ Time Converter</option>
-            <option value="volume">🧪 Volume Converter</option>
-        </select>
+    <!-- MEMORY -->
 
-        <div class="tool-body" id="toolBody"></div>
+    <div class="memory-bar">
+
+        <button
+            class="memory-btn"
+            onclick="memoryClear()"
+        >
+            MC
+        </button>
+
+        <button
+            class="memory-btn"
+            onclick="memoryRecall()"
+        >
+            MR
+        </button>
+
+        <button
+            class="memory-btn"
+            onclick="memoryAdd()"
+        >
+            M+
+        </button>
+
+        <button
+            class="memory-btn"
+            onclick="memorySubtract()"
+        >
+            M−
+        </button>
+
+        <button
+            class="memory-btn"
+            onclick="memoryStore()"
+        >
+            MS
+        </button>
+
     </div>
 
-    <!-- SCIENTIFIC -->
-    <div class="scientific-panel" id="scientificPanel">
-
-        <button class="btn-sci" onclick="appendScientific('sin(')">sin</button>
-        <button class="btn-sci" onclick="appendScientific('cos(')">cos</button>
-        <button class="btn-sci" onclick="appendScientific('tan(')">tan</button>
-        <button class="btn-sci" onclick="appendScientific('sqrt(')">√</button>
-
-        <button class="btn-sci" onclick="appendScientific('log(')">log</button>
-        <button class="btn-sci" onclick="appendScientific('ln(')">ln</button>
-        <button class="btn-sci" onclick="appendScientific('^')">aˣ</button>
-        <button class="btn-sci" onclick="appendScientific('fact(')">x!</button>
-
-        <button class="btn-sci" onclick="appendScientific('e^(')">eˣ</button>
-        <button class="btn-sci" onclick="appendScientific('1/(')">inv</button>
-        <button class="btn-sci" onclick="appendScientific('π')">π</button>
-        <button class="btn-sci" onclick="appendScientific('e')">e</button>
-
-        <button class="btn-sci" onclick="appendScientific('(')">(</button>
-        <button class="btn-sci" onclick="appendScientific(')')">)</button>
-        <button class="btn-sci" onclick="appendScientific(',')">,</button>
+    <div
+        class="memory-value"
+        id="memoryValue"
+    >
+        Memory: 0
     </div>
 
-    <!-- MAIN CALCULATOR -->
+
+    <!-- =====================================================
+         HISTORY
+    ====================================================== -->
+
+    <div
+        class="history-panel"
+        id="historyPanel"
+    >
+
+        <div class="history-header">
+
+            <div class="history-title">
+
+                <strong>
+                    📜 Calculation History
+                </strong>
+
+                <span>
+                    Up to 100 saved calculations
+                </span>
+
+            </div>
+
+            <div class="history-actions">
+
+                <button
+                    class="history-small-btn"
+                    onclick="exportHistory()"
+                >
+                    Export
+                </button>
+
+                <button
+                    class="history-small-btn clear-hist-btn"
+                    onclick="clearHistory()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </div>
+
+        <input
+            id="historySearch"
+            class="history-search"
+            placeholder="Search history..."
+            oninput="renderHistory()"
+        >
+
+        <div
+            class="history-list"
+            id="historyList"
+        ></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOOLS
+    ====================================================== -->
+
+    <div
+        class="tools-panel"
+        id="toolsPanel"
+    >
+
+        <div class="tools-title">
+
+            <div class="tools-title-left">
+
+                <div class="tools-icon">
+                    🧠
+                </div>
+
+                <div>
+
+                    <strong>
+                        Smart Calculation Hub
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <span>
+                12 Utilities
+            </span>
+
+        </div>
+
+
+        <div class="tool-segments">
+
+            <button
+                class="tool-segment active"
+                data-tool="distance"
+                onclick="selectTool('distance')"
+            >
+                📏 Distance
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="area"
+                onclick="selectTool('area')"
+            >
+                🗺️ Area
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="date"
+                onclick="selectTool('date')"
+            >
+                📅 Date
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="data"
+                onclick="selectTool('data')"
+            >
+                💾 Data
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="discount"
+                onclick="selectTool('discount')"
+            >
+                🏷️ Discount
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="mass"
+                onclick="selectTool('mass')"
+            >
+                ⚖️ Mass
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="speed"
+                onclick="selectTool('speed')"
+            >
+                🚀 Speed
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="temp"
+                onclick="selectTool('temp')"
+            >
+                🌡️ Temp
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="time"
+                onclick="selectTool('time')"
+            >
+                ⏱️ Time
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="bmi"
+                onclick="selectTool('bmi')"
+            >
+                🧍 BMI
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="volume"
+                onclick="selectTool('volume')"
+            >
+                🧪 Volume
+            </button>
+
+            <button
+                class="tool-segment"
+                data-tool="age"
+                onclick="selectTool('age')"
+            >
+                🎂 Exact Age
+            </button>
+
+        </div>
+
+
+        <div
+            class="tool-body"
+            id="toolBody"
+        ></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCIENTIFIC
+    ====================================================== -->
+
+    <div
+        class="scientific-panel"
+        id="scientificPanel"
+    >
+
+        <div class="sci-toolbar">
+
+            <span class="sci-title">
+                🔬 Scientific Engine
+            </span>
+
+            <div class="angle-switch">
+
+                <button
+                    id="degreeBtn"
+                    class="angle-btn active"
+                    onclick="setAngleMode('DEG')"
+                >
+                    DEG
+                </button>
+
+                <button
+                    id="radianBtn"
+                    class="angle-btn"
+                    onclick="setAngleMode('RAD')"
+                >
+                    RAD
+                </button>
+
+            </div>
+
+        </div>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('sin(')"
+        >
+            sin
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('cos(')"
+        >
+            cos
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('tan(')"
+        >
+            tan
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('sqrt(')"
+        >
+            √
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('log(')"
+        >
+            log
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('ln(')"
+        >
+            ln
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('^')"
+        >
+            xʸ
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('fact(')"
+        >
+            x!
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('e^(')"
+        >
+            eˣ
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('1/(')"
+        >
+            1/x
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('π')"
+        >
+            π
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('e')"
+        >
+            e
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('(')"
+        >
+            (
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific(')')"
+        >
+            )
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific(',')"
+        >
+            ,
+        </button>
+
+        <button
+            class="btn-sci"
+            onclick="appendScientific('Ans')"
+        >
+            Ans
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         KEYPAD
+    ====================================================== -->
+
     <div class="buttons">
 
-        <button class="btn-action" onclick="clearDisplay()">C</button>
-        <button class="btn-action" onclick="deleteLast()">DEL</button>
-        <button class="btn-action" onclick="appendOperator('%')">%</button>
-        <button class="operator" onclick="appendOperator('/')">÷</button>
+        <button
+            class="btn-action"
+            onclick="clearDisplay()"
+        >
+            C
+        </button>
 
-        <button onclick="appendNumber('7')">7</button>
-        <button onclick="appendNumber('8')">8</button>
-        <button onclick="appendNumber('9')">9</button>
-        <button class="operator" onclick="appendOperator('*')">×</button>
+        <button
+            class="btn-action"
+            onclick="deleteLast()"
+        >
+            DEL
+        </button>
 
-        <button onclick="appendNumber('4')">4</button>
-        <button onclick="appendNumber('5')">5</button>
-        <button onclick="appendNumber('6')">6</button>
-        <button class="operator" onclick="appendOperator('-')">−</button>
+        <button
+            class="btn-action"
+            onclick="appendOperator('%')"
+        >
+            %
+        </button>
 
-        <button onclick="appendNumber('1')">1</button>
-        <button onclick="appendNumber('2')">2</button>
-        <button onclick="appendNumber('3')">3</button>
-        <button class="operator" onclick="appendOperator('+')">+</button>
+        <button
+            class="operator"
+            onclick="appendOperator('/')"
+        >
+            ÷
+        </button>
 
-        <button onclick="appendNumber('0')">0</button>
-        <button onclick="appendNumber('.')">.</button>
-        <button class="equal" onclick="calculate()" style="grid-column: span 2;">=</button>
+
+        <button onclick="appendNumber('7')">
+            7
+        </button>
+
+        <button onclick="appendNumber('8')">
+            8
+        </button>
+
+        <button onclick="appendNumber('9')">
+            9
+        </button>
+
+        <button
+            class="operator"
+            onclick="appendOperator('*')"
+        >
+            ×
+        </button>
+
+
+        <button onclick="appendNumber('4')">
+            4
+        </button>
+
+        <button onclick="appendNumber('5')">
+            5
+        </button>
+
+        <button onclick="appendNumber('6')">
+            6
+        </button>
+
+        <button
+            class="operator"
+            onclick="appendOperator('-')"
+        >
+            −
+        </button>
+
+
+        <button onclick="appendNumber('1')">
+            1
+        </button>
+
+        <button onclick="appendNumber('2')">
+            2
+        </button>
+
+        <button onclick="appendNumber('3')">
+            3
+        </button>
+
+        <button
+            class="operator"
+            onclick="appendOperator('+')"
+        >
+            +
+        </button>
+
+
+        <button onclick="appendNumber('0')">
+            0
+        </button>
+
+        <button onclick="appendNumber('.')">
+            .
+        </button>
+
+        <button
+            class="equal"
+            onclick="calculate()"
+            style="grid-column:span 2;"
+        >
+            =
+        </button>
 
     </div>
+
+
+    <div class="bottom-bar">
+
+        <span class="bottom-hint">
+            ⌨ Keyboard supported
+        </span>
+
+        <span class="bottom-brand">
+            DILSHAD • CALC PRO
+        </span>
+
+    </div>
+
 </div>
 
-<!-- PRIVATE VAULT -->
-<div id="vaultOverlay" class="vault-overlay">
+
+<!-- =========================================================
+     SETTINGS
+========================================================= -->
+
+<div
+    class="settings-panel"
+    id="settingsPanel"
+    onclick="closeSettingsOutside(event)"
+>
+
+    <div class="settings-card">
+
+        <div class="settings-head">
+
+            <strong>
+                ⚙️ Personalize Calc Pro
+            </strong>
+
+            <button
+                class="settings-close"
+                onclick="closeSettings()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="settings-label">
+            Accent Theme
+        </div>
+
+        <div class="theme-grid">
+
+            <button
+                class="theme-btn theme-cyan"
+                onclick="setTheme('cyan')"
+            >
+                CYAN
+            </button>
+
+            <button
+                class="theme-btn theme-purple"
+                onclick="setTheme('purple')"
+            >
+                PURPLE
+            </button>
+
+            <button
+                class="theme-btn theme-green"
+                onclick="setTheme('green')"
+            >
+                GREEN
+            </button>
+
+            <button
+                class="theme-btn theme-orange"
+                onclick="setTheme('orange')"
+            >
+                ORANGE
+            </button>
+
+        </div>
+
+        <div class="setting-row">
+
+            <span>
+                Haptic feedback
+            </span>
+
+            <button onclick="toggleHaptics()">
+                Toggle
+            </button>
+
+        </div>
+
+        <div class="setting-row">
+
+            <span>
+                Fullscreen result
+            </span>
+
+            <button onclick="openBigDisplay()">
+                Open
+            </button>
+
+        </div>
+
+        <div class="setting-row">
+
+            <span>
+                Reset saved preferences
+            </span>
+
+            <button onclick="resetPreferences()">
+                Reset
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     BIG RESULT
+========================================================= -->
+
+<div
+    class="big-display-overlay"
+    id="bigDisplayOverlay"
+>
+
+    <button
+        class="big-close"
+        onclick="closeBigDisplay()"
+    >
+        ×
+    </button>
+
+    <div
+        class="big-result"
+        id="bigResult"
+    >
+        0
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PRIVATE VAULT
+========================================================= -->
+
+<div
+    id="vaultOverlay"
+    class="vault-overlay"
+>
 
     <div class="vault-content">
 
         <div class="vault-header">
-            <h3>🔒 Private Vault</h3>
-            <button class="close-vault-btn" onclick="closeVault()">Lock</button>
+
+            <div class="vault-title-area">
+
+                <div class="vault-icon">
+                    🔒
+                </div>
+
+                <div>
+
+                    <h3>
+                        Private Vault
+                    </h3>
+
+                    <div class="vault-subtitle">
+                        Private local media storage
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button
+                class="close-vault-btn"
+                onclick="closeVault()"
+            >
+                Lock
+            </button>
+
         </div>
 
         <label class="file-upload-label">
-            📁 Upload to Hide Media
+
+            📁 Upload Media to Vault
+
             <input
                 type="file"
                 id="vaultInput"
@@ -832,287 +2665,683 @@ h2 {
                 style="display:none"
                 onchange="handleFileSelect(event)"
             >
+
         </label>
 
-        <div id="galleryGrid" class="gallery-grid"></div>
+        <div class="vault-info">
+            Stored locally in your browser
+        </div>
+
+        <div
+            id="galleryGrid"
+            class="gallery-grid"
+        ></div>
 
     </div>
+
 </div>
 
+
+<div
+    id="toast"
+    class="toast"
+>
+    Done
+</div>
+
+
 <script>
-let display = document.getElementById("display");
-let calcTitle = document.getElementById("calc-title");
+/* =========================================================
+   CORE STATE
+========================================================= */
+
+const display =
+    document.getElementById("display");
+
+const calcTitle =
+    document.getElementById("calc-title");
+
+const livePreview =
+    document.getElementById("livePreview");
 
 let clearOnNextInput = false;
+
 let lastActiveFormula = "";
+
 let finalCalculationResult = "";
 
-let historyLog = JSON.parse(localStorage.getItem("calcHistory")) || [];
-let vaultCode = localStorage.getItem("vaultCode") || null;
+let lastAnswer = 0;
+
+let memory =
+    Number(
+        localStorage.getItem("calcMemory") || 0
+    );
+
+let angleMode =
+    localStorage.getItem("angleMode") || "DEG";
+
+let haptics =
+    localStorage.getItem("calcHaptics") !== "false";
+
+let historyLog =
+    JSON.parse(
+        localStorage.getItem("calcHistory")
+    ) || [];
+
+let vaultCode =
+    localStorage.getItem("vaultCode") || null;
+
 let equalClickCount = 0;
 
-/* Scientific functions */
+let currentTool = "distance";
 
-const sin = deg => Math.sin(deg * Math.PI / 180);
-const cos = deg => Math.cos(deg * Math.PI / 180);
-const tan = deg => Math.tan(deg * Math.PI / 180);
-const log = x => Math.log10(x);
-const ln = x => Math.log(x);
-const sqrt = x => Math.sqrt(x);
 
-const fact = n => {
-    if (n < 0 || !Number.isInteger(n)) return NaN;
-    if (n === 0 || n === 1) return 1;
+/* =========================================================
+   SCIENTIFIC FUNCTIONS
+========================================================= */
+
+function sin(x){
+
+    return angleMode === "DEG"
+        ? Math.sin(x * Math.PI / 180)
+        : Math.sin(x);
+}
+
+function cos(x){
+
+    return angleMode === "DEG"
+        ? Math.cos(x * Math.PI / 180)
+        : Math.cos(x);
+}
+
+function tan(x){
+
+    return angleMode === "DEG"
+        ? Math.tan(x * Math.PI / 180)
+        : Math.tan(x);
+}
+
+function log(x){
+    return Math.log10(x);
+}
+
+function ln(x){
+    return Math.log(x);
+}
+
+function sqrt(x){
+    return Math.sqrt(x);
+}
+
+function fact(n){
+
+    if(
+        n < 0 ||
+        !Number.isInteger(n)
+    ){
+        return NaN;
+    }
+
+    if(n === 0 || n === 1){
+        return 1;
+    }
 
     let r = 1;
 
-    for (let i = 2; i <= n; i++) {
+    for(let i=2;i<=n;i++){
         r *= i;
     }
 
     return r;
-};
-
-if (!vaultCode) {
-    calcTitle.innerText = "Set Passcode & Press =";
 }
 
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+if(!vaultCode){
+
+    calcTitle.innerText =
+        "Set Passcode & Press =";
+
+}
+
+updateMemoryDisplay();
+setAngleMode(angleMode);
 renderHistory();
-switchToolSegment();
+selectTool("distance");
 
-/* Display */
 
-function updateDisplayValue(value) {
-    display.innerText = value === "" ? "0" : value;
-    display.scrollLeft = display.scrollWidth;
+/* =========================================================
+   DISPLAY
+========================================================= */
+
+function updateDisplayValue(value){
+
+    display.innerText =
+        value === ""
+            ? "0"
+            : value;
+
+    display.scrollLeft =
+        display.scrollWidth;
+
+    updateLivePreview();
 }
 
-/* Panels */
+function updateLivePreview(){
 
-function closePanels() {
-    document.getElementById("scientificPanel").classList.remove("open");
-    document.getElementById("historyPanel").classList.remove("open");
-    document.getElementById("toolsPanel").classList.remove("open");
-}
+    const value = display.innerText;
 
-function toggleScientificPanel() {
-    const panel = document.getElementById("scientificPanel");
-    const state = panel.classList.contains("open");
+    if(
+        value === "0" ||
+        value === "Error" ||
+        value === "Code Set!"
+    ){
 
-    closePanels();
-
-    if (!state) {
-        panel.classList.add("open");
-    }
-}
-
-function toggleHistoryPanel() {
-    const panel = document.getElementById("historyPanel");
-    const state = panel.classList.contains("open");
-
-    closePanels();
-
-    if (!state) {
-        panel.classList.add("open");
-    }
-}
-
-function toggleToolsPanel() {
-    const panel = document.getElementById("toolsPanel");
-    const state = panel.classList.contains("open");
-
-    closePanels();
-
-    if (!state) {
-        panel.classList.add("open");
-    }
-}
-
-/* Input */
-
-function appendScientific(value) {
-    display.classList.remove("animate-pop");
-
-    if (clearOnNextInput) {
-        updateDisplayValue("");
-        clearOnNextInput = false;
-    }
-
-    let current =
-        display.innerText === "0"
-            ? ""
-            : display.innerText;
-
-    updateDisplayValue(current + value);
-    equalClickCount = 0;
-}
-
-function appendNumber(value) {
-    display.classList.remove("animate-pop");
-
-    if (clearOnNextInput) {
-        updateDisplayValue("");
-        clearOnNextInput = false;
-    }
-
-    let current =
-        display.innerText === "0"
-            ? ""
-            : display.innerText;
-
-    if (value === ".") {
-        const parts = current.split(/[\+\-\*\/%^,()]/);
-        const currentPart = parts[parts.length - 1];
-
-        if (currentPart.includes(".")) return;
-    }
-
-    updateDisplayValue(current + value);
-    equalClickCount = 0;
-}
-
-function appendOperator(op) {
-    display.classList.remove("animate-pop");
-
-    if (clearOnNextInput) {
-        clearOnNextInput = false;
-    }
-
-    let current =
-        display.innerText === "0"
-            ? ""
-            : display.innerText;
-
-    if (current === "") {
-        if (op === "-") {
-            updateDisplayValue(op);
-        }
+        livePreview.innerHTML =
+            "<strong>Ready</strong>";
 
         return;
     }
 
-    const last = current.slice(-1);
+    if(clearOnNextInput){
 
-    if (["+", "-", "*", "/", "%"].includes(last)) {
-        updateDisplayValue(
-            current.slice(0, -1) + op
-        );
-    } else {
-        updateDisplayValue(current + op);
+        livePreview.innerHTML =
+            "<strong>Answer</strong> • Tap a number to continue";
+
+        return;
     }
 
-    equalClickCount = 0;
+    try{
+
+        const result =
+            evaluateExpression(value);
+
+        if(
+            typeof result === "number" &&
+            Number.isFinite(result)
+        ){
+
+            livePreview.innerHTML =
+                "<strong>Preview</strong> • " +
+                formatNumber(result);
+
+        }else{
+
+            livePreview.innerHTML =
+                "<strong>Expression</strong>";
+
+        }
+
+    }catch{
+
+        livePreview.innerHTML =
+            "<strong>Expression</strong>";
+    }
 }
 
-/* Clear */
 
-function clearDisplay() {
-    display.classList.remove("animate-pop");
+/* =========================================================
+   HAPTIC
+========================================================= */
 
-    updateDisplayValue("");
+function vibrate(){
 
-    lastActiveFormula = "";
-    finalCalculationResult = "";
-    equalClickCount = 0;
+    if(
+        haptics &&
+        navigator.vibrate
+    ){
+
+        navigator.vibrate(8);
+
+    }
 }
 
-function deleteLast() {
-    display.classList.remove("animate-pop");
 
-    const current = display.innerText;
+/* =========================================================
+   PANELS
+========================================================= */
+
+function closeAllPanels(){
+
+    document
+        .getElementById("scientificPanel")
+        .classList.remove("open");
+
+    document
+        .getElementById("historyPanel")
+        .classList.remove("open");
+
+    document
+        .getElementById("toolsPanel")
+        .classList.remove("open");
+}
+
+function toggleScientificPanel(){
+
+    const panel =
+        document.getElementById(
+            "scientificPanel"
+        );
+
+    const wasOpen =
+        panel.classList.contains("open");
+
+    closeAllPanels();
+
+    if(!wasOpen){
+
+        panel.classList.add("open");
+
+    }
+
+    vibrate();
+}
+
+function toggleHistoryPanel(){
+
+    const panel =
+        document.getElementById(
+            "historyPanel"
+        );
+
+    const wasOpen =
+        panel.classList.contains("open");
+
+    closeAllPanels();
+
+    if(!wasOpen){
+
+        panel.classList.add("open");
+
+    }
+
+    vibrate();
+}
+
+function toggleToolsPanel(){
+
+    const panel =
+        document.getElementById(
+            "toolsPanel"
+        );
+
+    const wasOpen =
+        panel.classList.contains("open");
+
+    closeAllPanels();
+
+    if(!wasOpen){
+
+        panel.classList.add("open");
+
+    }
+
+    vibrate();
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+function appendScientific(val){
+
+    vibrate();
+
+    display.classList.remove(
+        "animate-pop"
+    );
+
+    if(clearOnNextInput){
+
+        updateDisplayValue("");
+
+        clearOnNextInput = false;
+
+    }
+
+    let current =
+        display.innerText === "0"
+            ? ""
+            : display.innerText;
+
+    if(val === "Ans"){
+
+        val = String(lastAnswer);
+
+    }
 
     updateDisplayValue(
-        current.slice(0, -1)
+        current + val
     );
 
     equalClickCount = 0;
 }
 
-/* Calculate */
+function appendNumber(value){
 
-function calculate() {
+    vibrate();
 
-    if (
-        display.innerText === "" ||
+    display.classList.remove(
+        "animate-pop"
+    );
+
+    if(clearOnNextInput){
+
+        updateDisplayValue("");
+
+        clearOnNextInput = false;
+
+    }
+
+    let current =
         display.innerText === "0"
-    ) {
+            ? ""
+            : display.innerText;
+
+    if(value === "."){
+
+        const parts =
+            current.split(
+                /[\+\-\*\/%^,()]/
+            );
+
+        const currentPart =
+            parts[parts.length - 1];
+
+        if(
+            currentPart.includes(".")
+        ){
+            return;
+        }
+
+    }
+
+    updateDisplayValue(
+        current + value
+    );
+
+    equalClickCount = 0;
+}
+
+function appendOperator(op){
+
+    vibrate();
+
+    display.classList.remove(
+        "animate-pop"
+    );
+
+    clearOnNextInput = false;
+
+    let current =
+        display.innerText === "0"
+            ? ""
+            : display.innerText;
+
+    if(current === ""){
+
+        if(op === "-"){
+
+            updateDisplayValue("-");
+
+        }
+
         return;
     }
 
-    let currentInput = display.innerText;
+    const last =
+        current.slice(-1);
 
-    const lastChar = currentInput.slice(-1);
+    if(
+        ["+","-","*","/","%"].includes(last)
+    ){
 
-    if (
-        ["+", "-", "*", "/", "%"].includes(lastChar)
-    ) {
-        currentInput = currentInput.slice(0, -1);
+        updateDisplayValue(
+            current.slice(0,-1) + op
+        );
+
+    }else{
+
+        updateDisplayValue(
+            current + op
+        );
+
     }
 
-    /* First numeric calculation sets vault password */
+    equalClickCount = 0;
+}
 
-    if (!vaultCode && !isNaN(currentInput)) {
+function clearDisplay(){
 
-        vaultCode = currentInput;
+    vibrate();
+
+    updateDisplayValue("");
+
+    lastActiveFormula = "";
+    finalCalculationResult = "";
+
+    clearOnNextInput = false;
+    equalClickCount = 0;
+}
+
+function deleteLast(){
+
+    vibrate();
+
+    if(clearOnNextInput){
+
+        clearDisplay();
+        return;
+
+    }
+
+    const current =
+        display.innerText;
+
+    updateDisplayValue(
+        current.slice(0,-1)
+    );
+
+    equalClickCount = 0;
+}
+
+
+/* =========================================================
+   CALCULATOR ENGINE
+========================================================= */
+
+function evaluateExpression(input){
+
+    let expression =
+        input
+            .replaceAll("×","*")
+            .replaceAll("÷","/")
+            .replace(
+                /e\^\(/g,
+                "Math.exp("
+            )
+            .replaceAll("^","**")
+            .replaceAll("π","Math.PI")
+            .replace(
+                /\bAns\b/g,
+                String(lastAnswer)
+            )
+            .replace(
+                /\be\b/g,
+                "Math.E"
+            );
+
+    if(
+        /[^0-9+\-*/%().,\sA-Za-z_]/.test(
+            expression
+        )
+    ){
+
+        throw new Error(
+            "Invalid expression"
+        );
+
+    }
+
+    const fn =
+        new Function(
+            "sin",
+            "cos",
+            "tan",
+            "log",
+            "ln",
+            "sqrt",
+            "fact",
+            "Math",
+            `
+            "use strict";
+            return (${expression});
+            `
+        );
+
+    return fn(
+        sin,
+        cos,
+        tan,
+        log,
+        ln,
+        sqrt,
+        fact,
+        Math
+    );
+}
+
+function calculate(){
+
+    vibrate();
+
+    if(
+        display.innerText === "" ||
+        display.innerText === "0"
+    ){
+        return;
+    }
+
+    let input =
+        display.innerText;
+
+    const last =
+        input.slice(-1);
+
+    if(
+        ["+","-","*","/","%"].includes(last)
+    ){
+
+        input =
+            input.slice(0,-1);
+
+    }
+
+
+    /* =====================================================
+       PRIVATE VAULT PASSCODE CREATION
+    ====================================================== */
+
+    if(
+        !vaultCode &&
+        !isNaN(input) &&
+        input !== ""
+    ){
+
+        vaultCode = input;
 
         localStorage.setItem(
             "vaultCode",
             vaultCode
         );
 
-        updateDisplayValue("Code Set!");
+        updateDisplayValue(
+            "Code Set!"
+        );
 
         clearOnNextInput = true;
 
         calcTitle.innerText =
             "Dilshad's Calc Pro";
 
+        showToast(
+            "Private Vault passcode created"
+        );
+
         return;
     }
 
-    /* Vault */
 
-    if (
+    /* =====================================================
+       VAULT ACCESS
+    ====================================================== */
+
+    if(
         vaultCode &&
-        currentInput === vaultCode
-    ) {
+        input === vaultCode
+    ){
 
         equalClickCount++;
 
-        if (equalClickCount === 2) {
+        if(equalClickCount === 2){
+
             openVault();
+
             clearDisplay();
+
             return;
         }
 
-    } else {
+    }else{
+
         equalClickCount = 1;
+
     }
 
-    try {
 
-        lastActiveFormula = currentInput;
+    /* =====================================================
+       CALCULATE
+    ====================================================== */
 
-        let expression = currentInput
-            .replaceAll("×", "*")
-            .replaceAll("÷", "/")
-            .replaceAll("π", "Math.PI")
-            .replaceAll("e^(", "Math.exp(")
-            .replaceAll("e", "Math.E")
-            .replaceAll("^", "**");
+    try{
 
-        let result = eval(expression);
+        lastActiveFormula =
+            input;
 
-        if (result % 1 !== 0) {
-            result =
-                parseFloat(
-                    result.toFixed(8)
-                );
+        const result =
+            evaluateExpression(input);
+
+        if(
+            typeof result !== "number" ||
+            !Number.isFinite(result)
+        ){
+
+            throw new Error(
+                "Invalid result"
+            );
+
         }
 
-        finalCalculationResult = result;
+        const finalResult =
+            Number.isInteger(result)
+                ? result
+                : parseFloat(
+                    result.toFixed(10)
+                );
 
-        updateDisplayValue(result);
+        finalCalculationResult =
+            finalResult;
+
+        lastAnswer =
+            finalResult;
+
+        updateDisplayValue(
+            finalResult
+        );
 
         clearOnNextInput = true;
 
@@ -1131,9 +3360,15 @@ function calculate() {
             "animate-pop"
         );
 
-    } catch (error) {
+        livePreview.innerHTML =
+            "<strong>Answer</strong> • " +
+            formatNumber(finalResult);
 
-        updateDisplayValue("Error");
+    }catch(error){
+
+        updateDisplayValue(
+            "Error"
+        );
 
         lastActiveFormula = "";
         finalCalculationResult = "";
@@ -1143,27 +3378,209 @@ function calculate() {
         display.classList.add(
             "animate-pop"
         );
+
     }
 }
 
-/* History */
 
-function saveToHistory(formula, result) {
+/* =========================================================
+   FORMAT
+========================================================= */
 
-    if (
+function formatNumber(value){
+
+    if(
+        typeof value !== "number" ||
+        !Number.isFinite(value)
+    ){
+        return String(value);
+    }
+
+    return Number(
+        value.toFixed(10)
+    ).toString();
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+function copyResult(){
+
+    const value =
+        display.innerText;
+
+    if(!value){
+        return;
+    }
+
+    if(
+        navigator.clipboard
+    ){
+
+        navigator.clipboard
+            .writeText(value)
+            .then(
+                () => showToast(
+                    "Result copied"
+                )
+            );
+
+    }else{
+
+        showToast(
+            "Copy unavailable"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BIG RESULT
+========================================================= */
+
+function openBigDisplay(){
+
+    document
+        .getElementById("bigResult")
+        .innerText =
+            display.innerText;
+
+    document
+        .getElementById("bigDisplayOverlay")
+        .classList.add("active");
+
+}
+
+function closeBigDisplay(){
+
+    document
+        .getElementById("bigDisplayOverlay")
+        .classList.remove("active");
+
+}
+
+
+/* =========================================================
+   MEMORY
+========================================================= */
+
+function updateMemoryDisplay(){
+
+    document
+        .getElementById("memoryValue")
+        .innerText =
+            "Memory: " +
+            formatNumber(memory);
+
+    localStorage.setItem(
+        "calcMemory",
+        memory
+    );
+}
+
+function getDisplayNumber(){
+
+    const value =
+        parseFloat(
+            display.innerText
+        );
+
+    return Number.isFinite(value)
+        ? value
+        : 0;
+}
+
+function memoryClear(){
+
+    memory = 0;
+
+    updateMemoryDisplay();
+
+    showToast("Memory cleared");
+
+}
+
+function memoryRecall(){
+
+    updateDisplayValue(
+        formatNumber(memory)
+    );
+
+    clearOnNextInput = false;
+
+    showToast("Memory recalled");
+
+}
+
+function memoryAdd(){
+
+    memory +=
+        getDisplayNumber();
+
+    updateMemoryDisplay();
+
+    showToast("Added to memory");
+
+}
+
+function memorySubtract(){
+
+    memory -=
+        getDisplayNumber();
+
+    updateMemoryDisplay();
+
+    showToast("Subtracted from memory");
+
+}
+
+function memoryStore(){
+
+    memory =
+        getDisplayNumber();
+
+    updateMemoryDisplay();
+
+    showToast("Stored in memory");
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function saveToHistory(
+    formula,
+    result
+){
+
+    if(
         historyLog.length > 0 &&
         historyLog[0].formula === formula
-    ) {
+    ){
         return;
     }
 
     historyLog.unshift({
-        formula: formula,
-        result: result
+
+        formula:formula,
+
+        result:result,
+
+        time:Date.now()
+
     });
 
-    if (historyLog.length > 100) {
+    if(historyLog.length > 100){
+
         historyLog.pop();
+
     }
 
     localStorage.setItem(
@@ -1174,55 +3591,151 @@ function saveToHistory(formula, result) {
     renderHistory();
 }
 
-function renderHistory() {
+function renderHistory(){
 
     const container =
-        document.getElementById("historyList");
+        document.getElementById(
+            "historyList"
+        );
+
+    const search =
+        (
+            document.getElementById(
+                "historySearch"
+            )?.value || ""
+        ).toLowerCase();
 
     container.innerHTML = "";
 
-    if (historyLog.length === 0) {
+    const filtered =
+        historyLog.filter(
+            item =>
+                String(
+                    item.formula
+                ).toLowerCase()
+                .includes(search) ||
+                String(
+                    item.result
+                ).toLowerCase()
+                .includes(search)
+        );
+
+    if(filtered.length === 0){
 
         container.innerHTML =
-            '<div class="empty-history">No history records yet</div>';
+            '<div class="empty-history">No matching history</div>';
 
         return;
     }
 
-    historyLog.forEach(item => {
+    filtered.forEach(
+        item => {
 
-        const row =
-            document.createElement("div");
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-        row.className = "history-item";
+            row.className =
+                "history-item";
 
-        row.onclick = () =>
-            loadHistoryItem(item.result);
+            row.onclick =
+                () =>
+                    loadHistoryItem(
+                        item.result
+                    );
 
-        row.innerHTML = `
-            <div class="history-formula">
-                ${item.formula} =
-            </div>
+            const left =
+                document.createElement(
+                    "div"
+                );
 
-            <div class="history-result">
-                ${item.result}
-            </div>
-        `;
+            left.className =
+                "history-item-left";
 
-        container.appendChild(row);
-    });
+            const formula =
+                document.createElement(
+                    "div"
+                );
+
+            formula.className =
+                "history-formula";
+
+            formula.textContent =
+                item.formula + " =";
+
+            const result =
+                document.createElement(
+                    "div"
+                );
+
+            result.className =
+                "history-result";
+
+            result.textContent =
+                item.result;
+
+            const copy =
+                document.createElement(
+                    "button"
+                );
+
+            copy.className =
+                "history-copy";
+
+            copy.innerText =
+                "⧉";
+
+            copy.onclick =
+                event => {
+
+                    event.stopPropagation();
+
+                    navigator.clipboard
+                        ?.writeText(
+                            String(item.result)
+                        );
+
+                    showToast(
+                        "History result copied"
+                    );
+
+                };
+
+            left.appendChild(formula);
+            left.appendChild(result);
+
+            row.appendChild(left);
+            row.appendChild(copy);
+
+            container.appendChild(row);
+
+        }
+    );
 }
 
-function loadHistoryItem(value) {
+function loadHistoryItem(value){
 
-    updateDisplayValue(value);
+    updateDisplayValue(
+        value
+    );
 
-    finalCalculationResult = value;
+    finalCalculationResult =
+        value;
+
+    lastAnswer =
+        Number(value) || 0;
+
     lastActiveFormula = "";
+
     clearOnNextInput = false;
+
+    showToast(
+        "History result loaded"
+    );
 }
 
-function clearHistory() {
+function clearHistory(){
 
     historyLog = [];
 
@@ -1231,208 +3744,205 @@ function clearHistory() {
     );
 
     renderHistory();
+
+    showToast(
+        "History cleared"
+    );
 }
 
-/* Voice */
+function exportHistory(){
 
-function reviseCalculation() {
+    if(historyLog.length === 0){
+
+        showToast(
+            "No history to export"
+        );
+
+        return;
+    }
+
+    const text =
+        historyLog
+            .map(
+                item =>
+                    `${item.formula} = ${item.result}`
+            )
+            .join("\n");
+
+    const blob =
+        new Blob(
+            [text],
+            {
+                type:"text/plain"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+    a.download =
+        "dilshad-calc-history.txt";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        "History exported"
+    );
+}
+
+
+/* =========================================================
+   VOICE REVISION
+========================================================= */
+
+function reviseCalculation(){
+
+    if(
+        !window.speechSynthesis
+    ){
+
+        showToast(
+            "Speech is not supported"
+        );
+
+        return;
+    }
 
     window.speechSynthesis.cancel();
 
-    let text = "";
+    let context = "";
 
-    if (lastActiveFormula !== "") {
+    if(
+        lastActiveFormula !== ""
+    ){
 
-        text =
+        context =
             lastActiveFormula +
             " equals " +
             finalCalculationResult;
 
-    } else if (
+    }else if(
         display.innerText !== "" &&
         display.innerText !== "Error" &&
         display.innerText !== "Code Set!"
-    ) {
+    ){
 
-        text = display.innerText;
+        context =
+            display.innerText;
 
-    } else {
+    }else{
 
-        text = "Zero";
+        context =
+            "Zero";
+
     }
 
-    const spoken =
-        text
-            .replaceAll("+", " plus ")
-            .replaceAll("-", " minus ")
-            .replaceAll("*", " multiplied by ")
-            .replaceAll("/", " divided by ")
-            .replaceAll("×", " multiplied by ")
-            .replaceAll("÷", " divided by ")
-            .replaceAll("%", " percent ")
-            .replaceAll(".", " point ")
-            .replaceAll("sin(", " sine of ")
-            .replaceAll("cos(", " cosine of ")
-            .replaceAll("tan(", " tangent of ")
-            .replaceAll("log(", " log base ten of ")
-            .replaceAll("ln(", " natural log of ")
-            .replaceAll("sqrt(", " square root of ")
-            .replaceAll("fact(", " factorial of ")
-            .replaceAll("e^(", " e to the power of ")
-            .replaceAll("1/(", " inverse of ")
-            .replaceAll("^", " to the power of ")
-            .replaceAll("(", " open bracket ")
-            .replaceAll(")", " close bracket ");
+    const audio =
+        context
+
+            .replaceAll("+"," plus ")
+            .replaceAll("-"," minus ")
+            .replaceAll("*"," multiplied by ")
+            .replaceAll("/"," divided by ")
+            .replaceAll("×"," multiplied by ")
+            .replaceAll("÷"," divided by ")
+            .replaceAll("%"," percent ")
+            .replaceAll("sin("," sine of ")
+            .replaceAll("cos("," cosine of ")
+            .replaceAll("tan("," tangent of ")
+            .replaceAll("log("," logarithm of ")
+            .replaceAll("ln("," natural logarithm of ")
+            .replaceAll("sqrt("," square root of ")
+            .replaceAll("fact("," factorial of ")
+            .replaceAll("e^("," e to the power of ")
+            .replaceAll("^"," to the power of ")
+            .replaceAll("("," open bracket ")
+            .replaceAll(")"," close bracket ")
+            .replaceAll("."," point ");
 
     const utterance =
-        new SpeechSynthesisUtterance(spoken);
+        new SpeechSynthesisUtterance(
+            audio
+        );
 
     utterance.rate = .95;
 
     window.speechSynthesis.speak(
         utterance
     );
-}
 
-/* Vault */
-
-function openVault() {
-
-    document
-        .getElementById("vaultOverlay")
-        .classList.add("active");
-
-    renderGallery();
-}
-
-function closeVault() {
-
-    document
-        .getElementById("vaultOverlay")
-        .classList.remove("active");
-
-    equalClickCount = 0;
-}
-
-function handleFileSelect(event) {
-
-    const files = event.target.files;
-
-    let vaultItems =
-        JSON.parse(
-            localStorage.getItem("vaultItems")
-        ) || [];
-
-    for (const file of files) {
-
-        const reader =
-            new FileReader();
-
-        reader.onload = function(e) {
-
-            vaultItems.push({
-                type:
-                    file.type.startsWith("video")
-                        ? "video"
-                        : "image",
-
-                data: e.target.result
-            });
-
-            localStorage.setItem(
-                "vaultItems",
-                JSON.stringify(vaultItems)
-            );
-
-            renderGallery();
-        };
-
-        reader.readAsDataURL(file);
-    }
-}
-
-function renderGallery() {
-
-    const grid =
-        document.getElementById(
-            "galleryGrid"
-        );
-
-    grid.innerHTML = "";
-
-    let vaultItems =
-        JSON.parse(
-            localStorage.getItem("vaultItems")
-        ) || [];
-
-    vaultItems.forEach(
-        (item, index) => {
-
-            const container =
-                document.createElement("div");
-
-            container.className =
-                "gallery-item";
-
-            if (item.type === "video") {
-
-                const video =
-                    document.createElement("video");
-
-                video.src = item.data;
-                video.controls = true;
-
-                container.appendChild(video);
-
-            } else {
-
-                const img =
-                    document.createElement("img");
-
-                img.src = item.data;
-
-                container.appendChild(img);
-            }
-
-            const deleteBtn =
-                document.createElement("button");
-
-            deleteBtn.className =
-                "delete-item-btn";
-
-            deleteBtn.innerHTML = "×";
-
-            deleteBtn.onclick = () => {
-
-                vaultItems.splice(index, 1);
-
-                localStorage.setItem(
-                    "vaultItems",
-                    JSON.stringify(vaultItems)
-                );
-
-                renderGallery();
-            };
-
-            container.appendChild(
-                deleteBtn
-            );
-
-            grid.appendChild(
-                container
-            );
-        }
+    showToast(
+        "Reading calculation"
     );
 }
 
-/* TOOLS */
 
-function switchToolSegment() {
+/* =========================================================
+   ANGLE MODE
+========================================================= */
 
-    const type =
-        document.getElementById(
-            "toolTypeSelect"
-        ).value;
+function setAngleMode(mode){
+
+    angleMode = mode;
+
+    localStorage.setItem(
+        "angleMode",
+        mode
+    );
+
+    document
+        .getElementById("degreeBtn")
+        .classList.toggle(
+            "active",
+            mode === "DEG"
+        );
+
+    document
+        .getElementById("radianBtn")
+        .classList.toggle(
+            "active",
+            mode === "RAD"
+        );
+
+    updateLivePreview();
+
+}
+
+
+/* =========================================================
+   TOOLS
+========================================================= */
+
+function selectTool(type){
+
+    currentTool = type;
+
+    document
+        .querySelectorAll(
+            ".tool-segment"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.tool === type
+                );
+
+            }
+        );
+
+    renderTool(type);
+
+}
+
+function renderTool(type){
 
     const body =
         document.getElementById(
@@ -1441,350 +3951,739 @@ function switchToolSegment() {
 
     body.innerHTML = "";
 
-    if (type === "age") {
+    const metadata = {
 
-        body.innerHTML = `
-            <div class="tool-group">
-                <label>Date of Birth</label>
-                <input type="date" id="dobInput" class="tool-input">
+        distance:{
+            icon:"📏",
+            title:"Distance Converter",
+            sub:"Length and distance units"
+        },
+
+        area:{
+            icon:"🗺️",
+            title:"Area Converter",
+            sub:"Surface area conversion"
+        },
+
+        data:{
+            icon:"💾",
+            title:"Data Storage Converter",
+            sub:"Digital storage units"
+        },
+
+        mass:{
+            icon:"⚖️",
+            title:"Mass / Weight Converter",
+            sub:"Weight and mass units"
+        },
+
+        speed:{
+            icon:"🚀",
+            title:"Speed Converter",
+            sub:"Velocity conversion"
+        },
+
+        temp:{
+            icon:"🌡️",
+            title:"Temperature Converter",
+            sub:"Celsius, Fahrenheit and Kelvin"
+        },
+
+        time:{
+            icon:"⏱️",
+            title:"Time Converter",
+            sub:"Time units"
+        },
+
+        volume:{
+            icon:"🧪",
+            title:"Volume Converter",
+            sub:"Liquid and volume units"
+        },
+
+        bmi:{
+            icon:"🧍",
+            title:"BMI Calculator",
+            sub:"Body mass index"
+        },
+
+        discount:{
+            icon:"🏷️",
+            title:"Discount Calculator",
+            sub:"Price, savings and final amount"
+        },
+
+        date:{
+            icon:"📅",
+            title:"Date Difference",
+            sub:"Compare two calendar dates"
+        },
+
+        age:{
+            icon:"🎂",
+            title:"Exact Age Calculator",
+            sub:"Years, months and days"
+
+        }
+
+    };
+
+    const meta =
+        metadata[type];
+
+    body.innerHTML =
+        `
+        <div class="tool-heading">
+
+            <div class="tool-heading-icon">
+                ${meta.icon}
             </div>
 
-            <div class="tool-group">
-                <label>Target Date</label>
-                <input type="date"
-                       id="targetDateInput"
-                       class="tool-input"
-                       value="${new Date().toISOString().split("T")[0]}">
+            <div class="tool-heading-text">
+
+                <strong>
+                    ${meta.title}
+                </strong>
+
+                <span>
+                    ${meta.sub}
+                </span>
+
             </div>
 
-            <button class="btn-calc-tool"
-                    onclick="calcAge()">
-                Calculate Age
-            </button>
-
-            <div class="tool-result-box"
-                 id="toolResult">
-                Select DOB to calculate
-            </div>
+        </div>
         `;
 
-    } else if (type === "bmi") {
 
-        body.innerHTML = `
+    if(
+        [
+            "distance",
+            "area",
+            "data",
+            "mass",
+            "speed",
+            "temp",
+            "time",
+            "volume"
+        ].includes(type)
+    ){
+
+        renderUnitConverter(
+            type,
+            body
+        );
+
+        return;
+
+    }
+
+
+    if(type === "bmi"){
+
+        body.innerHTML += `
+
             <div class="tool-row">
 
                 <div class="tool-group">
-                    <label>Weight (kg)</label>
-                    <input type="number"
-                           id="bmiWeight"
-                           class="tool-input"
-                           placeholder="70">
+
+                    <label>
+                        Weight (kg)
+                    </label>
+
+                    <input
+                        id="bmiWeight"
+                        class="tool-input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="70"
+                    >
+
                 </div>
 
                 <div class="tool-group">
-                    <label>Height (cm)</label>
-                    <input type="number"
-                           id="bmiHeight"
-                           class="tool-input"
-                           placeholder="175">
+
+                    <label>
+                        Height (cm)
+                    </label>
+
+                    <input
+                        id="bmiHeight"
+                        class="tool-input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="175"
+                    >
+
                 </div>
 
             </div>
 
-            <button class="btn-calc-tool"
-                    onclick="calcBMI()">
+            <button
+                class="btn-calc-tool"
+                onclick="calcBMI()"
+            >
                 Calculate BMI
             </button>
 
-            <div class="tool-result-box"
-                 id="toolResult">
-                Enter details
+            <div
+                class="tool-result-box"
+                id="toolResult"
+            >
+                Enter your details
             </div>
+
+            <div class="tool-description">
+                BMI is a general screening measurement.
+            </div>
+
         `;
 
-    } else if (type === "discount") {
+        return;
+    }
 
-        body.innerHTML = `
+
+    if(type === "discount"){
+
+        body.innerHTML += `
+
             <div class="tool-row">
 
                 <div class="tool-group">
-                    <label>Original Price</label>
-                    <input type="number"
-                           id="discPrice"
-                           class="tool-input"
-                           placeholder="Price">
+
+                    <label>
+                        Original Price
+                    </label>
+
+                    <input
+                        id="discPrice"
+                        class="tool-input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="₹ 1000"
+                    >
+
                 </div>
 
                 <div class="tool-group">
-                    <label>Discount (%)</label>
-                    <input type="number"
-                           id="discPercent"
-                           class="tool-input"
-                           placeholder="%">
+
+                    <label>
+                        Discount %
+                    </label>
+
+                    <input
+                        id="discPercent"
+                        class="tool-input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="20"
+                    >
+
                 </div>
 
             </div>
 
-            <button class="btn-calc-tool"
-                    onclick="calcDiscount()">
+            <button
+                class="btn-calc-tool"
+                onclick="calcDiscount()"
+            >
                 Calculate Discount
             </button>
 
-            <div class="tool-result-box"
-                 id="toolResult">
+            <div
+                class="tool-result-box"
+                id="toolResult"
+            >
                 Enter price and discount
             </div>
+
         `;
 
-    } else if (type === "date") {
+        return;
+    }
 
-        body.innerHTML = `
+
+    if(type === "date"){
+
+        body.innerHTML += `
+
             <div class="tool-group">
-                <label>Start Date</label>
-                <input type="date"
-                       id="dateStart"
-                       class="tool-input">
+
+                <label>
+                    Start Date
+                </label>
+
+                <input
+                    id="dateStart"
+                    class="tool-input"
+                    type="date"
+                >
+
             </div>
 
             <div class="tool-group">
-                <label>End Date</label>
-                <input type="date"
-                       id="dateEnd"
-                       class="tool-input"
-                       value="${new Date().toISOString().split("T")[0]}">
+
+                <label>
+                    End Date
+                </label>
+
+                <input
+                    id="dateEnd"
+                    class="tool-input"
+                    type="date"
+                >
+
             </div>
 
-            <button class="btn-calc-tool"
-                    onclick="calcDateDiff()">
+            <button
+                class="btn-calc-tool"
+                onclick="calcDateDiff()"
+            >
                 Calculate Difference
             </button>
 
-            <div class="tool-result-box"
-                 id="toolResult">
-                Select dates
+            <div
+                class="tool-result-box"
+                id="toolResult"
+            >
+                Select both dates
             </div>
+
+            <div
+                class="quick-stats"
+                id="dateStats"
+            ></div>
+
         `;
 
-    } else {
+        setToday("dateEnd");
 
-        const units = {
+        return;
+    }
 
-            distance: [
-                "Meters",
-                "Kilometers",
-                "Centimeters",
-                "Miles",
-                "Feet",
-                "Inches",
-                "Yards"
-            ],
 
-            area: [
-                "Square Meters",
-                "Square Kilometers",
-                "Square Feet",
-                "Acres",
-                "Hectares"
-            ],
+    if(type === "age"){
 
-            data: [
-                "Bytes",
-                "KB",
-                "MB",
-                "GB",
-                "TB"
-            ],
-
-            mass: [
-                "Kilograms",
-                "Grams",
-                "Milligrams",
-                "Pounds",
-                "Ounces"
-            ],
-
-            speed: [
-                "km/h",
-                "m/s",
-                "mph",
-                "Knots"
-            ],
-
-            temp: [
-                "Celsius",
-                "Fahrenheit",
-                "Kelvin"
-            ],
-
-            time: [
-                "Seconds",
-                "Minutes",
-                "Hours",
-                "Days",
-                "Weeks"
-            ],
-
-            volume: [
-                "Liters",
-                "Milliliters",
-                "Gallons (US)",
-                "Cubic Meters"
-            ]
-        };
-
-        const selectedUnits =
-            units[type];
-
-        const options =
-            selectedUnits
-                .map(
-                    u =>
-                        `<option value="${u}">${u}</option>`
-                )
-                .join("");
-
-        body.innerHTML = `
+        body.innerHTML += `
 
             <div class="tool-group">
-                <label>Value</label>
 
-                <input type="number"
-                       id="unitVal"
-                       class="tool-input"
-                       placeholder="Enter value"
-                       oninput="convertUnits('${type}')">
-            </div>
+                <label>
+                    🎂 Date of Birth
+                </label>
 
-            <div class="tool-row">
-
-                <div class="tool-group">
-                    <label>From</label>
-
-                    <select id="unitFrom"
-                            class="tool-select"
-                            onchange="convertUnits('${type}')">
-                        ${options}
-                    </select>
-                </div>
-
-                <div class="tool-group">
-                    <label>To</label>
-
-                    <select id="unitTo"
-                            class="tool-select"
-                            onchange="convertUnits('${type}')">
-                        ${options}
-                    </select>
-                </div>
+                <input
+                    id="dobInput"
+                    class="tool-input"
+                    type="date"
+                >
 
             </div>
 
-            <div class="tool-result-box"
-                 id="toolResult">
-                Result will appear here
+            <div class="tool-group">
+
+                <label>
+                    📅 Calculate Age On
+                </label>
+
+                <input
+                    id="targetDateInput"
+                    class="tool-input"
+                    type="date"
+                >
+
             </div>
+
+            <button
+                class="btn-calc-tool"
+                onclick="calcAge()"
+            >
+                Calculate Exact Age
+            </button>
+
+            <div
+                class="tool-result-box"
+                id="toolResult"
+            >
+                Select your Date of Birth
+            </div>
+
+            <div class="tool-description">
+                Calculates completed years, months and days.
+            </div>
+
         `;
 
-        if (selectedUnits.length > 1) {
-            document.getElementById(
-                "unitTo"
-            ).selectedIndex = 1;
-        }
+        setToday(
+            "targetDateInput"
+        );
+
+        return;
     }
 }
 
-/* Age */
 
-function calcAge() {
+/* =========================================================
+   UNIT CONVERTER
+========================================================= */
 
-    const dobVal =
+function renderUnitConverter(
+    type,
+    body
+){
+
+    const unitsMap = {
+
+        distance:[
+            "Meters",
+            "Kilometers",
+            "Centimeters",
+            "Miles",
+            "Feet",
+            "Inches",
+            "Yards"
+        ],
+
+        area:[
+            "Square Meters",
+            "Square Kilometers",
+            "Square Feet",
+            "Acres",
+            "Hectares"
+        ],
+
+        data:[
+            "Bytes",
+            "KB",
+            "MB",
+            "GB",
+            "TB"
+        ],
+
+        mass:[
+            "Kilograms",
+            "Grams",
+            "Milligrams",
+            "Pounds",
+            "Ounces"
+        ],
+
+        speed:[
+            "km/h",
+            "m/s",
+            "mph",
+            "Knots"
+        ],
+
+        temp:[
+            "Celsius",
+            "Fahrenheit",
+            "Kelvin"
+        ],
+
+        time:[
+            "Seconds",
+            "Minutes",
+            "Hours",
+            "Days",
+            "Weeks"
+        ],
+
+        volume:[
+            "Liters",
+            "Milliliters",
+            "Gallons (US)",
+            "Cubic Meters"
+        ]
+
+    };
+
+    const units =
+        unitsMap[type];
+
+    const options =
+        units
+            .map(
+                unit =>
+                    `<option value="${unit}">${unit}</option>`
+            )
+            .join("");
+
+    body.innerHTML += `
+
+        <div class="tool-group">
+
+            <label>
+                Value
+            </label>
+
+            <input
+                id="unitVal"
+                class="tool-input"
+                type="number"
+                inputmode="decimal"
+                placeholder="Enter value"
+                oninput="convertUnits('${type}')"
+            >
+
+        </div>
+
+        <div class="tool-row">
+
+            <div class="tool-group">
+
+                <label>
+                    From
+                </label>
+
+                <select
+                    id="unitFrom"
+                    class="tool-select"
+                    onchange="convertUnits('${type}')"
+                >
+                    ${options}
+                </select>
+
+            </div>
+
+            <button
+                class="converter-swap"
+                onclick="swapUnits('${type}')"
+                title="Swap units"
+            >
+                ⇄
+            </button>
+
+            <div class="tool-group">
+
+                <label>
+                    To
+                </label>
+
+                <select
+                    id="unitTo"
+                    class="tool-select"
+                    onchange="convertUnits('${type}')"
+                >
+                    ${options}
+                </select>
+
+            </div>
+
+        </div>
+
+        <div
+            class="tool-result-box"
+            id="toolResult"
+        >
+            Result will appear here
+        </div>
+
+    `;
+
+    if(units.length > 1){
+
+        document
+            .getElementById("unitTo")
+            .selectedIndex = 1;
+
+    }
+
+}
+
+function swapUnits(type){
+
+    const from =
         document.getElementById(
-            "dobInput"
-        ).value;
+            "unitFrom"
+        );
 
-    const targetVal =
+    const to =
         document.getElementById(
-            "targetDateInput"
-        ).value;
+            "unitTo"
+        );
+
+    const temp =
+        from.value;
+
+    from.value =
+        to.value;
+
+    to.value =
+        temp;
+
+    convertUnits(type);
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function setToday(id){
+
+    const input =
+        document.getElementById(id);
+
+    if(!input){
+        return;
+    }
+
+    const today =
+        new Date();
+
+    input.value =
+        [
+            today.getFullYear(),
+            String(
+                today.getMonth()+1
+            ).padStart(2,"0"),
+            String(
+                today.getDate()
+            ).padStart(2,"0")
+        ].join("-");
+
+}
+
+function parseLocalDate(value){
+
+    const [
+        year,
+        month,
+        day
+    ] =
+        value
+            .split("-")
+            .map(Number);
+
+    return new Date(
+        year,
+        month-1,
+        day
+    );
+
+}
+
+
+/* =========================================================
+   AGE
+========================================================= */
+
+function calcAge(){
+
+    const dob =
+        document
+            .getElementById(
+                "dobInput"
+            )
+            .value;
+
+    const target =
+        document
+            .getElementById(
+                "targetDateInput"
+            )
+            .value;
 
     const result =
         document.getElementById(
             "toolResult"
         );
 
-    if (!dobVal) {
+    if(!dob){
+
         result.innerText =
             "Please select Date of Birth";
+
+        return;
+    }
+
+    if(!target){
+
+        result.innerText =
+            "Please select target date";
+
         return;
     }
 
     const birth =
-        new Date(dobVal);
+        parseLocalDate(dob);
 
-    const target =
-        targetVal
-            ? new Date(targetVal)
-            : new Date();
+    const end =
+        parseLocalDate(target);
 
-    if (birth > target) {
+    if(birth > end){
+
         result.innerText =
-            "DOB cannot be in the future";
+            "Date of Birth cannot be after target date";
+
         return;
     }
 
     let years =
-        target.getFullYear() -
+        end.getFullYear() -
         birth.getFullYear();
 
     let months =
-        target.getMonth() -
+        end.getMonth() -
         birth.getMonth();
 
     let days =
-        target.getDate() -
+        end.getDate() -
         birth.getDate();
 
-    if (days < 0) {
+    if(days < 0){
 
         months--;
 
         const previousMonth =
             new Date(
-                target.getFullYear(),
-                target.getMonth(),
+                end.getFullYear(),
+                end.getMonth(),
                 0
             );
 
         days +=
             previousMonth.getDate();
+
     }
 
-    if (months < 0) {
+    if(months < 0){
 
         years--;
+
         months += 12;
+
     }
 
     result.innerText =
-        `${years} Years, ${months} Months, ${days} Days`;
+        `${years} Years • ${months} Months • ${days} Days`;
+
 }
 
-/* BMI */
 
-function calcBMI() {
+/* =========================================================
+   BMI
+========================================================= */
+
+function calcBMI(){
 
     const weight =
         parseFloat(
-            document.getElementById(
-                "bmiWeight"
-            ).value
+            document
+                .getElementById(
+                    "bmiWeight"
+                )
+                .value
         );
 
     const height =
         parseFloat(
-            document.getElementById(
-                "bmiHeight"
-            ).value
+            document
+                .getElementById(
+                    "bmiHeight"
+                )
+                .value
         );
 
     const result =
@@ -1792,12 +4691,12 @@ function calcBMI() {
             "toolResult"
         );
 
-    if (
+    if(
         !weight ||
         !height ||
         weight <= 0 ||
         height <= 0
-    ) {
+    ){
 
         result.innerText =
             "Enter valid positive values";
@@ -1806,42 +4705,64 @@ function calcBMI() {
     }
 
     const bmi =
+        weight /
         (
-            weight /
-            ((height / 100) ** 2)
-        ).toFixed(2);
+            (height/100) *
+            (height/100)
+        );
 
-    let category = "";
+    let category;
 
-    if (bmi < 18.5)
-        category = "Underweight";
-    else if (bmi < 24.9)
-        category = "Normal weight";
-    else if (bmi < 29.9)
-        category = "Overweight";
-    else
-        category = "Obese";
+    if(bmi < 18.5){
+
+        category =
+            "Underweight";
+
+    }else if(bmi < 25){
+
+        category =
+            "Normal range";
+
+    }else if(bmi < 30){
+
+        category =
+            "Overweight";
+
+    }else{
+
+        category =
+            "Obesity range";
+
+    }
 
     result.innerText =
-        `BMI: ${bmi} (${category})`;
+        `BMI: ${bmi.toFixed(2)} • ${category}`;
+
 }
 
-/* Discount */
 
-function calcDiscount() {
+/* =========================================================
+   DISCOUNT
+========================================================= */
+
+function calcDiscount(){
 
     const price =
         parseFloat(
-            document.getElementById(
-                "discPrice"
-            ).value
+            document
+                .getElementById(
+                    "discPrice"
+                )
+                .value
         );
 
     const discount =
         parseFloat(
-            document.getElementById(
-                "discPercent"
-            ).value
+            document
+                .getElementById(
+                    "discPercent"
+                )
+                .value
         );
 
     const result =
@@ -1849,51 +4770,61 @@ function calcDiscount() {
             "toolResult"
         );
 
-    if (
+    if(
         isNaN(price) ||
         isNaN(discount) ||
         price < 0 ||
-        discount < 0
-    ) {
+        discount < 0 ||
+        discount > 100
+    ){
 
         result.innerText =
-            "Enter valid numbers";
+            "Enter valid price and discount";
 
         return;
     }
 
     const saved =
-        (price * (discount / 100))
-        .toFixed(2);
+        price *
+        discount /
+        100;
 
     const finalPrice =
-        (price - saved)
-        .toFixed(2);
+        price -
+        saved;
 
     result.innerText =
-        `Final Price: ${finalPrice} (Saved: ${saved})`;
+        `Final: ${finalPrice.toFixed(2)} • Saved: ${saved.toFixed(2)}`;
+
 }
 
-/* Date Difference */
 
-function calcDateDiff() {
+/* =========================================================
+   DATE DIFFERENCE
+========================================================= */
+
+function calcDateDiff(){
 
     const start =
-        document.getElementById(
-            "dateStart"
-        ).value;
+        document
+            .getElementById(
+                "dateStart"
+            )
+            .value;
 
     const end =
-        document.getElementById(
-            "dateEnd"
-        ).value;
+        document
+            .getElementById(
+                "dateEnd"
+            )
+            .value;
 
     const result =
         document.getElementById(
             "toolResult"
         );
 
-    if (!start || !end) {
+    if(!start || !end){
 
         result.innerText =
             "Select both dates";
@@ -1901,58 +4832,97 @@ function calcDateDiff() {
         return;
     }
 
-    const date1 =
-        new Date(start);
+    const d1 =
+        parseLocalDate(start);
 
-    const date2 =
-        new Date(end);
-
-    const difference =
-        Math.abs(date2 - date1);
+    const d2 =
+        parseLocalDate(end);
 
     const days =
-        Math.ceil(
-            difference /
-            (1000 * 60 * 60 * 24)
+        Math.abs(
+            Math.round(
+                (d2-d1) /
+                86400000
+            )
         );
 
     const weeks =
-        Math.floor(days / 7);
+        Math.floor(
+            days/7
+        );
 
-    const remainingDays =
+    const remaining =
         days % 7;
 
     result.innerText =
-        `${days} Days (${weeks} Weeks, ${remainingDays} Days)`;
+        `${days} Days • ${weeks} Weeks ${remaining} Days`;
+
+    const stats =
+        document.getElementById(
+            "dateStats"
+        );
+
+    if(stats){
+
+        stats.innerHTML = `
+
+            <div class="quick-stat">
+                <strong>${days}</strong>
+                <span>Days</span>
+            </div>
+
+            <div class="quick-stat">
+                <strong>${weeks}</strong>
+                <span>Weeks</span>
+            </div>
+
+            <div class="quick-stat">
+                <strong>${remaining}</strong>
+                <span>Extra Days</span>
+            </div>
+
+        `;
+
+    }
+
 }
 
-/* Unit Converter */
 
-function convertUnits(type) {
+/* =========================================================
+   CONVERSIONS
+========================================================= */
 
-    const value =
+function convertUnits(type){
+
+    const val =
         parseFloat(
-            document.getElementById(
-                "unitVal"
-            ).value
+            document
+                .getElementById(
+                    "unitVal"
+                )
+                .value
         );
 
     const from =
-        document.getElementById(
-            "unitFrom"
-        ).value;
+        document
+            .getElementById(
+                "unitFrom"
+            )
+            .value;
 
     const to =
-        document.getElementById(
-            "unitTo"
-        ).value;
+        document
+            .getElementById(
+                "unitTo"
+            )
+            .value;
 
     const resultBox =
         document.getElementById(
             "toolResult"
         );
 
-    if (isNaN(value)) {
+    if(isNaN(val)){
 
         resultBox.innerText =
             "Enter a valid value";
@@ -1960,136 +4930,720 @@ function convertUnits(type) {
         return;
     }
 
-    let base;
     let result;
 
-    if (type === "distance") {
 
-        const units = {
-            Meters: 1,
-            Kilometers: 1000,
-            Centimeters: .01,
-            Miles: 1609.34,
-            Feet: .3048,
-            Inches: .0254,
-            Yards: .9144
+    /* DISTANCE */
+
+    if(type === "distance"){
+
+        const map = {
+
+            "Meters":1,
+            "Kilometers":1000,
+            "Centimeters":.01,
+            "Miles":1609.344,
+            "Feet":.3048,
+            "Inches":.0254,
+            "Yards":.9144
+
         };
 
-        base = value * units[from];
-        result = base / units[to];
+        result =
+            val * map[from] / map[to];
 
-    } else if (type === "area") {
+    }
 
-        const units = {
-            "Square Meters": 1,
-            "Square Kilometers": 1e6,
-            "Square Feet": .092903,
-            Acres: 4046.86,
-            Hectares: 10000
+
+    /* AREA */
+
+    else if(type === "area"){
+
+        const map = {
+
+            "Square Meters":1,
+            "Square Kilometers":1000000,
+            "Square Feet":.09290304,
+            "Acres":4046.8564224,
+            "Hectares":10000
+
         };
 
-        base = value * units[from];
-        result = base / units[to];
+        result =
+            val * map[from] / map[to];
 
-    } else if (type === "data") {
+    }
 
-        const units = {
-            Bytes: 1,
-            KB: 1024,
-            MB: 1048576,
-            GB: 1073741824,
-            TB: 1099511627776
+
+    /* DATA */
+
+    else if(type === "data"){
+
+        const map = {
+
+            "Bytes":1,
+            "KB":1024,
+            "MB":1024**2,
+            "GB":1024**3,
+            "TB":1024**4
+
         };
 
-        base = value * units[from];
-        result = base / units[to];
+        result =
+            val * map[from] / map[to];
 
-    } else if (type === "mass") {
+    }
 
-        const units = {
-            Kilograms: 1,
-            Grams: .001,
-            Milligrams: .000001,
-            Pounds: .453592,
-            Ounces: .0283495
+
+    /* MASS */
+
+    else if(type === "mass"){
+
+        const map = {
+
+            "Kilograms":1,
+            "Grams":.001,
+            "Milligrams":.000001,
+            "Pounds":.45359237,
+            "Ounces":.028349523125
+
         };
 
-        base = value * units[from];
-        result = base / units[to];
+        result =
+            val * map[from] / map[to];
 
-    } else if (type === "speed") {
+    }
 
-        const units = {
-            "m/s": 1,
-            "km/h": .277778,
-            mph: .44704,
-            Knots: .514444
+
+    /* SPEED */
+
+    else if(type === "speed"){
+
+        const map = {
+
+            "m/s":1,
+            "km/h":1000/3600,
+            "mph":1609.344/3600,
+            "Knots":1852/3600
+
         };
 
-        base = value * units[from];
-        result = base / units[to];
+        result =
+            val * map[from] / map[to];
 
-    } else if (type === "temp") {
+    }
 
-        if (from === to) {
-            result = value;
 
-        } else if (from === "Celsius") {
+    /* TEMPERATURE */
+
+    else if(type === "temp"){
+
+        if(from === to){
+
+            result = val;
+
+        }else if(from === "Celsius"){
 
             result =
                 to === "Fahrenheit"
-                    ? value * 9 / 5 + 32
-                    : value + 273.15;
+                    ? val*9/5+32
+                    : val+273.15;
 
-        } else if (from === "Fahrenheit") {
-
-            result =
-                to === "Celsius"
-                    ? (value - 32) * 5 / 9
-                    : ((value - 32) * 5 / 9) + 273.15;
-
-        } else {
+        }else if(from === "Fahrenheit"){
 
             result =
                 to === "Celsius"
-                    ? value - 273.15
-                    : ((value - 273.15) * 9 / 5) + 32;
+                    ? (val-32)*5/9
+                    : (val-32)*5/9+273.15;
+
+        }else{
+
+            result =
+                to === "Celsius"
+                    ? val-273.15
+                    : (val-273.15)*9/5+32;
+
         }
 
-    } else if (type === "time") {
-
-        const units = {
-            Seconds: 1,
-            Minutes: 60,
-            Hours: 3600,
-            Days: 86400,
-            Weeks: 604800
-        };
-
-        base = value * units[from];
-        result = base / units[to];
-
-    } else if (type === "volume") {
-
-        const units = {
-            Liters: 1,
-            Milliliters: .001,
-            "Gallons (US)": 3.78541,
-            "Cubic Meters": 1000
-        };
-
-        base = value * units[from];
-        result = base / units[to];
     }
 
-    result =
-        type === "temp"
-            ? parseFloat(result.toFixed(2))
-            : parseFloat(result.toFixed(6));
+
+    /* TIME */
+
+    else if(type === "time"){
+
+        const map = {
+
+            "Seconds":1,
+            "Minutes":60,
+            "Hours":3600,
+            "Days":86400,
+            "Weeks":604800
+
+        };
+
+        result =
+            val * map[from] / map[to];
+
+    }
+
+
+    /* VOLUME */
+
+    else if(type === "volume"){
+
+        const map = {
+
+            "Liters":1,
+            "Milliliters":.001,
+            "Gallons (US)":3.785411784,
+            "Cubic Meters":1000
+
+        };
+
+        result =
+            val * map[from] / map[to];
+
+    }
+
+
+    if(
+        typeof result === "number" &&
+        Number.isFinite(result)
+    ){
+
+        result =
+            parseFloat(
+                result.toFixed(
+                    type === "temp"
+                        ? 6
+                        : 10
+                )
+            );
+
+    }
 
     resultBox.innerText =
-        `${value} ${from} = ${result} ${to}`;
+        `${val} ${from} = ${result} ${to}`;
+
 }
+
+
+/* =========================================================
+   PRIVATE VAULT
+========================================================= */
+
+function openVault(){
+
+    document
+        .getElementById(
+            "vaultOverlay"
+        )
+        .classList.add("active");
+
+    renderGallery();
+
+}
+
+function closeVault(){
+
+    document
+        .getElementById(
+            "vaultOverlay"
+        )
+        .classList.remove("active");
+
+    equalClickCount = 0;
+
+}
+
+function handleFileSelect(event){
+
+    const files =
+        event.target.files;
+
+    let items =
+        JSON.parse(
+            localStorage.getItem(
+                "vaultItems"
+            )
+        ) || [];
+
+    for(const file of files){
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+            function(e){
+
+                items.push({
+
+                    type:
+                        file.type.startsWith(
+                            "video"
+                        )
+                            ? "video"
+                            : "image",
+
+                    data:
+                        e.target.result
+
+                });
+
+                try{
+
+                    localStorage.setItem(
+                        "vaultItems",
+                        JSON.stringify(items)
+                    );
+
+                    renderGallery();
+
+                }catch(error){
+
+                    showToast(
+                        "Vault storage limit reached"
+                    );
+
+                }
+
+            };
+
+        reader.readAsDataURL(file);
+
+    }
+
+    event.target.value = "";
+
+}
+
+function renderGallery(){
+
+    const grid =
+        document.getElementById(
+            "galleryGrid"
+        );
+
+    grid.innerHTML = "";
+
+    let items =
+        JSON.parse(
+            localStorage.getItem(
+                "vaultItems"
+            )
+        ) || [];
+
+    items.forEach(
+        (item,index) => {
+
+            const container =
+                document.createElement(
+                    "div"
+                );
+
+            container.className =
+                "gallery-item";
+
+            if(
+                item.type === "video"
+            ){
+
+                const video =
+                    document.createElement(
+                        "video"
+                    );
+
+                video.src =
+                    item.data;
+
+                video.controls = true;
+
+                container.appendChild(
+                    video
+                );
+
+            }else{
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+                img.src =
+                    item.data;
+
+                container.appendChild(
+                    img
+                );
+
+            }
+
+            const deleteBtn =
+                document.createElement(
+                    "button"
+                );
+
+            deleteBtn.className =
+                "delete-item-btn";
+
+            deleteBtn.innerText =
+                "×";
+
+            deleteBtn.onclick =
+                () => {
+
+                    items.splice(
+                        index,
+                        1
+                    );
+
+                    localStorage.setItem(
+                        "vaultItems",
+                        JSON.stringify(items)
+                    );
+
+                    renderGallery();
+
+                };
+
+            container.appendChild(
+                deleteBtn
+            );
+
+            grid.appendChild(
+                container
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function openSettings(){
+
+    document
+        .getElementById(
+            "settingsPanel"
+        )
+        .classList.add("active");
+
+}
+
+function closeSettings(){
+
+    document
+        .getElementById(
+            "settingsPanel"
+        )
+        .classList.remove("active");
+
+}
+
+function closeSettingsOutside(event){
+
+    if(
+        event.target.id ===
+        "settingsPanel"
+    ){
+
+        closeSettings();
+
+    }
+
+}
+
+function toggleHaptics(){
+
+    haptics = !haptics;
+
+    localStorage.setItem(
+        "calcHaptics",
+        haptics
+    );
+
+    showToast(
+        haptics
+            ? "Haptics enabled"
+            : "Haptics disabled"
+    );
+
+}
+
+function resetPreferences(){
+
+    localStorage.removeItem(
+        "calcTheme"
+    );
+
+    localStorage.removeItem(
+        "angleMode"
+    );
+
+    localStorage.removeItem(
+        "calcHaptics"
+    );
+
+    location.reload();
+
+}
+
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+function setTheme(theme){
+
+    const root =
+        document.documentElement;
+
+    if(theme === "cyan"){
+
+        root.style.setProperty(
+            "--accent",
+            "#38bdf8"
+        );
+
+        root.style.setProperty(
+            "--accent2",
+            "#2563eb"
+        );
+
+        root.style.setProperty(
+            "--accentRGB",
+            "56,189,248"
+        );
+
+    }
+
+    if(theme === "purple"){
+
+        root.style.setProperty(
+            "--accent",
+            "#c084fc"
+        );
+
+        root.style.setProperty(
+            "--accent2",
+            "#7c3aed"
+        );
+
+        root.style.setProperty(
+            "--accentRGB",
+            "192,132,252"
+        );
+
+    }
+
+    if(theme === "green"){
+
+        root.style.setProperty(
+            "--accent",
+            "#34d399"
+        );
+
+        root.style.setProperty(
+            "--accent2",
+            "#059669"
+        );
+
+        root.style.setProperty(
+            "--accentRGB",
+            "52,211,153"
+        );
+
+    }
+
+    if(theme === "orange"){
+
+        root.style.setProperty(
+            "--accent",
+            "#fb923c"
+        );
+
+        root.style.setProperty(
+            "--accent2",
+            "#ea580c"
+        );
+
+        root.style.setProperty(
+            "--accentRGB",
+            "251,146,60"
+        );
+
+    }
+
+    localStorage.setItem(
+        "calcTheme",
+        theme
+    );
+
+    showToast(
+        theme.toUpperCase() +
+        " theme activated"
+    );
+
+}
+
+
+/* =========================================================
+   LOAD THEME
+========================================================= */
+
+(function(){
+
+    const theme =
+        localStorage.getItem(
+            "calcTheme"
+        );
+
+    if(theme){
+
+        setTheme(theme);
+
+    }
+
+})();
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.innerText =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        toastTimer
+    );
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+/* =========================================================
+   KEYBOARD ENGINE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        const key =
+            event.key;
+
+        if(
+            /^[0-9.]$/.test(key)
+        ){
+
+            appendNumber(key);
+            return;
+
+        }
+
+        if(
+            ["+","-","*","/","%"].includes(
+                key
+            )
+        ){
+
+            appendOperator(key);
+            return;
+
+        }
+
+        if(
+            key === "Enter" ||
+            key === "="
+        ){
+
+            event.preventDefault();
+
+            calculate();
+
+            return;
+
+        }
+
+        if(
+            key === "Backspace"
+        ){
+
+            deleteLast();
+            return;
+
+        }
+
+        if(
+            key === "Escape"
+        ){
+
+            clearDisplay();
+            return;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EXTRA SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.ctrlKey &&
+            event.key.toLowerCase() === "c"
+        ){
+
+            if(
+                document.activeElement.tagName !==
+                "INPUT"
+            ){
+
+                copyResult();
+
+            }
+
+        }
+
+    }
+);
+
 </script>
 
 </body>
