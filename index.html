@@ -16,44 +16,28 @@
 <title>Dilshad's Calc Pro</title>
 
 <style>
-/* =========================================================
-   DILSHAD'S CALC PRO — EXTREME PREMIUM UI
-========================================================= */
-
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
 :root{
-    --bg:#030712;
-    --bg2:#07111f;
-    --card:rgba(10,18,34,.82);
-    --card2:rgba(15,27,48,.74);
-    --glass:rgba(255,255,255,.045);
-
+    --bg-1:#050b16;
+    --bg-2:#0a1425;
+    --card:rgba(15,27,46,.78);
     --text:#f8fafc;
     --muted:#94a3b8;
-    --dim:#64748b;
-
-    --accent:#38bdf8;
-    --accent2:#2563eb;
-    --accentRGB:56,189,248;
-
+    --blue:#38bdf8;
     --green:#22c55e;
-    --green2:#10b981;
+    --green-light:#34d399;
     --purple:#a855f7;
     --yellow:#facc15;
     --red:#ef4444;
     --orange:#fb923c;
-
     --border:rgba(255,255,255,.075);
-
     --shadow:
-        0 40px 100px rgba(0,0,0,.58),
-        0 15px 40px rgba(0,0,0,.30);
-
-    --radius:30px;
+        0 30px 80px rgba(0,0,0,.45),
+        0 10px 30px rgba(0,0,0,.25);
 }
 
 html{
@@ -61,144 +45,110 @@ html{
 }
 
 body{
-    margin:0;
-    min-height:100vh;
-    padding:22px 10px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
     font-family:
-        Inter,
         "Segoe UI",
+        Inter,
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         sans-serif;
 
-    color:var(--text);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    min-height:100vh;
+    margin:0;
+    padding:25px 12px;
 
     background:
         radial-gradient(
-            circle at 12% 8%,
-            rgba(var(--accentRGB),.16),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 90% 88%,
-            rgba(168,85,247,.13),
+            circle at 15% 15%,
+            rgba(37,99,235,.16),
             transparent 30%
         ),
         radial-gradient(
-            circle at 50% 50%,
-            rgba(16,185,129,.035),
-            transparent 42%
+            circle at 85% 85%,
+            rgba(168,85,247,.13),
+            transparent 30%
         ),
         linear-gradient(
             135deg,
-            var(--bg),
-            var(--bg2)
+            var(--bg-1),
+            var(--bg-2)
         );
 
+    color:var(--text);
     overflow-x:hidden;
 }
 
-/* Ambient lights */
+body::before{
+    content:"";
+    position:fixed;
+    width:400px;
+    height:400px;
+    left:-180px;
+    top:-180px;
+    background:rgba(56,189,248,.08);
+    filter:blur(100px);
+    pointer-events:none;
+}
 
-body::before,
 body::after{
     content:"";
     position:fixed;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    filter:blur(120px);
-    pointer-events:none;
-    z-index:0;
-}
-
-body::before{
-    left:-240px;
-    top:-240px;
-    background:rgba(var(--accentRGB),.10);
-}
-
-body::after{
-    right:-240px;
-    bottom:-240px;
+    width:400px;
+    height:400px;
+    right:-180px;
+    bottom:-180px;
     background:rgba(168,85,247,.08);
+    filter:blur(100px);
+    pointer-events:none;
 }
 
 /* =========================================================
-   MAIN APP
+   MAIN CARD
 ========================================================= */
 
 .calc-card{
-    width:min(480px,96vw);
-    position:relative;
-    z-index:2;
-
-    padding:20px;
-
-    border-radius:var(--radius);
+    width:390px;
+    max-width:96vw;
+    padding:22px;
+    border-radius:30px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(20,34,57,.90),
-            rgba(5,13,26,.91)
+            rgba(24,39,64,.88),
+            rgba(9,18,33,.82)
         );
 
-    border:1px solid rgba(255,255,255,.085);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
 
-    backdrop-filter:blur(30px);
-    -webkit-backdrop-filter:blur(30px);
-
+    border:1px solid var(--border);
     box-shadow:var(--shadow);
 
+    position:relative;
+    z-index:2;
     overflow:hidden;
-
-    isolation:isolate;
 }
 
 .calc-card::before{
     content:"";
     position:absolute;
     top:0;
-    left:8%;
-    width:84%;
+    left:15%;
+    width:70%;
     height:1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(var(--accentRGB),.9),
-            rgba(168,85,247,.6),
+            rgba(56,189,248,.7),
             transparent
         );
-
-    box-shadow:
-        0 0 25px rgba(var(--accentRGB),.45);
-}
-
-.calc-card::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            125deg,
-            rgba(255,255,255,.025),
-            transparent 25%,
-            transparent 70%,
-            rgba(255,255,255,.018)
-        );
-
-    z-index:-1;
 }
 
 /* =========================================================
@@ -209,100 +159,47 @@ body::after{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:17px;
+    margin-bottom:18px;
+    padding:0 4px;
 }
 
 .brand-area{
     display:flex;
     align-items:center;
-    gap:12px;
-}
-
-.logo-wrap{
-    position:relative;
+    gap:11px;
 }
 
 .logo{
-    width:46px;
-    height:46px;
-    border-radius:14px;
+    width:43px;
+    height:43px;
+    border-radius:13px;
     object-fit:cover;
-
-    border:1px solid rgba(255,255,255,.13);
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.4),
-        0 0 25px rgba(var(--accentRGB),.10);
-}
-
-.logo-status{
-    position:absolute;
-    width:9px;
-    height:9px;
-    right:-2px;
-    bottom:-1px;
-
-    border-radius:50%;
-
-    background:#22c55e;
-    border:2px solid #0b1728;
+    border:1px solid rgba(255,255,255,.1);
 
     box-shadow:
-        0 0 12px rgba(34,197,94,.8);
+        0 8px 20px rgba(0,0,0,.3),
+        0 0 20px rgba(56,189,248,.08);
 }
 
 .brand-text{
     display:flex;
     flex-direction:column;
+    align-items:flex-start;
 }
 
 .brand-name{
+    color:#fff;
     font-size:17px;
-    font-weight:800;
-    letter-spacing:-.4px;
+    font-weight:700;
+    letter-spacing:-.3px;
 }
 
 .brand-subtitle{
-    margin-top:3px;
-    font-size:8px;
-    font-weight:700;
-    letter-spacing:1.1px;
-    text-transform:uppercase;
-    color:var(--dim);
-}
-
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-
-.status-pill{
-    display:flex;
-    align-items:center;
-    gap:5px;
-
-    padding:7px 9px;
-
-    border-radius:999px;
-
-    background:rgba(34,197,94,.07);
-    border:1px solid rgba(34,197,94,.16);
-
-    color:#86efac;
-
-    font-size:8px;
-    font-weight:800;
+    color:#64748b;
+    font-size:9px;
+    margin-top:2px;
     letter-spacing:.7px;
     text-transform:uppercase;
-}
-
-.status-dot{
-    width:5px;
-    height:5px;
-    border-radius:50%;
-    background:#22c55e;
-    box-shadow:0 0 8px #22c55e;
 }
 
 /* =========================================================
@@ -313,221 +210,128 @@ body::after{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:7px;
-    margin-bottom:13px;
+    margin-bottom:17px;
 }
 
 .action-row button{
-    min-height:43px;
-
-    border-radius:13px;
     border:1px solid rgba(255,255,255,.07);
-
+    padding:9px 3px;
+    border-radius:12px;
+    font-size:10px;
+    font-weight:700;
     cursor:pointer;
-
-    font-size:9px;
-    font-weight:800;
-
-    color:#cbd5e1;
-
-    transition:
-        transform .18s ease,
-        background .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
+    transition:.2s;
 }
 
 .action-row button:hover{
     transform:translateY(-2px);
 }
 
-.action-row button:active{
-    transform:scale(.94);
-}
-
 .btn-toggle-sci{
-    background:rgba(168,85,247,.10);
-    color:#c084fc !important;
-    border-color:rgba(168,85,247,.25) !important;
+    background:rgba(168,85,247,.12);
+    border-color:rgba(168,85,247,.3)!important;
+    color:#c084fc;
 }
 
 .btn-toggle-hist{
-    background:rgba(250,204,21,.075);
-    color:#facc15 !important;
-    border-color:rgba(250,204,21,.22) !important;
+    background:rgba(234,179,8,.1);
+    border-color:rgba(234,179,8,.28)!important;
+    color:#facc15;
 }
 
 .btn-toggle-tools{
-    background:rgba(16,185,129,.08);
-    color:#34d399 !important;
-    border-color:rgba(52,211,153,.22) !important;
+    background:rgba(52,211,153,.1);
+    border-color:rgba(52,211,153,.28)!important;
+    color:#34d399;
 }
 
 .btn-revise{
-    background:rgba(var(--accentRGB),.08);
-    color:var(--accent) !important;
-    border-color:rgba(var(--accentRGB),.23) !important;
+    background:rgba(56,189,248,.1);
+    border-color:rgba(56,189,248,.28)!important;
+    color:#38bdf8;
 }
 
 /* =========================================================
-   SMART DISPLAY
+   DISPLAY
 ========================================================= */
 
 .display-container{
-    position:relative;
-
-    min-height:126px;
-
-    padding:16px 17px 13px;
-
-    margin-bottom:13px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    align-items:stretch;
-
-    border-radius:21px;
-
     background:
         linear-gradient(
             145deg,
-            rgba(1,7,17,.94),
-            rgba(7,17,31,.82)
+            rgba(2,8,20,.88),
+            rgba(9,18,33,.72)
         );
 
-    border:1px solid rgba(255,255,255,.055);
+    border-radius:20px;
+    padding:21px 18px;
+    margin-bottom:18px;
+    min-height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+
+    overflow:hidden;
+    position:relative;
+
+    border:1px solid rgba(255,255,255,.045);
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.025),
-        inset 0 -20px 45px rgba(0,0,0,.20);
-
-    overflow:hidden;
+        inset 0 -10px 30px rgba(0,0,0,.18);
 }
 
-.display-container::before{
+.display-container::after{
     content:"";
     position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    height:2px;
+    bottom:0;
+    right:12%;
+    width:35%;
+    height:1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(var(--accentRGB),.7),
-            rgba(168,85,247,.5),
+            rgba(56,189,248,.45),
             transparent
         );
-
-    opacity:.8;
-}
-
-.display-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    min-height:20px;
-    margin-bottom:5px;
-}
-
-.expression-label{
-    color:#475569;
-    font-size:8px;
-    font-weight:700;
-    letter-spacing:.8px;
-    text-transform:uppercase;
-}
-
-.display-tools{
-    display:flex;
-    gap:4px;
-}
-
-.mini-btn{
-    width:26px;
-    height:23px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    border-radius:7px;
-    border:1px solid rgba(255,255,255,.055);
-
-    background:rgba(255,255,255,.035);
-
-    color:#64748b;
-    font-size:11px;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.mini-btn:hover{
-    color:white;
-    background:rgba(255,255,255,.08);
 }
 
 .calc-display{
     width:100%;
-
+    font-size:34px;
+    font-weight:500;
+    line-height:1.2;
     text-align:right;
 
-    color:var(--accent);
+    background:transparent;
+    color:var(--blue);
 
-    font-size:37px;
-    font-weight:500;
-
-    line-height:1.2;
+    border:none;
+    outline:none;
 
     white-space:nowrap;
     overflow-x:auto;
-
     scrollbar-width:none;
-
-    text-shadow:
-        0 0 25px rgba(var(--accentRGB),.12);
 }
 
 .calc-display::-webkit-scrollbar{
     display:none;
 }
 
-.live-preview{
-    min-height:17px;
-
-    margin-top:6px;
-
-    text-align:right;
-
-    color:#475569;
-
-    font-size:10px;
-    font-weight:600;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.live-preview strong{
-    color:#64748b;
-}
-
 .animate-pop{
     animation:
         answerPop .3s
-        cubic-bezier(.175,.885,.32,1.2);
+        cubic-bezier(.175,.885,.32,1.2)
+        forwards;
 }
 
 @keyframes answerPop{
     0%{
-        transform:scale(.93);
-        opacity:.5;
+        transform:scale(.95);
+        opacity:.6;
     }
     100%{
         transform:scale(1);
@@ -536,88 +340,17 @@ body::after{
 }
 
 /* =========================================================
-   MEMORY BAR
-========================================================= */
-
-.memory-bar{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:5px;
-    margin-bottom:12px;
-}
-
-.memory-btn{
-    min-height:27px;
-
-    border-radius:8px;
-
-    border:1px solid rgba(255,255,255,.05);
-
-    background:rgba(255,255,255,.025);
-
-    color:#64748b;
-
-    font-size:8px;
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.memory-btn:hover{
-    color:white;
-    background:rgba(var(--accentRGB),.07);
-    border-color:rgba(var(--accentRGB),.18);
-}
-
-.memory-value{
-    text-align:center;
-    color:#475569;
-    font-size:8px;
-    margin-top:-7px;
-    margin-bottom:8px;
-}
-
-/* =========================================================
-   COLLAPSIBLE PANELS
+   PANELS
 ========================================================= */
 
 .scientific-panel,
 .history-panel,
 .tools-panel{
     overflow:hidden;
-
-    max-height:0;
-    opacity:0;
-
-    margin-bottom:0;
-
     transition:
-        max-height .4s ease,
-        opacity .25s ease,
+        max-height .35s ease,
         margin-bottom .3s ease,
         padding .3s ease;
-}
-
-.scientific-panel.open{
-    max-height:340px;
-    opacity:1;
-    margin-bottom:13px;
-}
-
-.history-panel.open{
-    max-height:330px;
-    opacity:1;
-    margin-bottom:13px;
-    padding:13px;
-}
-
-.tools-panel.open{
-    max-height:900px;
-    opacity:1;
-    margin-bottom:13px;
-    padding:14px;
 }
 
 /* =========================================================
@@ -627,78 +360,34 @@ body::after{
 .scientific-panel{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:7px;
+    gap:8px;
+    max-height:0;
+    margin-bottom:0;
 }
 
-.sci-toolbar{
-    grid-column:1/-1;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:2px 1px 5px;
-}
-
-.sci-title{
-    color:#a78bfa;
-    font-size:10px;
-    font-weight:800;
-}
-
-.angle-switch{
-    display:flex;
-    gap:3px;
-}
-
-.angle-btn{
-    border:1px solid rgba(168,85,247,.18);
-    background:rgba(168,85,247,.06);
-    color:#8b5cf6;
-    border-radius:6px;
-    padding:4px 7px;
-    font-size:7px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.angle-btn.active{
-    background:rgba(168,85,247,.23);
-    color:#ddd6fe;
+.scientific-panel.open{
+    max-height:250px;
+    margin-bottom:18px;
 }
 
 .btn-sci{
-    min-height:39px;
-
-    border-radius:11px;
-
+    background:rgba(30,41,59,.72);
     border:1px solid rgba(255,255,255,.045);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(35,47,67,.72),
-            rgba(23,32,49,.72)
-        );
-
     color:#cbd5e1;
-
-    font-size:12px;
-    font-weight:700;
-
+    font-size:13px;
+    padding:11px 0;
+    border-radius:12px;
     cursor:pointer;
-
-    transition:.18s;
+    transition:.2s;
 }
 
 .btn-sci:hover{
-    color:white;
-    background:rgba(168,85,247,.12);
-    border-color:rgba(168,85,247,.24);
+    background:rgba(56,189,248,.12);
+    color:#fff;
 }
 
 .btn-sci:active{
-    transform:scale(.92);
+    transform:scale(.94);
 }
 
 /* =========================================================
@@ -706,350 +395,254 @@ body::after{
 ========================================================= */
 
 .history-panel{
-    background:rgba(3,9,19,.76);
+    max-height:0;
+    background:rgba(5,12,24,.72);
     border-radius:18px;
     text-align:left;
+    padding:0 13px;
+    margin-bottom:0;
+}
+
+.history-panel.open{
+    max-height:230px;
+    margin-bottom:18px;
+    padding:13px;
+    border:1px solid rgba(255,255,255,.05);
 }
 
 .history-header{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    gap:7px;
-    margin-bottom:9px;
+    align-items:center;
+    margin-bottom:8px;
 }
 
-.history-title{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-}
-
-.history-title strong{
+.history-header span{
     font-size:11px;
-}
-
-.history-title span{
-    font-size:7px;
-    color:#475569;
-    text-transform:uppercase;
-    letter-spacing:.7px;
-}
-
-.history-actions{
-    display:flex;
-    gap:5px;
-}
-
-.history-small-btn{
-    border:1px solid rgba(255,255,255,.06);
-    background:rgba(255,255,255,.035);
-    color:#64748b;
-    padding:6px 8px;
-    border-radius:7px;
-    font-size:8px;
-    cursor:pointer;
-}
-
-.history-small-btn:hover{
-    color:white;
+    color:#94a3b8;
+    font-weight:700;
 }
 
 .clear-hist-btn{
-    color:#f87171 !important;
-}
-
-.history-search{
-    width:100%;
-    padding:8px 10px;
-    margin-bottom:8px;
-
-    border-radius:9px;
-
-    background:rgba(255,255,255,.035);
-    border:1px solid rgba(255,255,255,.055);
-
-    color:white;
-    outline:none;
-
-    font-size:9px;
+    background:transparent;
+    border:none;
+    color:#f87171;
+    font-size:10px;
+    cursor:pointer;
+    padding:3px 6px;
 }
 
 .history-list{
-    max-height:210px;
+    max-height:170px;
     overflow-y:auto;
-
     display:flex;
     flex-direction:column;
     gap:6px;
 }
 
-.history-list::-webkit-scrollbar{
-    width:3px;
-}
-
-.history-list::-webkit-scrollbar-thumb{
-    background:#334155;
-    border-radius:10px;
-}
-
 .history-item{
-    padding:9px 10px;
-
+    background:rgba(255,255,255,.035);
     border-radius:10px;
-
-    background:rgba(255,255,255,.032);
-    border:1px solid transparent;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-
+    padding:9px 10px;
+    font-size:12px;
     cursor:pointer;
-
-    transition:.18s;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    border:1px solid transparent;
 }
 
 .history-item:hover{
-    background:rgba(250,204,21,.055);
-    border-color:rgba(250,204,21,.15);
-}
-
-.history-item-left{
-    min-width:0;
+    background:rgba(255,255,255,.065);
+    border-color:rgba(234,179,8,.2);
 }
 
 .history-formula{
     color:#94a3b8;
-    font-size:9px;
+    font-size:10px;
     word-break:break-all;
 }
 
 .history-result{
     color:#facc15;
-    font-size:12px;
-    font-weight:800;
-    white-space:nowrap;
-}
-
-.history-copy{
-    opacity:0;
-    border:0;
-    background:transparent;
-    color:#64748b;
-    cursor:pointer;
-}
-
-.history-item:hover .history-copy{
-    opacity:1;
+    font-weight:700;
 }
 
 .empty-history{
-    padding:25px 0;
-    text-align:center;
     color:#475569;
-    font-size:9px;
+    font-size:11px;
+    text-align:center;
+    padding:22px 0;
 }
 
 /* =========================================================
-   TOOLS HUB
+   TOOLS
 ========================================================= */
 
 .tools-panel{
+    max-height:0;
+
     background:
         linear-gradient(
             145deg,
-            rgba(3,13,22,.95),
-            rgba(7,19,30,.91)
+            rgba(5,15,25,.94),
+            rgba(8,20,31,.88)
         );
 
     border-radius:20px;
     text-align:left;
+    padding:0 14px;
+    margin-bottom:0;
+}
 
-    border:1px solid rgba(52,211,153,.12);
+.tools-panel.open{
+    max-height:2500px;
+    margin-bottom:18px;
+    padding:14px;
+
+    border:1px solid rgba(52,211,153,.16);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.02);
 }
 
 .tools-title{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:11px;
-}
-
-.tools-title-left{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.tools-icon{
-    width:29px;
-    height:29px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    border-radius:9px;
-
-    background:rgba(16,185,129,.09);
-    border:1px solid rgba(16,185,129,.18);
+    margin-bottom:12px;
 }
 
 .tools-title strong{
-    font-size:12px;
+    font-size:13px;
 }
 
 .tools-title span{
-    color:#475569;
-    font-size:7px;
-    font-weight:800;
-    letter-spacing:.8px;
+    font-size:9px;
+    color:#64748b;
     text-transform:uppercase;
+    letter-spacing:.8px;
 }
 
-/* tool segments */
+/* =========================================================
+   TOOL CATEGORY TABS
+========================================================= */
+
+.tool-categories{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    margin-bottom:10px;
+}
+
+.tool-category{
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.035);
+    color:#94a3b8;
+    padding:9px 3px;
+    border-radius:10px;
+    font-size:9px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.tool-category.active{
+    background:rgba(56,189,248,.12);
+    border-color:rgba(56,189,248,.35);
+    color:#38bdf8;
+}
+
+/* =========================================================
+   TOOL SEGMENTS
+========================================================= */
 
 .tool-segments{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:6px;
+    margin-bottom:13px;
 
-    max-height:188px;
+    max-height:230px;
     overflow-y:auto;
-
     padding-right:2px;
-    margin-bottom:11px;
-}
-
-.tool-segments::-webkit-scrollbar{
-    width:3px;
-}
-
-.tool-segments::-webkit-scrollbar-thumb{
-    background:#334155;
-    border-radius:10px;
 }
 
 .tool-segment{
-    min-height:40px;
+    border:1px solid rgba(255,255,255,.055);
+    background:rgba(255,255,255,.035);
+    color:#94a3b8;
 
+    padding:9px 4px;
     border-radius:10px;
 
-    border:1px solid rgba(255,255,255,.05);
-
-    background:rgba(255,255,255,.028);
-
-    color:#64748b;
-
-    font-size:8px;
-    font-weight:800;
-
+    font-size:9px;
+    font-weight:700;
     cursor:pointer;
-
     transition:.2s;
 }
 
 .tool-segment:hover{
+    background:rgba(52,211,153,.08);
     color:#d1fae5;
-    background:rgba(52,211,153,.07);
 }
 
 .tool-segment.active{
-    color:#34d399;
-
     background:
         linear-gradient(
             135deg,
-            rgba(16,185,129,.22),
-            rgba(16,185,129,.055)
+            rgba(16,185,129,.24),
+            rgba(52,211,153,.08)
         );
 
-    border-color:rgba(52,211,153,.38);
-
-    box-shadow:
-        0 0 20px rgba(16,185,129,.06);
+    border-color:rgba(52,211,153,.42);
+    color:#34d399;
 }
 
-/* tool heading */
-
-.tool-heading{
-    display:flex;
-    align-items:center;
-    gap:9px;
-
-    margin-bottom:9px;
-}
-
-.tool-heading-icon{
-    font-size:20px;
-}
-
-.tool-heading-text{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-}
-
-.tool-heading-text strong{
-    font-size:12px;
-}
-
-.tool-heading-text span{
-    color:#475569;
-    font-size:7px;
-}
-
-/* tool body */
+/* =========================================================
+   TOOL BODY
+========================================================= */
 
 .tool-body{
     display:flex;
     flex-direction:column;
-    gap:9px;
+    gap:10px;
 }
 
 .tool-group{
     display:flex;
     flex-direction:column;
-    gap:4px;
+    gap:5px;
 }
 
 .tool-group label{
+    font-size:10px;
     color:#94a3b8;
-    font-size:8px;
-    font-weight:800;
-    letter-spacing:.25px;
+    font-weight:700;
 }
 
 .tool-input,
 .tool-select{
     width:100%;
+    padding:10px 11px;
 
-    padding:10px 10px;
+    border-radius:11px;
 
-    border-radius:10px;
-
-    background:rgba(255,255,255,.043);
-    border:1px solid rgba(255,255,255,.075);
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.09);
 
     color:white;
+    font-size:12px;
     outline:none;
-
-    font-size:11px;
-
-    transition:.2s;
 }
 
 .tool-input:focus,
 .tool-select:focus{
-    border-color:rgba(52,211,153,.55);
+    border-color:rgba(52,211,153,.6);
     background:rgba(52,211,153,.035);
-    box-shadow:0 0 0 3px rgba(52,211,153,.035);
 }
 
 .tool-select option{
-    background:#0b1728;
+    background:#0f1b2d;
     color:white;
 }
 
@@ -1062,40 +655,13 @@ body::after{
     flex:1;
 }
 
-.converter-swap{
-    width:34px;
-    height:34px;
-    flex:0 0 34px !important;
-    align-self:end;
-    margin-bottom:1px;
-
-    border-radius:9px;
-
-    border:1px solid rgba(56,189,248,.18);
-    background:rgba(56,189,248,.07);
-
-    color:#38bdf8;
-
-    cursor:pointer;
-    font-size:14px;
-
-    transition:.2s;
-}
-
-.converter-swap:hover{
-    background:rgba(56,189,248,.16);
-    transform:rotate(180deg);
+.tool-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
 }
 
 .btn-calc-tool{
-    width:100%;
-
-    border:0;
-
-    padding:11px;
-
-    border-radius:10px;
-
     background:
         linear-gradient(
             135deg,
@@ -1104,147 +670,268 @@ body::after{
         );
 
     color:white;
+    border:none;
 
-    font-size:10px;
-    font-weight:900;
+    padding:11px;
+    border-radius:11px;
 
+    font-size:12px;
+    font-weight:700;
     cursor:pointer;
-
-    box-shadow:
-        0 8px 22px rgba(16,185,129,.12);
-
-    transition:.18s;
+    margin-top:4px;
 }
 
 .btn-calc-tool:hover{
     transform:translateY(-1px);
-    box-shadow:
-        0 12px 27px rgba(16,185,129,.2);
+    box-shadow:0 8px 20px rgba(16,185,129,.18);
 }
 
-.btn-calc-tool:active{
-    transform:scale(.97);
+.btn-secondary{
+    background:rgba(56,189,248,.12);
+    border:1px solid rgba(56,189,248,.3);
+    color:#38bdf8;
+    padding:10px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.btn-danger{
+    background:rgba(239,68,68,.1);
+    border:1px solid rgba(239,68,68,.3);
+    color:#f87171;
+    padding:10px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 .tool-result-box{
-    min-height:42px;
+    background:rgba(16,185,129,.08);
+    border:1px dashed rgba(16,185,129,.3);
+    color:#34d399;
+
+    padding:11px;
+    border-radius:11px;
+
+    font-size:12px;
+    font-weight:700;
+    text-align:center;
+
+    word-break:break-word;
+    min-height:39px;
 
     display:flex;
     align-items:center;
     justify-content:center;
-
-    padding:10px;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(16,185,129,.085),
-            rgba(16,185,129,.025)
-        );
-
-    border:1px dashed rgba(16,185,129,.27);
-
-    color:#34d399;
-
-    font-size:10px;
-    font-weight:800;
-
-    text-align:center;
-    word-break:break-word;
 }
 
 .tool-description{
-    color:#475569;
-    font-size:8px;
-    line-height:1.45;
+    font-size:9px;
+    color:#64748b;
+    line-height:1.4;
     text-align:center;
 }
 
-.quick-stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:5px;
+.result-positive{
+    color:#34d399!important;
 }
 
-.quick-stat{
-    padding:7px 5px;
-    text-align:center;
-    border-radius:8px;
-    background:rgba(255,255,255,.025);
-    border:1px solid rgba(255,255,255,.04);
+.result-negative{
+    color:#f87171!important;
+    border-color:rgba(239,68,68,.3)!important;
+    background:rgba(239,68,68,.08)!important;
 }
 
-.quick-stat strong{
-    display:block;
-    color:#cbd5e1;
-    font-size:10px;
-}
-
-.quick-stat span{
-    color:#475569;
-    font-size:7px;
+.result-neutral{
+    color:#38bdf8!important;
 }
 
 /* =========================================================
-   MAIN KEYPAD
+   P2P BOOK
+========================================================= */
+
+.p2p-section{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.p2p-card{
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:14px;
+    padding:10px;
+}
+
+.p2p-card h4{
+    margin:0 0 9px;
+    font-size:11px;
+}
+
+.buy-title{
+    color:#34d399;
+}
+
+.sell-title{
+    color:#38bdf8;
+}
+
+.p2p-row{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:6px;
+    margin-bottom:7px;
+}
+
+.p2p-row input{
+    min-width:0;
+}
+
+.remove-row{
+    width:34px;
+    border-radius:9px;
+    border:1px solid rgba(239,68,68,.25);
+    background:rgba(239,68,68,.08);
+    color:#f87171;
+    cursor:pointer;
+}
+
+.add-row{
+    width:100%;
+    border:1px dashed rgba(52,211,153,.35);
+    background:rgba(52,211,153,.06);
+    color:#34d399;
+    padding:8px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:10px;
+    font-weight:700;
+}
+
+.p2p-summary{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:7px;
+}
+
+.summary-item{
+    background:rgba(255,255,255,.035);
+    border-radius:10px;
+    padding:9px;
+}
+
+.summary-label{
+    color:#64748b;
+    font-size:8px;
+    display:block;
+    margin-bottom:3px;
+}
+
+.summary-value{
+    color:#f8fafc;
+    font-size:11px;
+    font-weight:800;
+    word-break:break-word;
+}
+
+.summary-value.green{
+    color:#34d399;
+}
+
+.summary-value.red{
+    color:#f87171;
+}
+
+.summary-value.blue{
+    color:#38bdf8;
+}
+
+.summary-value.yellow{
+    color:#facc15;
+}
+
+/* =========================================================
+   TRADE JOURNAL
+========================================================= */
+
+.journal-list{
+    max-height:300px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.journal-item{
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.05);
+    padding:9px;
+    border-radius:10px;
+    font-size:10px;
+}
+
+.journal-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:4px;
+}
+
+.journal-profit{
+    color:#34d399;
+    font-weight:800;
+}
+
+.journal-loss{
+    color:#f87171;
+    font-weight:800;
+}
+
+/* =========================================================
+   CALCULATOR BUTTONS
 ========================================================= */
 
 .buttons{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:8px;
+    gap:10px;
 }
 
 .buttons button{
-    min-height:57px;
+    padding:16px 0;
+    font-size:21px;
+    font-weight:600;
 
-    border:1px solid rgba(255,255,255,.045);
-
+    border:none;
     border-radius:15px;
+
+    cursor:pointer;
 
     background:
         linear-gradient(
             145deg,
             #303b50,
-            #222c3d
+            #252e3f
         );
 
-    color:#f8fafc;
-
-    font-size:20px;
-    font-weight:650;
-
-    cursor:pointer;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.025),
-        0 5px 10px rgba(0,0,0,.10);
-
-    transition:
-        transform .1s ease,
-        background .18s ease,
-        box-shadow .18s ease;
+    color:#fff;
+    transition:.15s;
 }
 
 .buttons button:hover{
     background:
         linear-gradient(
             145deg,
-            #3a4860,
-            #293549
+            #37445a,
+            #293448
         );
-
-    box-shadow:
-        0 8px 18px rgba(0,0,0,.18);
 }
 
 .buttons button:active{
-    transform:scale(.91);
-
-    box-shadow:
-        0 0 25px rgba(var(--accentRGB),.24);
+    transform:scale(.92);
+    box-shadow:0 0 20px rgba(56,189,248,.3);
 }
 
 .btn-action{
@@ -1252,10 +939,10 @@ body::after{
         linear-gradient(
             145deg,
             #394458,
-            #293345
-        ) !important;
+            #2b3446
+        )!important;
 
-    color:#cbd5e1 !important;
+    color:#e2e8f0!important;
 }
 
 .operator{
@@ -1264,208 +951,44 @@ body::after{
             145deg,
             #2563eb,
             #1d4ed8
-        ) !important;
-
-    border-color:rgba(96,165,250,.18) !important;
+        )!important;
 }
 
 .equal{
     background:
         linear-gradient(
-            135deg,
-            #16a34a,
-            #059669
-        ) !important;
-
-    border-color:rgba(74,222,128,.18) !important;
-
-    box-shadow:
-        0 8px 24px rgba(16,185,129,.13) !important;
-}
-
-/* =========================================================
-   BOTTOM STATUS
-========================================================= */
-
-.bottom-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-top:10px;
-    padding:0 3px;
-}
-
-.bottom-hint{
-    color:#334155;
-    font-size:7px;
-    font-weight:700;
-}
-
-.bottom-brand{
-    color:#334155;
-    font-size:7px;
-    font-weight:800;
-    letter-spacing:.7px;
-}
-
-/* =========================================================
-   SETTINGS / THEME POPUP
-========================================================= */
-
-.settings-panel{
-    position:fixed;
-    inset:0;
-    z-index:500;
-
-    display:flex;
-    justify-content:center;
-    align-items:flex-end;
-
-    padding:14px;
-
-    background:rgba(0,0,0,.45);
-    backdrop-filter:blur(12px);
-
-    opacity:0;
-    pointer-events:none;
-
-    transition:.25s;
-}
-
-.settings-panel.active{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.settings-card{
-    width:min(390px,100%);
-
-    padding:18px;
-
-    border-radius:23px;
-
-    background:
-        linear-gradient(
             145deg,
-            #13233a,
-            #091525
-        );
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
-
-    transform:translateY(30px);
-    transition:.3s;
-}
-
-.settings-panel.active .settings-card{
-    transform:translateY(0);
-}
-
-.settings-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
-}
-
-.settings-head strong{
-    font-size:14px;
-}
-
-.settings-close{
-    width:30px;
-    height:30px;
-    border:0;
-    border-radius:9px;
-    background:rgba(239,68,68,.10);
-    color:#f87171;
-    cursor:pointer;
-}
-
-.settings-label{
-    color:#64748b;
-    font-size:8px;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:.8px;
-    margin-bottom:7px;
-}
-
-.theme-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:7px;
-    margin-bottom:15px;
-}
-
-.theme-btn{
-    height:38px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,.08);
-    cursor:pointer;
-    color:white;
-    font-size:8px;
-    font-weight:800;
-}
-
-.theme-cyan{background:linear-gradient(135deg,#0284c7,#2563eb);}
-.theme-purple{background:linear-gradient(135deg,#7c3aed,#a855f7);}
-.theme-green{background:linear-gradient(135deg,#059669,#22c55e);}
-.theme-orange{background:linear-gradient(135deg,#ea580c,#f59e0b);}
-
-.setting-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:10px 0;
-
-    border-top:1px solid rgba(255,255,255,.045);
-}
-
-.setting-row span{
-    color:#94a3b8;
-    font-size:10px;
-}
-
-.setting-row button{
-    border:1px solid rgba(255,255,255,.07);
-    background:rgba(255,255,255,.04);
-    color:#cbd5e1;
-    padding:7px 10px;
-    border-radius:8px;
-    font-size:8px;
-    font-weight:800;
-    cursor:pointer;
+            #16a34a,
+            #15803d
+        )!important;
 }
 
 /* =========================================================
-   PRIVATE VAULT
+   VAULT
 ========================================================= */
 
 .vault-overlay{
     position:fixed;
     inset:0;
+    width:100vw;
+    height:100vh;
+
+    background:rgba(3,8,17,.96);
+
+    backdrop-filter:blur(28px);
+    -webkit-backdrop-filter:blur(28px);
+
     z-index:999;
 
     display:flex;
-    align-items:center;
     justify-content:center;
-
-    padding:18px;
-
-    background:rgba(2,6,15,.97);
-
-    backdrop-filter:blur(30px);
-    -webkit-backdrop-filter:blur(30px);
+    align-items:center;
 
     opacity:0;
     pointer-events:none;
 
-    transition:.3s;
+    transition:opacity .3s;
+    padding:20px;
 }
 
 .vault-overlay.active{
@@ -1474,121 +997,76 @@ body::after{
 }
 
 .vault-content{
-    width:min(420px,100%);
-
-    padding:20px;
-
-    border-radius:25px;
-
     background:
         linear-gradient(
             145deg,
-            #14263f,
-            #091525
+            #15243a,
+            #0c1729
         );
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.07);
+    padding:22px;
+    border-radius:24px;
 
-    box-shadow:
-        0 40px 100px rgba(0,0,0,.7);
+    width:100%;
+    max-width:400px;
+
+    color:white;
+
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
 }
 
 .vault-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:18px;
-}
-
-.vault-title-area{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.vault-icon{
-    width:38px;
-    height:38px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:11px;
-    background:rgba(168,85,247,.10);
-    border:1px solid rgba(168,85,247,.2);
+    margin-bottom:20px;
 }
 
 .vault-header h3{
     margin:0;
-    font-size:16px;
-}
-
-.vault-subtitle{
-    color:#64748b;
-    font-size:7px;
-    margin-top:2px;
+    font-size:18px;
 }
 
 .close-vault-btn{
-    background:rgba(239,68,68,.12);
-    border:1px solid rgba(239,68,68,.2);
-    color:#f87171;
-    padding:8px 12px;
-    border-radius:9px;
-    font-size:9px;
-    font-weight:800;
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    font-size:12px;
+    font-weight:700;
+    border-radius:10px;
     cursor:pointer;
 }
 
 .file-upload-label{
     display:block;
-
-    padding:20px;
-
-    text-align:center;
-
-    border:1px dashed rgba(56,189,248,.45);
-    border-radius:14px;
-
-    background:rgba(56,189,248,.055);
-
+    background:rgba(37,99,235,.12);
     color:#60a5fa;
-
-    font-size:11px;
-    font-weight:800;
-
+    border:2px dashed rgba(37,99,235,.65);
+    padding:20px;
+    border-radius:14px;
     cursor:pointer;
-
-    transition:.2s;
-}
-
-.file-upload-label:hover{
-    background:rgba(56,189,248,.10);
-}
-
-.vault-info{
     text-align:center;
-    color:#475569;
-    font-size:7px;
-    margin-top:8px;
+    font-weight:700;
+    font-size:13px;
 }
 
 .gallery-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin-top:16px;
-
-    max-height:270px;
+    gap:10px;
+    margin-top:20px;
+    max-height:240px;
     overflow-y:auto;
 }
 
 .gallery-item{
     position:relative;
     aspect-ratio:1;
+    border-radius:9px;
     overflow:hidden;
-    border-radius:10px;
     background:#020617;
-    border:1px solid rgba(255,255,255,.06);
 }
 
 .gallery-item img,
@@ -1600,125 +1078,23 @@ body::after{
 
 .delete-item-btn{
     position:absolute;
-    top:4px;
-    right:4px;
+    top:3px;
+    right:3px;
 
+    background:#ef4444;
+    border:none;
+    color:white;
+
+    border-radius:50%;
     width:21px;
     height:21px;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    border:0;
-    border-radius:50%;
-
-    background:#ef4444;
-    color:white;
-
     font-size:13px;
     cursor:pointer;
-}
-
-/* =========================================================
-   BIG DISPLAY MODE
-========================================================= */
-
-.big-display-overlay{
-    position:fixed;
-    inset:0;
-    z-index:800;
 
     display:flex;
     align-items:center;
     justify-content:center;
-
-    padding:25px;
-
-    background:rgba(1,5,12,.97);
-    backdrop-filter:blur(30px);
-
-    opacity:0;
-    pointer-events:none;
-
-    transition:.25s;
-}
-
-.big-display-overlay.active{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.big-result{
-    width:100%;
-    max-width:1000px;
-
-    text-align:center;
-
-    color:var(--accent);
-
-    font-size:clamp(50px,10vw,130px);
-    font-weight:400;
-
-    word-break:break-word;
-
-    text-shadow:
-        0 0 50px rgba(var(--accentRGB),.18);
-}
-
-.big-close{
-    position:absolute;
-    top:20px;
-    right:20px;
-
-    width:40px;
-    height:40px;
-
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-
-    background:rgba(255,255,255,.05);
-
-    color:#94a3b8;
-
-    cursor:pointer;
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:25px;
-    z-index:1200;
-
-    transform:translate(-50%,20px);
-
-    padding:9px 13px;
-
-    border-radius:999px;
-
-    background:rgba(15,23,42,.94);
-    border:1px solid rgba(255,255,255,.08);
-
-    color:#e2e8f0;
-
-    font-size:9px;
-    font-weight:800;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.4);
-
-    opacity:0;
-    pointer-events:none;
-
-    transition:.25s;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translate(-50%,0);
 }
 
 /* =========================================================
@@ -1728,45 +1104,26 @@ body::after{
 @media(max-width:430px){
 
     body{
-        padding:9px 7px;
-        align-items:flex-start;
+        padding:12px 8px;
     }
 
     .calc-card{
-        margin-top:4px;
-        padding:15px;
+        padding:17px;
         border-radius:25px;
     }
 
-    .logo{
-        width:42px;
-        height:42px;
-    }
-
-    .brand-name{
-        font-size:15px;
-    }
-
-    .status-pill{
-        padding:6px 7px;
-    }
-
-    .display-container{
-        min-height:116px;
-    }
-
     .calc-display{
-        font-size:31px;
+        font-size:29px;
     }
 
     .buttons{
-        gap:7px;
+        gap:8px;
     }
 
     .buttons button{
-        min-height:55px;
-        border-radius:14px;
+        padding:15px 0;
         font-size:19px;
+        border-radius:14px;
     }
 
     .tool-segments{
@@ -1777,7 +1134,7 @@ body::after{
 @media(max-width:350px){
 
     .calc-card{
-        padding:12px;
+        padding:13px;
     }
 
     .action-row button{
@@ -1785,16 +1142,11 @@ body::after{
     }
 
     .buttons button{
-        min-height:51px;
         font-size:17px;
     }
 
     .tool-segment{
-        font-size:7px;
-    }
-
-    .calc-display{
-        font-size:28px;
+        font-size:8px;
     }
 }
 </style>
@@ -1802,781 +1154,34 @@ body::after{
 
 <body>
 
-<!-- =========================================================
-     MAIN APP
-========================================================= -->
-
 <div class="calc-card">
 
-    <!-- HEADER -->
-
-    <div class="header-section">
-
-        <div class="brand-area">
-
-            <div class="logo-wrap">
-
-                <img
-                    src="my_logo.png"
-                    class="logo"
-                    alt="Dilshad's Calc Pro"
-                >
-
-                <div class="logo-status"></div>
-
-            </div>
-
-            <div class="brand-text">
-
-                <div
-                    class="brand-name"
-                    id="calc-title"
-                >
-                    Dilshad's Calc Pro
-                </div>
-
-                <div class="brand-subtitle">
-                    Smart • Scientific • Utility
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="header-right">
-
-            <div class="status-pill">
-                <span class="status-dot"></span>
-                Local
-            </div>
-
-            <button
-                class="mini-btn"
-                onclick="openSettings()"
-                title="Settings"
-            >
-                ⚙
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- ACTIONS -->
-
-    <div class="action-row">
-
-        <button
-            class="btn-toggle-sci"
-            onclick="toggleScientificPanel()"
-        >
-            🔬 Mode
-        </button>
-
-        <button
-            class="btn-toggle-hist"
-            onclick="toggleHistoryPanel()"
-        >
-            📜 History
-        </button>
-
-        <button
-            class="btn-toggle-tools"
-            onclick="toggleToolsPanel()"
-        >
-            🧰 Tools
-        </button>
-
-        <button
-            class="btn-revise"
-            onclick="reviseCalculation()"
-        >
-            🔊 Revise
-        </button>
-
-    </div>
-
-
-    <!-- DISPLAY -->
-
-    <div
-        class="display-container"
-        id="displayContainer"
-    >
-
-        <div class="display-top">
-
-            <span class="expression-label">
-                Expression
-            </span>
-
-            <div class="display-tools">
-
-                <button
-                    class="mini-btn"
-                    onclick="copyResult()"
-                    title="Copy"
-                >
-                    ⧉
-                </button>
-
-                <button
-                    class="mini-btn"
-                    onclick="openBigDisplay()"
-                    title="Big Display"
-                >
-                    ⛶
-                </button>
-
-            </div>
-
-        </div>
-
-        <div
-            id="display"
-            class="calc-display"
-        >
-            0
-        </div>
-
-        <div
-            id="livePreview"
-            class="live-preview"
-        >
-            <strong>Ready</strong>
-        </div>
-
-    </div>
-
-
-    <!-- MEMORY -->
-
-    <div class="memory-bar">
-
-        <button
-            class="memory-btn"
-            onclick="memoryClear()"
-        >
-            MC
-        </button>
-
-        <button
-            class="memory-btn"
-            onclick="memoryRecall()"
-        >
-            MR
-        </button>
-
-        <button
-            class="memory-btn"
-            onclick="memoryAdd()"
-        >
-            M+
-        </button>
-
-        <button
-            class="memory-btn"
-            onclick="memorySubtract()"
-        >
-            M−
-        </button>
-
-        <button
-            class="memory-btn"
-            onclick="memoryStore()"
-        >
-            MS
-        </button>
-
-    </div>
-
-    <div
-        class="memory-value"
-        id="memoryValue"
-    >
-        Memory: 0
-    </div>
-
-
-    <!-- =====================================================
-         HISTORY
-    ====================================================== -->
-
-    <div
-        class="history-panel"
-        id="historyPanel"
-    >
-
-        <div class="history-header">
-
-            <div class="history-title">
-
-                <strong>
-                    📜 Calculation History
-                </strong>
-
-                <span>
-                    Up to 100 saved calculations
-                </span>
-
-            </div>
-
-            <div class="history-actions">
-
-                <button
-                    class="history-small-btn"
-                    onclick="exportHistory()"
-                >
-                    Export
-                </button>
-
-                <button
-                    class="history-small-btn clear-hist-btn"
-                    onclick="clearHistory()"
-                >
-                    Clear
-                </button>
-
-            </div>
-
-        </div>
-
-        <input
-            id="historySearch"
-            class="history-search"
-            placeholder="Search history..."
-            oninput="renderHistory()"
-        >
-
-        <div
-            class="history-list"
-            id="historyList"
-        ></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         TOOLS
-    ====================================================== -->
-
-    <div
-        class="tools-panel"
-        id="toolsPanel"
-    >
-
-        <div class="tools-title">
-
-            <div class="tools-title-left">
-
-                <div class="tools-icon">
-                    🧠
-                </div>
-
-                <div>
-
-                    <strong>
-                        Smart Calculation Hub
-                    </strong>
-
-                </div>
-
-            </div>
-
-            <span>
-                12 Utilities
-            </span>
-
-        </div>
-
-
-        <div class="tool-segments">
-
-            <button
-                class="tool-segment active"
-                data-tool="distance"
-                onclick="selectTool('distance')"
-            >
-                📏 Distance
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="area"
-                onclick="selectTool('area')"
-            >
-                🗺️ Area
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="date"
-                onclick="selectTool('date')"
-            >
-                📅 Date
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="data"
-                onclick="selectTool('data')"
-            >
-                💾 Data
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="discount"
-                onclick="selectTool('discount')"
-            >
-                🏷️ Discount
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="mass"
-                onclick="selectTool('mass')"
-            >
-                ⚖️ Mass
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="speed"
-                onclick="selectTool('speed')"
-            >
-                🚀 Speed
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="temp"
-                onclick="selectTool('temp')"
-            >
-                🌡️ Temp
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="time"
-                onclick="selectTool('time')"
-            >
-                ⏱️ Time
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="bmi"
-                onclick="selectTool('bmi')"
-            >
-                🧍 BMI
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="volume"
-                onclick="selectTool('volume')"
-            >
-                🧪 Volume
-            </button>
-
-            <button
-                class="tool-segment"
-                data-tool="age"
-                onclick="selectTool('age')"
-            >
-                🎂 Exact Age
-            </button>
-
-        </div>
-
-
-        <div
-            class="tool-body"
-            id="toolBody"
-        ></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         SCIENTIFIC
-    ====================================================== -->
-
-    <div
-        class="scientific-panel"
-        id="scientificPanel"
-    >
-
-        <div class="sci-toolbar">
-
-            <span class="sci-title">
-                🔬 Scientific Engine
-            </span>
-
-            <div class="angle-switch">
-
-                <button
-                    id="degreeBtn"
-                    class="angle-btn active"
-                    onclick="setAngleMode('DEG')"
-                >
-                    DEG
-                </button>
-
-                <button
-                    id="radianBtn"
-                    class="angle-btn"
-                    onclick="setAngleMode('RAD')"
-                >
-                    RAD
-                </button>
-
-            </div>
-
-        </div>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('sin(')"
-        >
-            sin
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('cos(')"
-        >
-            cos
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('tan(')"
-        >
-            tan
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('sqrt(')"
-        >
-            √
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('log(')"
-        >
-            log
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('ln(')"
-        >
-            ln
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('^')"
-        >
-            xʸ
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('fact(')"
-        >
-            x!
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('e^(')"
-        >
-            eˣ
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('1/(')"
-        >
-            1/x
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('π')"
-        >
-            π
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('e')"
-        >
-            e
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('(')"
-        >
-            (
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific(')')"
-        >
-            )
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific(',')"
-        >
-            ,
-        </button>
-
-        <button
-            class="btn-sci"
-            onclick="appendScientific('Ans')"
-        >
-            Ans
-        </button>
-
-    </div>
-
-
-    <!-- =====================================================
-         KEYPAD
-    ====================================================== -->
-
-    <div class="buttons">
-
-        <button
-            class="btn-action"
-            onclick="clearDisplay()"
-        >
-            C
-        </button>
-
-        <button
-            class="btn-action"
-            onclick="deleteLast()"
-        >
-            DEL
-        </button>
-
-        <button
-            class="btn-action"
-            onclick="appendOperator('%')"
-        >
-            %
-        </button>
-
-        <button
-            class="operator"
-            onclick="appendOperator('/')"
-        >
-            ÷
-        </button>
-
-
-        <button onclick="appendNumber('7')">
-            7
-        </button>
-
-        <button onclick="appendNumber('8')">
-            8
-        </button>
-
-        <button onclick="appendNumber('9')">
-            9
-        </button>
-
-        <button
-            class="operator"
-            onclick="appendOperator('*')"
-        >
-            ×
-        </button>
-
-
-        <button onclick="appendNumber('4')">
-            4
-        </button>
-
-        <button onclick="appendNumber('5')">
-            5
-        </button>
-
-        <button onclick="appendNumber('6')">
-            6
-        </button>
-
-        <button
-            class="operator"
-            onclick="appendOperator('-')"
-        >
-            −
-        </button>
-
-
-        <button onclick="appendNumber('1')">
-            1
-        </button>
-
-        <button onclick="appendNumber('2')">
-            2
-        </button>
-
-        <button onclick="appendNumber('3')">
-            3
-        </button>
-
-        <button
-            class="operator"
-            onclick="appendOperator('+')"
-        >
-            +
-        </button>
-
-
-        <button onclick="appendNumber('0')">
-            0
-        </button>
-
-        <button onclick="appendNumber('.')">
-            .
-        </button>
-
-        <button
-            class="equal"
-            onclick="calculate()"
-            style="grid-column:span 2;"
-        >
-            =
-        </button>
-
-    </div>
-
-
-    <div class="bottom-bar">
-
-        <span class="bottom-hint">
-            ⌨ Keyboard supported
-        </span>
-
-        <span class="bottom-brand">
-            DILSHAD • CALC PRO
-        </span>
-
-    </div>
-
-</div>
-
-
 <!-- =========================================================
-     SETTINGS
+HEADER
 ========================================================= -->
 
-<div
-    class="settings-panel"
-    id="settingsPanel"
-    onclick="closeSettingsOutside(event)"
->
+<div class="header-section">
 
-    <div class="settings-card">
+    <div class="brand-area">
 
-        <div class="settings-head">
+        <img
+            src="my_logo.png"
+            alt="Dilshad's Calc Pro Logo"
+            class="logo"
+        >
 
-            <strong>
-                ⚙️ Personalize Calc Pro
-            </strong>
+        <div class="brand-text">
 
-            <button
-                class="settings-close"
-                onclick="closeSettings()"
+            <div
+                class="brand-name"
+                id="calc-title"
             >
-                ×
-            </button>
+                Dilshad's Calc Pro
+            </div>
 
-        </div>
-
-        <div class="settings-label">
-            Accent Theme
-        </div>
-
-        <div class="theme-grid">
-
-            <button
-                class="theme-btn theme-cyan"
-                onclick="setTheme('cyan')"
-            >
-                CYAN
-            </button>
-
-            <button
-                class="theme-btn theme-purple"
-                onclick="setTheme('purple')"
-            >
-                PURPLE
-            </button>
-
-            <button
-                class="theme-btn theme-green"
-                onclick="setTheme('green')"
-            >
-                GREEN
-            </button>
-
-            <button
-                class="theme-btn theme-orange"
-                onclick="setTheme('orange')"
-            >
-                ORANGE
-            </button>
-
-        </div>
-
-        <div class="setting-row">
-
-            <span>
-                Haptic feedback
-            </span>
-
-            <button onclick="toggleHaptics()">
-                Toggle
-            </button>
-
-        </div>
-
-        <div class="setting-row">
-
-            <span>
-                Fullscreen result
-            </span>
-
-            <button onclick="openBigDisplay()">
-                Open
-            </button>
-
-        </div>
-
-        <div class="setting-row">
-
-            <span>
-                Reset saved preferences
-            </span>
-
-            <button onclick="resetPreferences()">
-                Reset
-            </button>
+            <div class="brand-subtitle">
+                Smart • Scientific • Trader • P2P
+            </div>
 
         </div>
 
@@ -2584,35 +1189,503 @@ body::after{
 
 </div>
 
-
 <!-- =========================================================
-     BIG RESULT
+MAIN ACTIONS
 ========================================================= -->
 
-<div
-    class="big-display-overlay"
-    id="bigDisplayOverlay"
->
+<div class="action-row">
 
     <button
-        class="big-close"
-        onclick="closeBigDisplay()"
+        class="btn-toggle-sci"
+        onclick="toggleScientificPanel()"
     >
-        ×
+        🔬 Mode
     </button>
 
+    <button
+        class="btn-toggle-hist"
+        onclick="toggleHistoryPanel()"
+    >
+        📜 History
+    </button>
+
+    <button
+        class="btn-toggle-tools"
+        onclick="toggleToolsPanel()"
+    >
+        🧰 Tools
+    </button>
+
+    <button
+        class="btn-revise"
+        onclick="reviseCalculation()"
+    >
+        🔊 Revise
+    </button>
+
+</div>
+
+<!-- =========================================================
+DISPLAY
+========================================================= -->
+
+<div class="display-container">
+
     <div
-        class="big-result"
-        id="bigResult"
+        id="display"
+        class="calc-display"
     >
         0
     </div>
 
 </div>
 
+<!-- =========================================================
+HISTORY
+========================================================= -->
+
+<div
+    class="history-panel"
+    id="historyPanel"
+>
+
+    <div class="history-header">
+
+        <span>
+            Previous Logs • Max 100
+        </span>
+
+        <button
+            class="clear-hist-btn"
+            onclick="clearHistory()"
+        >
+            Clear All
+        </button>
+
+    </div>
+
+    <div
+        class="history-list"
+        id="historyList"
+    ></div>
+
+</div>
 
 <!-- =========================================================
-     PRIVATE VAULT
+TOOLS PANEL
+========================================================= -->
+
+<div
+    class="tools-panel"
+    id="toolsPanel"
+>
+
+    <div class="tools-title">
+
+        <strong>
+            🧰 Smart Calculation Hub
+        </strong>
+
+        <span id="toolCount">
+            30+ Tools
+        </span>
+
+    </div>
+
+    <!-- CATEGORY TABS -->
+
+    <div class="tool-categories">
+
+        <button
+            class="tool-category active"
+            id="catExisting"
+            onclick="setToolCategory('existing')"
+        >
+            🧮 Utility
+        </button>
+
+        <button
+            class="tool-category"
+            id="catTrader"
+            onclick="setToolCategory('trader')"
+        >
+            📈 Trader
+        </button>
+
+        <button
+            class="tool-category"
+            id="catP2P"
+            onclick="setToolCategory('p2p')"
+        >
+            🤝 P2P
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+    EXISTING TOOLS
+    ====================================================== -->
+
+    <div
+        class="tool-segments"
+        id="existingTools"
+    >
+
+        <button class="tool-segment active"
+            data-tool="distance"
+            onclick="selectTool('distance')">
+            📏 Distance
+        </button>
+
+        <button class="tool-segment"
+            data-tool="area"
+            onclick="selectTool('area')">
+            🗺️ Area
+        </button>
+
+        <button class="tool-segment"
+            data-tool="date"
+            onclick="selectTool('date')">
+            📅 Date
+        </button>
+
+        <button class="tool-segment"
+            data-tool="data"
+            onclick="selectTool('data')">
+            💾 Data
+        </button>
+
+        <button class="tool-segment"
+            data-tool="discount"
+            onclick="selectTool('discount')">
+            🏷️ Discount
+        </button>
+
+        <button class="tool-segment"
+            data-tool="mass"
+            onclick="selectTool('mass')">
+            🏋️ Mass
+        </button>
+
+        <button class="tool-segment"
+            data-tool="speed"
+            onclick="selectTool('speed')">
+            🚀 Speed
+        </button>
+
+        <button class="tool-segment"
+            data-tool="temp"
+            onclick="selectTool('temp')">
+            🌡️ Temperature
+        </button>
+
+        <button class="tool-segment"
+            data-tool="time"
+            onclick="selectTool('time')">
+            ⏱️ Time
+        </button>
+
+        <button class="tool-segment"
+            data-tool="bmi"
+            onclick="selectTool('bmi')">
+            ⚖️ BMI
+        </button>
+
+        <button class="tool-segment"
+            data-tool="volume"
+            onclick="selectTool('volume')">
+            🧪 Volume
+        </button>
+
+        <button class="tool-segment"
+            data-tool="age"
+            onclick="selectTool('age')">
+            🎂 Exact Age
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+    TRADER TOOLS
+    ====================================================== -->
+
+    <div
+        class="tool-segments"
+        id="traderTools"
+        style="display:none;"
+    >
+
+        <button class="tool-segment"
+            data-tool="pnl"
+            onclick="selectTool('pnl')">
+            ₿ Crypto P&L
+        </button>
+
+        <button class="tool-segment"
+            data-tool="futures"
+            onclick="selectTool('futures')">
+            ⚡ Futures
+        </button>
+
+        <button class="tool-segment"
+            data-tool="risk"
+            onclick="selectTool('risk')">
+            🎯 Risk
+        </button>
+
+        <button class="tool-segment"
+            data-tool="rr"
+            onclick="selectTool('rr')">
+            ⚖️ R:R
+        </button>
+
+        <button class="tool-segment"
+            data-tool="fees"
+            onclick="selectTool('fees')">
+            💸 Fees
+        </button>
+
+        <button class="tool-segment"
+            data-tool="dca"
+            onclick="selectTool('dca')">
+            📊 DCA
+        </button>
+
+        <button class="tool-segment"
+            data-tool="crypto"
+            onclick="selectTool('crypto')">
+            🪙 Crypto
+        </button>
+
+        <button class="tool-segment"
+            data-tool="gold"
+            onclick="selectTool('gold')">
+            🥇 XAUUSD
+        </button>
+
+        <button class="tool-segment"
+            data-tool="pip"
+            onclick="selectTool('pip')">
+            📈 Pip / Point
+        </button>
+
+        <button class="tool-segment"
+            data-tool="usdt"
+            onclick="selectTool('usdt')">
+            💵 USDT / INR
+        </button>
+
+        <button class="tool-segment"
+            data-tool="journal"
+            onclick="selectTool('journal')">
+            📒 Journal
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+    P2P TOOLS
+    ====================================================== -->
+
+    <div
+        class="tool-segments"
+        id="p2pTools"
+        style="display:none;"
+    >
+
+        <button class="tool-segment"
+            data-tool="p2pbook"
+            onclick="selectTool('p2pbook')">
+            🤝 P2P Book
+        </button>
+
+        <button class="tool-segment"
+            data-tool="p2pquick"
+            onclick="selectTool('p2pquick')">
+            ⚡ Quick P2P
+        </button>
+
+        <button class="tool-segment"
+            data-tool="p2pcalc"
+            onclick="selectTool('p2pcalc')">
+            💰 P2P Calculator
+        </button>
+
+    </div>
+
+    <div
+        class="tool-body"
+        id="toolBody"
+    ></div>
+
+</div>
+
+<!-- =========================================================
+SCIENTIFIC MODE
+========================================================= -->
+
+<div
+    class="scientific-panel"
+    id="scientificPanel"
+>
+
+<button class="btn-sci"
+    onclick="appendScientific('sin(')">
+    sin
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('cos(')">
+    cos
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('tan(')">
+    tan
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('sqrt(')">
+    √
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('log(')">
+    log
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('ln(')">
+    ln
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('^')">
+    aˣ
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('fact(')">
+    x!
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('e^(')">
+    eˣ
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('1/(')">
+    inv
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('π')">
+    π
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('e')">
+    e
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific('(')">
+    (
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific(')')">
+    )
+</button>
+
+<button class="btn-sci"
+    onclick="appendScientific(',')">
+    ,
+</button>
+
+<button class="btn-sci"
+    style="visibility:hidden;">
+</button>
+
+</div>
+
+<!-- =========================================================
+MAIN CALCULATOR
+========================================================= -->
+
+<div class="buttons">
+
+<button
+    class="btn-action"
+    onclick="clearDisplay()">
+    C
+</button>
+
+<button
+    class="btn-action"
+    onclick="deleteLast()">
+    DEL
+</button>
+
+<button
+    class="btn-action"
+    onclick="appendOperator('%')">
+    %
+</button>
+
+<button
+    class="operator"
+    onclick="appendOperator('/')">
+    ÷
+</button>
+
+<button onclick="appendNumber('7')">7</button>
+<button onclick="appendNumber('8')">8</button>
+<button onclick="appendNumber('9')">9</button>
+
+<button
+    class="operator"
+    onclick="appendOperator('*')">
+    ×
+</button>
+
+<button onclick="appendNumber('4')">4</button>
+<button onclick="appendNumber('5')">5</button>
+<button onclick="appendNumber('6')">6</button>
+
+<button
+    class="operator"
+    onclick="appendOperator('-')">
+    -
+</button>
+
+<button onclick="appendNumber('1')">1</button>
+<button onclick="appendNumber('2')">2</button>
+<button onclick="appendNumber('3')">3</button>
+
+<button
+    class="operator"
+    onclick="appendOperator('+')">
+    +
+</button>
+
+<button onclick="appendNumber('0')">0</button>
+<button onclick="appendNumber('.')">.</button>
+
+<button
+    class="equal"
+    onclick="calculate()"
+    style="grid-column:span 2;">
+    =
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================================================
+PRIVATE VAULT
 ========================================================= -->
 
 <div
@@ -2620,79 +1693,48 @@ body::after{
     class="vault-overlay"
 >
 
-    <div class="vault-content">
+<div class="vault-content">
 
-        <div class="vault-header">
+    <div class="vault-header">
 
-            <div class="vault-title-area">
+        <h3>🔒 Private Vault</h3>
 
-                <div class="vault-icon">
-                    🔒
-                </div>
+        <button
+            class="close-vault-btn"
+            onclick="closeVault()">
+            Lock
+        </button>
 
-                <div>
+    </div>
 
-                    <h3>
-                        Private Vault
-                    </h3>
+    <label class="file-upload-label">
 
-                    <div class="vault-subtitle">
-                        Private local media storage
-                    </div>
+        📁 Upload to Hide Media
 
-                </div>
+        <input
+            type="file"
+            id="vaultInput"
+            accept="image/*,video/*"
+            multiple
+            style="display:none;"
+            onchange="handleFileSelect(event)"
+        >
 
-            </div>
+    </label>
 
-            <button
-                class="close-vault-btn"
-                onclick="closeVault()"
-            >
-                Lock
-            </button>
-
-        </div>
-
-        <label class="file-upload-label">
-
-            📁 Upload Media to Vault
-
-            <input
-                type="file"
-                id="vaultInput"
-                accept="image/*,video/*"
-                multiple
-                style="display:none"
-                onchange="handleFileSelect(event)"
-            >
-
-        </label>
-
-        <div class="vault-info">
-            Stored locally in your browser
-        </div>
-
-        <div
-            id="galleryGrid"
-            class="gallery-grid"
-        ></div>
-
+    <div
+        id="galleryGrid"
+        class="gallery-grid">
     </div>
 
 </div>
 
-
-<div
-    id="toast"
-    class="toast"
->
-    Done
 </div>
 
-
 <script>
+
 /* =========================================================
-   CORE STATE
+CORE CALCULATOR
 ========================================================= */
 
 const display =
@@ -2701,27 +1743,9 @@ const display =
 const calcTitle =
     document.getElementById("calc-title");
 
-const livePreview =
-    document.getElementById("livePreview");
-
-let clearOnNextInput = false;
-
-let lastActiveFormula = "";
-
-let finalCalculationResult = "";
-
-let lastAnswer = 0;
-
-let memory =
-    Number(
-        localStorage.getItem("calcMemory") || 0
-    );
-
-let angleMode =
-    localStorage.getItem("angleMode") || "DEG";
-
-let haptics =
-    localStorage.getItem("calcHaptics") !== "false";
+let clearOnNextInput=false;
+let lastActiveFormula="";
+let finalCalculationResult="";
 
 let historyLog =
     JSON.parse(
@@ -2731,73 +1755,50 @@ let historyLog =
 let vaultCode =
     localStorage.getItem("vaultCode") || null;
 
-let equalClickCount = 0;
-
-let currentTool = "distance";
-
+let equalClickCount=0;
 
 /* =========================================================
-   SCIENTIFIC FUNCTIONS
+SCIENTIFIC FUNCTIONS
 ========================================================= */
 
-function sin(x){
+const sin =
+    deg => Math.sin(deg*Math.PI/180);
 
-    return angleMode === "DEG"
-        ? Math.sin(x * Math.PI / 180)
-        : Math.sin(x);
-}
+const cos =
+    deg => Math.cos(deg*Math.PI/180);
 
-function cos(x){
+const tan =
+    deg => Math.tan(deg*Math.PI/180);
 
-    return angleMode === "DEG"
-        ? Math.cos(x * Math.PI / 180)
-        : Math.cos(x);
-}
+const log =
+    x => Math.log10(x);
 
-function tan(x){
+const ln =
+    x => Math.log(x);
 
-    return angleMode === "DEG"
-        ? Math.tan(x * Math.PI / 180)
-        : Math.tan(x);
-}
+const sqrt =
+    x => Math.sqrt(x);
 
-function log(x){
-    return Math.log10(x);
-}
-
-function ln(x){
-    return Math.log(x);
-}
-
-function sqrt(x){
-    return Math.sqrt(x);
-}
-
-function fact(n){
+const fact = n => {
 
     if(
-        n < 0 ||
+        n<0 ||
         !Number.isInteger(n)
-    ){
-        return NaN;
-    }
+    ) return NaN;
 
-    if(n === 0 || n === 1){
+    if(n===0 || n===1)
         return 1;
-    }
 
-    let r = 1;
+    let r=1;
 
-    for(let i=2;i<=n;i++){
-        r *= i;
-    }
+    for(let i=2;i<=n;i++)
+        r*=i;
 
     return r;
-}
-
+};
 
 /* =========================================================
-   INITIALIZATION
+INIT
 ========================================================= */
 
 if(!vaultCode){
@@ -2807,101 +1808,24 @@ if(!vaultCode){
 
 }
 
-updateMemoryDisplay();
-setAngleMode(angleMode);
 renderHistory();
 selectTool("distance");
 
-
 /* =========================================================
-   DISPLAY
+DISPLAY
 ========================================================= */
 
 function updateDisplayValue(value){
 
     display.innerText =
-        value === ""
-            ? "0"
-            : value;
+        value==="" ? "0" : value;
 
     display.scrollLeft =
         display.scrollWidth;
-
-    updateLivePreview();
 }
-
-function updateLivePreview(){
-
-    const value = display.innerText;
-
-    if(
-        value === "0" ||
-        value === "Error" ||
-        value === "Code Set!"
-    ){
-
-        livePreview.innerHTML =
-            "<strong>Ready</strong>";
-
-        return;
-    }
-
-    if(clearOnNextInput){
-
-        livePreview.innerHTML =
-            "<strong>Answer</strong> • Tap a number to continue";
-
-        return;
-    }
-
-    try{
-
-        const result =
-            evaluateExpression(value);
-
-        if(
-            typeof result === "number" &&
-            Number.isFinite(result)
-        ){
-
-            livePreview.innerHTML =
-                "<strong>Preview</strong> • " +
-                formatNumber(result);
-
-        }else{
-
-            livePreview.innerHTML =
-                "<strong>Expression</strong>";
-
-        }
-
-    }catch{
-
-        livePreview.innerHTML =
-            "<strong>Expression</strong>";
-    }
-}
-
 
 /* =========================================================
-   HAPTIC
-========================================================= */
-
-function vibrate(){
-
-    if(
-        haptics &&
-        navigator.vibrate
-    ){
-
-        navigator.vibrate(8);
-
-    }
-}
-
-
-/* =========================================================
-   PANELS
+PANELS
 ========================================================= */
 
 function closeAllPanels(){
@@ -2921,76 +1845,58 @@ function closeAllPanels(){
 
 function toggleScientificPanel(){
 
-    const panel =
+    const p =
         document.getElementById(
             "scientificPanel"
         );
 
-    const wasOpen =
-        panel.classList.contains("open");
+    const open =
+        p.classList.contains("open");
 
     closeAllPanels();
 
-    if(!wasOpen){
-
-        panel.classList.add("open");
-
-    }
-
-    vibrate();
+    if(!open)
+        p.classList.add("open");
 }
 
 function toggleHistoryPanel(){
 
-    const panel =
+    const p =
         document.getElementById(
             "historyPanel"
         );
 
-    const wasOpen =
-        panel.classList.contains("open");
+    const open =
+        p.classList.contains("open");
 
     closeAllPanels();
 
-    if(!wasOpen){
-
-        panel.classList.add("open");
-
-    }
-
-    vibrate();
+    if(!open)
+        p.classList.add("open");
 }
 
 function toggleToolsPanel(){
 
-    const panel =
+    const p =
         document.getElementById(
             "toolsPanel"
         );
 
-    const wasOpen =
-        panel.classList.contains("open");
+    const open =
+        p.classList.contains("open");
 
     closeAllPanels();
 
-    if(!wasOpen){
-
-        panel.classList.add("open");
-
-    }
-
-    vibrate();
+    if(!open)
+        p.classList.add("open");
 }
 
-
 /* =========================================================
-   INPUT
+CALCULATOR INPUT
 ========================================================= */
 
 function appendScientific(val){
 
-    vibrate();
-
     display.classList.remove(
         "animate-pop"
     );
@@ -2998,33 +1904,24 @@ function appendScientific(val){
     if(clearOnNextInput){
 
         updateDisplayValue("");
-
-        clearOnNextInput = false;
+        clearOnNextInput=false;
 
     }
 
     let current =
-        display.innerText === "0"
+        display.innerText==="0"
             ? ""
             : display.innerText;
 
-    if(val === "Ans"){
-
-        val = String(lastAnswer);
-
-    }
-
     updateDisplayValue(
-        current + val
+        current+val
     );
 
-    equalClickCount = 0;
+    equalClickCount=0;
 }
 
 function appendNumber(value){
 
-    vibrate();
-
     display.classList.remove(
         "animate-pop"
     );
@@ -3032,17 +1929,16 @@ function appendNumber(value){
     if(clearOnNextInput){
 
         updateDisplayValue("");
-
-        clearOnNextInput = false;
+        clearOnNextInput=false;
 
     }
 
     let current =
-        display.innerText === "0"
+        display.innerText==="0"
             ? ""
             : display.innerText;
 
-    if(value === "."){
+    if(value==="."){
 
         const parts =
             current.split(
@@ -3050,45 +1946,37 @@ function appendNumber(value){
             );
 
         const currentPart =
-            parts[parts.length - 1];
+            parts[parts.length-1];
 
-        if(
-            currentPart.includes(".")
-        ){
+        if(currentPart.includes("."))
             return;
-        }
-
     }
 
     updateDisplayValue(
-        current + value
+        current+value
     );
 
-    equalClickCount = 0;
+    equalClickCount=0;
 }
 
 function appendOperator(op){
-
-    vibrate();
 
     display.classList.remove(
         "animate-pop"
     );
 
-    clearOnNextInput = false;
+    if(clearOnNextInput)
+        clearOnNextInput=false;
 
     let current =
-        display.innerText === "0"
+        display.innerText==="0"
             ? ""
             : display.innerText;
 
-    if(current === ""){
+    if(current===""){
 
-        if(op === "-"){
-
-            updateDisplayValue("-");
-
-        }
+        if(op==="-")
+            updateDisplayValue(op);
 
         return;
     }
@@ -3097,162 +1985,86 @@ function appendOperator(op){
         current.slice(-1);
 
     if(
-        ["+","-","*","/","%"].includes(last)
+        ["+","-","*","/","%"]
+        .includes(last)
     ){
 
         updateDisplayValue(
-            current.slice(0,-1) + op
+            current.slice(0,-1)+op
         );
 
     }else{
 
         updateDisplayValue(
-            current + op
+            current+op
         );
 
     }
 
-    equalClickCount = 0;
+    equalClickCount=0;
 }
 
 function clearDisplay(){
 
-    vibrate();
+    display.classList.remove(
+        "animate-pop"
+    );
 
     updateDisplayValue("");
 
-    lastActiveFormula = "";
-    finalCalculationResult = "";
-
-    clearOnNextInput = false;
-    equalClickCount = 0;
+    lastActiveFormula="";
+    finalCalculationResult="";
+    equalClickCount=0;
 }
 
 function deleteLast(){
 
-    vibrate();
-
-    if(clearOnNextInput){
-
-        clearDisplay();
-        return;
-
-    }
-
-    const current =
-        display.innerText;
+    display.classList.remove(
+        "animate-pop"
+    );
 
     updateDisplayValue(
-        current.slice(0,-1)
+        display.innerText.slice(0,-1)
     );
 
-    equalClickCount = 0;
+    equalClickCount=0;
 }
-
 
 /* =========================================================
-   CALCULATOR ENGINE
+CALCULATION ENGINE
 ========================================================= */
-
-function evaluateExpression(input){
-
-    let expression =
-        input
-            .replaceAll("×","*")
-            .replaceAll("÷","/")
-            .replace(
-                /e\^\(/g,
-                "Math.exp("
-            )
-            .replaceAll("^","**")
-            .replaceAll("π","Math.PI")
-            .replace(
-                /\bAns\b/g,
-                String(lastAnswer)
-            )
-            .replace(
-                /\be\b/g,
-                "Math.E"
-            );
-
-    if(
-        /[^0-9+\-*/%().,\sA-Za-z_]/.test(
-            expression
-        )
-    ){
-
-        throw new Error(
-            "Invalid expression"
-        );
-
-    }
-
-    const fn =
-        new Function(
-            "sin",
-            "cos",
-            "tan",
-            "log",
-            "ln",
-            "sqrt",
-            "fact",
-            "Math",
-            `
-            "use strict";
-            return (${expression});
-            `
-        );
-
-    return fn(
-        sin,
-        cos,
-        tan,
-        log,
-        ln,
-        sqrt,
-        fact,
-        Math
-    );
-}
 
 function calculate(){
 
-    vibrate();
-
     if(
-        display.innerText === "" ||
-        display.innerText === "0"
-    ){
-        return;
-    }
+        display.innerText==="" ||
+        display.innerText==="0"
+    ) return;
 
-    let input =
+    let currentInput =
         display.innerText;
 
     const last =
-        input.slice(-1);
+        currentInput.slice(-1);
 
     if(
-        ["+","-","*","/","%"].includes(last)
+        ["+","-","*","/","%"]
+        .includes(last)
     ){
 
-        input =
-            input.slice(0,-1);
-
+        currentInput =
+            currentInput.slice(0,-1);
     }
 
-
-    /* =====================================================
-       PRIVATE VAULT PASSCODE CREATION
-    ====================================================== */
+    /* PRIVATE VAULT PASSCODE */
 
     if(
         !vaultCode &&
-        !isNaN(input) &&
-        input !== ""
+        !isNaN(currentInput) &&
+        currentInput!==""
     ){
 
-        vaultCode = input;
+        vaultCode=currentInput;
 
         localStorage.setItem(
             "vaultCode",
@@ -3263,87 +2075,128 @@ function calculate(){
             "Code Set!"
         );
 
-        clearOnNextInput = true;
+        clearOnNextInput=true;
 
         calcTitle.innerText =
             "Dilshad's Calc Pro";
 
-        showToast(
-            "Private Vault passcode created"
-        );
-
         return;
     }
 
-
-    /* =====================================================
-       VAULT ACCESS
-    ====================================================== */
+    /* PRIVATE VAULT ACCESS */
 
     if(
         vaultCode &&
-        input === vaultCode
+        currentInput===vaultCode
     ){
 
         equalClickCount++;
 
-        if(equalClickCount === 2){
+        if(equalClickCount===2){
 
             openVault();
-
             clearDisplay();
-
             return;
         }
 
     }else{
 
-        equalClickCount = 1;
-
+        equalClickCount=1;
     }
 
-
-    /* =====================================================
-       CALCULATE
-    ====================================================== */
+    /* ACTUAL CALCULATION */
 
     try{
 
         lastActiveFormula =
-            input;
+            currentInput;
 
-        const result =
-            evaluateExpression(input);
+        /*
+         * Convert e^( BEFORE converting ^.
+         * This fixes the scientific e^x operation.
+         */
+
+        let expression =
+            currentInput
+                .replaceAll("×","*")
+                .replaceAll("÷","/")
+                .replaceAll("π","Math.PI")
+                .replace(
+                    /e\^\(/g,
+                    "Math.exp("
+                )
+                .replace(
+                    /\be\b/g,
+                    "Math.E"
+                )
+                .replaceAll("^","**");
 
         if(
-            typeof result !== "number" ||
+            /[^0-9+\-*/%().,\sA-Za-z_]/.test(
+                expression
+            )
+        ){
+
+            throw new Error(
+                "Invalid expression"
+            );
+        }
+
+        const calculatorFunction =
+            new Function(
+                "sin",
+                "cos",
+                "tan",
+                "log",
+                "ln",
+                "sqrt",
+                "fact",
+                "Math",
+                `"use strict"; return (${expression});`
+            );
+
+        const result =
+            calculatorFunction(
+                sin,
+                cos,
+                tan,
+                log,
+                ln,
+                sqrt,
+                fact,
+                Math
+            );
+
+        if(
+            typeof result!=="number" ||
             !Number.isFinite(result)
         ){
 
             throw new Error(
                 "Invalid result"
             );
-
         }
 
-        const finalResult =
-            Number.isInteger(result)
-                ? result
-                : parseFloat(
-                    result.toFixed(10)
+        let finalResult=result;
+
+        if(
+            Math.abs(result%1)>0
+        ){
+
+            finalResult =
+                parseFloat(
+                    result.toFixed(8)
                 );
+        }
 
         finalCalculationResult =
-            finalResult;
-
-        lastAnswer =
             finalResult;
 
         updateDisplayValue(
             finalResult
         );
 
-        clearOnNextInput = true;
+        clearOnNextInput=true;
 
         saveToHistory(
             lastActiveFormula,
@@ -3360,199 +2213,22 @@ function calculate(){
             "animate-pop"
         );
 
-        livePreview.innerHTML =
-            "<strong>Answer</strong> • " +
-            formatNumber(finalResult);
-
     }catch(error){
 
-        updateDisplayValue(
-            "Error"
-        );
+        updateDisplayValue("Error");
 
-        lastActiveFormula = "";
-        finalCalculationResult = "";
-
-        clearOnNextInput = true;
+        lastActiveFormula="";
+        finalCalculationResult="";
+        clearOnNextInput=true;
 
         display.classList.add(
             "animate-pop"
         );
-
     }
 }
 
-
 /* =========================================================
-   FORMAT
-========================================================= */
-
-function formatNumber(value){
-
-    if(
-        typeof value !== "number" ||
-        !Number.isFinite(value)
-    ){
-        return String(value);
-    }
-
-    return Number(
-        value.toFixed(10)
-    ).toString();
-
-}
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-function copyResult(){
-
-    const value =
-        display.innerText;
-
-    if(!value){
-        return;
-    }
-
-    if(
-        navigator.clipboard
-    ){
-
-        navigator.clipboard
-            .writeText(value)
-            .then(
-                () => showToast(
-                    "Result copied"
-                )
-            );
-
-    }else{
-
-        showToast(
-            "Copy unavailable"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   BIG RESULT
-========================================================= */
-
-function openBigDisplay(){
-
-    document
-        .getElementById("bigResult")
-        .innerText =
-            display.innerText;
-
-    document
-        .getElementById("bigDisplayOverlay")
-        .classList.add("active");
-
-}
-
-function closeBigDisplay(){
-
-    document
-        .getElementById("bigDisplayOverlay")
-        .classList.remove("active");
-
-}
-
-
-/* =========================================================
-   MEMORY
-========================================================= */
-
-function updateMemoryDisplay(){
-
-    document
-        .getElementById("memoryValue")
-        .innerText =
-            "Memory: " +
-            formatNumber(memory);
-
-    localStorage.setItem(
-        "calcMemory",
-        memory
-    );
-}
-
-function getDisplayNumber(){
-
-    const value =
-        parseFloat(
-            display.innerText
-        );
-
-    return Number.isFinite(value)
-        ? value
-        : 0;
-}
-
-function memoryClear(){
-
-    memory = 0;
-
-    updateMemoryDisplay();
-
-    showToast("Memory cleared");
-
-}
-
-function memoryRecall(){
-
-    updateDisplayValue(
-        formatNumber(memory)
-    );
-
-    clearOnNextInput = false;
-
-    showToast("Memory recalled");
-
-}
-
-function memoryAdd(){
-
-    memory +=
-        getDisplayNumber();
-
-    updateMemoryDisplay();
-
-    showToast("Added to memory");
-
-}
-
-function memorySubtract(){
-
-    memory -=
-        getDisplayNumber();
-
-    updateMemoryDisplay();
-
-    showToast("Subtracted from memory");
-
-}
-
-function memoryStore(){
-
-    memory =
-        getDisplayNumber();
-
-    updateMemoryDisplay();
-
-    showToast("Stored in memory");
-
-}
-
-
-/* =========================================================
-   HISTORY
+HISTORY
 ========================================================= */
 
 function saveToHistory(
@@ -3561,27 +2237,17 @@ function saveToHistory(
 ){
 
     if(
-        historyLog.length > 0 &&
-        historyLog[0].formula === formula
-    ){
-        return;
-    }
+        historyLog.length>0 &&
+        historyLog[0].formula===formula
+    ) return;
 
     historyLog.unshift({
-
-        formula:formula,
-
-        result:result,
-
-        time:Date.now()
-
+        formula,
+        result
     });
 
-    if(historyLog.length > 100){
-
+    if(historyLog.length>100)
         historyLog.pop();
-
-    }
 
     localStorage.setItem(
         "calcHistory",
@@ -3593,259 +2259,111 @@ function saveToHistory(
 
 function renderHistory(){
 
-    const container =
+    const list =
         document.getElementById(
             "historyList"
         );
 
-    const search =
-        (
-            document.getElementById(
-                "historySearch"
-            )?.value || ""
-        ).toLowerCase();
+    list.innerHTML="";
 
-    container.innerHTML = "";
+    if(historyLog.length===0){
 
-    const filtered =
-        historyLog.filter(
-            item =>
-                String(
-                    item.formula
-                ).toLowerCase()
-                .includes(search) ||
-                String(
-                    item.result
-                ).toLowerCase()
-                .includes(search)
-        );
-
-    if(filtered.length === 0){
-
-        container.innerHTML =
-            '<div class="empty-history">No matching history</div>';
+        list.innerHTML =
+            `<div class="empty-history">
+                No history records yet
+            </div>`;
 
         return;
     }
 
-    filtered.forEach(
-        item => {
+    historyLog.forEach(item=>{
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+        const row =
+            document.createElement("div");
 
-            row.className =
-                "history-item";
+        row.className="history-item";
 
-            row.onclick =
-                () =>
-                    loadHistoryItem(
-                        item.result
-                    );
+        row.onclick=()=>{
+            loadHistoryItem(item.result);
+        };
 
-            const left =
-                document.createElement(
-                    "div"
-                );
+        const formula =
+            document.createElement("div");
 
-            left.className =
-                "history-item-left";
+        formula.className =
+            "history-formula";
 
-            const formula =
-                document.createElement(
-                    "div"
-                );
+        formula.textContent =
+            item.formula+" =";
 
-            formula.className =
-                "history-formula";
+        const result =
+            document.createElement("div");
 
-            formula.textContent =
-                item.formula + " =";
+        result.className =
+            "history-result";
 
-            const result =
-                document.createElement(
-                    "div"
-                );
+        result.textContent =
+            item.result;
 
-            result.className =
-                "history-result";
+        row.appendChild(formula);
+        row.appendChild(result);
 
-            result.textContent =
-                item.result;
-
-            const copy =
-                document.createElement(
-                    "button"
-                );
-
-            copy.className =
-                "history-copy";
-
-            copy.innerText =
-                "⧉";
-
-            copy.onclick =
-                event => {
-
-                    event.stopPropagation();
-
-                    navigator.clipboard
-                        ?.writeText(
-                            String(item.result)
-                        );
-
-                    showToast(
-                        "History result copied"
-                    );
-
-                };
-
-            left.appendChild(formula);
-            left.appendChild(result);
-
-            row.appendChild(left);
-            row.appendChild(copy);
-
-            container.appendChild(row);
-
-        }
-    );
+        list.appendChild(row);
+    });
 }
 
 function loadHistoryItem(value){
 
-    updateDisplayValue(
-        value
-    );
+    updateDisplayValue(value);
 
-    finalCalculationResult =
-        value;
-
-    lastAnswer =
-        Number(value) || 0;
-
-    lastActiveFormula = "";
-
-    clearOnNextInput = false;
-
-    showToast(
-        "History result loaded"
-    );
+    finalCalculationResult=value;
+    lastActiveFormula="";
+    clearOnNextInput=false;
 }
 
 function clearHistory(){
 
-    historyLog = [];
+    historyLog=[];
 
     localStorage.removeItem(
         "calcHistory"
     );
 
     renderHistory();
-
-    showToast(
-        "History cleared"
-    );
 }
-
-function exportHistory(){
-
-    if(historyLog.length === 0){
-
-        showToast(
-            "No history to export"
-        );
-
-        return;
-    }
-
-    const text =
-        historyLog
-            .map(
-                item =>
-                    `${item.formula} = ${item.result}`
-            )
-            .join("\n");
-
-    const blob =
-        new Blob(
-            [text],
-            {
-                type:"text/plain"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const a =
-        document.createElement("a");
-
-    a.href = url;
-    a.download =
-        "dilshad-calc-history.txt";
-
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    showToast(
-        "History exported"
-    );
-}
-
 
 /* =========================================================
-   VOICE REVISION
+VOICE REVISION
 ========================================================= */
 
 function reviseCalculation(){
 
-    if(
-        !window.speechSynthesis
-    ){
-
-        showToast(
-            "Speech is not supported"
-        );
-
-        return;
-    }
-
     window.speechSynthesis.cancel();
 
-    let context = "";
+    let text="";
 
-    if(
-        lastActiveFormula !== ""
-    ){
+    if(lastActiveFormula!==""){
 
-        context =
-            lastActiveFormula +
-            " equals " +
+        text =
+            lastActiveFormula+
+            " equals "+
             finalCalculationResult;
 
     }else if(
-        display.innerText !== "" &&
-        display.innerText !== "Error" &&
-        display.innerText !== "Code Set!"
+        display.innerText!=="" &&
+        display.innerText!=="Error" &&
+        display.innerText!=="Code Set!"
     ){
 
-        context =
-            display.innerText;
+        text=display.innerText;
 
     }else{
 
-        context =
-            "Zero";
-
+        text="Zero";
     }
 
-    const audio =
-        context
-
+    text =
+        text
             .replaceAll("+"," plus ")
             .replaceAll("-"," minus ")
             .replaceAll("*"," multiplied by ")
@@ -3856,91 +2374,243 @@ function reviseCalculation(){
             .replaceAll("sin("," sine of ")
             .replaceAll("cos("," cosine of ")
             .replaceAll("tan("," tangent of ")
-            .replaceAll("log("," logarithm of ")
-            .replaceAll("ln("," natural logarithm of ")
+            .replaceAll("log("," log base ten of ")
+            .replaceAll("ln("," natural log of ")
             .replaceAll("sqrt("," square root of ")
             .replaceAll("fact("," factorial of ")
             .replaceAll("e^("," e to the power of ")
+            .replaceAll("1/("," inverse of ")
             .replaceAll("^"," to the power of ")
             .replaceAll("("," open bracket ")
             .replaceAll(")"," close bracket ")
             .replaceAll("."," point ");
 
     const utterance =
-        new SpeechSynthesisUtterance(
-            audio
-        );
+        new SpeechSynthesisUtterance(text);
 
-    utterance.rate = .95;
+    utterance.rate=.95;
 
     window.speechSynthesis.speak(
         utterance
     );
-
-    showToast(
-        "Reading calculation"
-    );
 }
 
-
 /* =========================================================
-   ANGLE MODE
+PRIVATE VAULT
 ========================================================= */
 
-function setAngleMode(mode){
-
-    angleMode = mode;
-
-    localStorage.setItem(
-        "angleMode",
-        mode
-    );
+function openVault(){
 
     document
-        .getElementById("degreeBtn")
+        .getElementById("vaultOverlay")
+        .classList.add("active");
+
+    renderGallery();
+}
+
+function closeVault(){
+
+    document
+        .getElementById("vaultOverlay")
+        .classList.remove("active");
+
+    equalClickCount=0;
+}
+
+function handleFileSelect(event){
+
+    const files=event.target.files;
+
+    let items =
+        JSON.parse(
+            localStorage.getItem(
+                "vaultItems"
+            )
+        ) || [];
+
+    for(const file of files){
+
+        const reader =
+            new FileReader();
+
+        reader.onload=e=>{
+
+            items.push({
+
+                type:
+                    file.type.startsWith("video")
+                        ? "video"
+                        : "image",
+
+                data:e.target.result
+            });
+
+            localStorage.setItem(
+                "vaultItems",
+                JSON.stringify(items)
+            );
+
+            renderGallery();
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    event.target.value="";
+}
+
+function renderGallery(){
+
+    const grid =
+        document.getElementById(
+            "galleryGrid"
+        );
+
+    grid.innerHTML="";
+
+    let items =
+        JSON.parse(
+            localStorage.getItem(
+                "vaultItems"
+            )
+        ) || [];
+
+    items.forEach((item,index)=>{
+
+        const container =
+            document.createElement("div");
+
+        container.className=
+            "gallery-item";
+
+        if(item.type==="video"){
+
+            const video =
+                document.createElement("video");
+
+            video.src=item.data;
+            video.controls=true;
+
+            container.appendChild(video);
+
+        }else{
+
+            const img =
+                document.createElement("img");
+
+            img.src=item.data;
+
+            container.appendChild(img);
+        }
+
+        const deleteBtn =
+            document.createElement("button");
+
+        deleteBtn.className=
+            "delete-item-btn";
+
+        deleteBtn.innerHTML="×";
+
+        deleteBtn.onclick=()=>{
+
+            items.splice(index,1);
+
+            localStorage.setItem(
+                "vaultItems",
+                JSON.stringify(items)
+            );
+
+            renderGallery();
+        };
+
+        container.appendChild(deleteBtn);
+
+        grid.appendChild(container);
+    });
+}
+
+/* =========================================================
+TOOL CATEGORY SYSTEM
+========================================================= */
+
+let currentCategory="existing";
+let currentTool="distance";
+
+function setToolCategory(category){
+
+    currentCategory=category;
+
+    document
+        .getElementById("catExisting")
         .classList.toggle(
             "active",
-            mode === "DEG"
+            category==="existing"
         );
 
     document
-        .getElementById("radianBtn")
+        .getElementById("catTrader")
         .classList.toggle(
             "active",
-            mode === "RAD"
+            category==="trader"
         );
 
-    updateLivePreview();
+    document
+        .getElementById("catP2P")
+        .classList.toggle(
+            "active",
+            category==="p2p"
+        );
 
+    document.getElementById(
+        "existingTools"
+    ).style.display =
+        category==="existing"
+            ? "grid"
+            : "none";
+
+    document.getElementById(
+        "traderTools"
+    ).style.display =
+        category==="trader"
+            ? "grid"
+            : "none";
+
+    document.getElementById(
+        "p2pTools"
+    ).style.display =
+        category==="p2p"
+            ? "grid"
+            : "none";
+
+    if(category==="existing")
+        selectTool("distance");
+
+    if(category==="trader")
+        selectTool("pnl");
+
+    if(category==="p2p")
+        selectTool("p2pbook");
 }
-
-
-/* =========================================================
-   TOOLS
-========================================================= */
 
 function selectTool(type){
 
-    currentTool = type;
+    currentTool=type;
 
     document
-        .querySelectorAll(
-            ".tool-segment"
-        )
-        .forEach(
-            button => {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.tool === type
-                );
-
-            }
-        );
+        .querySelectorAll(".tool-segment")
+        .forEach(button=>{
+            button.classList.toggle(
+                "active",
+                button.dataset.tool===type
+            );
+        });
 
     renderTool(type);
-
 }
+
+/* =========================================================
+TOOL RENDER
+========================================================= */
 
 function renderTool(type){
 
@@ -3949,111 +2619,9 @@ function renderTool(type){
             "toolBody"
         );
 
-    body.innerHTML = "";
+    body.innerHTML="";
 
-    const metadata = {
-
-        distance:{
-            icon:"📏",
-            title:"Distance Converter",
-            sub:"Length and distance units"
-        },
-
-        area:{
-            icon:"🗺️",
-            title:"Area Converter",
-            sub:"Surface area conversion"
-        },
-
-        data:{
-            icon:"💾",
-            title:"Data Storage Converter",
-            sub:"Digital storage units"
-        },
-
-        mass:{
-            icon:"⚖️",
-            title:"Mass / Weight Converter",
-            sub:"Weight and mass units"
-        },
-
-        speed:{
-            icon:"🚀",
-            title:"Speed Converter",
-            sub:"Velocity conversion"
-        },
-
-        temp:{
-            icon:"🌡️",
-            title:"Temperature Converter",
-            sub:"Celsius, Fahrenheit and Kelvin"
-        },
-
-        time:{
-            icon:"⏱️",
-            title:"Time Converter",
-            sub:"Time units"
-        },
-
-        volume:{
-            icon:"🧪",
-            title:"Volume Converter",
-            sub:"Liquid and volume units"
-        },
-
-        bmi:{
-            icon:"🧍",
-            title:"BMI Calculator",
-            sub:"Body mass index"
-        },
-
-        discount:{
-            icon:"🏷️",
-            title:"Discount Calculator",
-            sub:"Price, savings and final amount"
-        },
-
-        date:{
-            icon:"📅",
-            title:"Date Difference",
-            sub:"Compare two calendar dates"
-        },
-
-        age:{
-            icon:"🎂",
-            title:"Exact Age Calculator",
-            sub:"Years, months and days"
-
-        }
-
-    };
-
-    const meta =
-        metadata[type];
-
-    body.innerHTML =
-        `
-        <div class="tool-heading">
-
-            <div class="tool-heading-icon">
-                ${meta.icon}
-            </div>
-
-            <div class="tool-heading-text">
-
-                <strong>
-                    ${meta.title}
-                </strong>
-
-                <span>
-                    ${meta.sub}
-                </span>
-
-            </div>
-
-        </div>
-        `;
-
+    /* EXISTING */
 
     if(
         [
@@ -4068,554 +2636,474 @@ function renderTool(type){
         ].includes(type)
     ){
 
+        const map={
+
+            distance:[
+                "📏 Distance Converter",
+                [
+                    "Meters",
+                    "Kilometers",
+                    "Centimeters",
+                    "Miles",
+                    "Feet",
+                    "Inches",
+                    "Yards"
+                ]
+            ],
+
+            area:[
+                "🗺️ Area Converter",
+                [
+                    "Square Meters",
+                    "Square Kilometers",
+                    "Square Feet",
+                    "Acres",
+                    "Hectares"
+                ]
+            ],
+
+            data:[
+                "💾 Data Storage Converter",
+                [
+                    "Bytes",
+                    "KB",
+                    "MB",
+                    "GB",
+                    "TB"
+                ]
+            ],
+
+            mass:[
+                "🏋️ Mass / Weight Converter",
+                [
+                    "Kilograms",
+                    "Grams",
+                    "Milligrams",
+                    "Pounds",
+                    "Ounces"
+                ]
+            ],
+
+            speed:[
+                "🚀 Speed Converter",
+                [
+                    "km/h",
+                    "m/s",
+                    "mph",
+                    "Knots"
+                ]
+            ],
+
+            temp:[
+                "🌡️ Temperature Converter",
+                [
+                    "Celsius",
+                    "Fahrenheit",
+                    "Kelvin"
+                ]
+            ],
+
+            time:[
+                "⏱️ Time Converter",
+                [
+                    "Seconds",
+                    "Minutes",
+                    "Hours",
+                    "Days",
+                    "Weeks"
+                ]
+            ],
+
+            volume:[
+                "🧪 Volume Converter",
+                [
+                    "Liters",
+                    "Milliliters",
+                    "Gallons (US)",
+                    "Cubic Meters"
+                ]
+            ]
+        };
+
         renderUnitConverter(
             type,
-            body
+            map[type][0],
+            map[type][1]
         );
 
         return;
-
     }
 
+    if(type==="bmi"){
 
-    if(type === "bmi"){
+        body.innerHTML=`
 
-        body.innerHTML += `
+        <div class="tool-row">
 
-            <div class="tool-row">
-
-                <div class="tool-group">
-
-                    <label>
-                        Weight (kg)
-                    </label>
-
-                    <input
-                        id="bmiWeight"
-                        class="tool-input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="70"
-                    >
-
-                </div>
-
-                <div class="tool-group">
-
-                    <label>
-                        Height (cm)
-                    </label>
-
-                    <input
-                        id="bmiHeight"
-                        class="tool-input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="175"
-                    >
-
-                </div>
-
+            <div class="tool-group">
+                <label>Weight (kg)</label>
+                <input
+                    type="number"
+                    id="bmiWeight"
+                    class="tool-input"
+                    placeholder="70">
             </div>
 
-            <button
-                class="btn-calc-tool"
-                onclick="calcBMI()"
-            >
-                Calculate BMI
-            </button>
-
-            <div
-                class="tool-result-box"
-                id="toolResult"
-            >
-                Enter your details
+            <div class="tool-group">
+                <label>Height (cm)</label>
+                <input
+                    type="number"
+                    id="bmiHeight"
+                    class="tool-input"
+                    placeholder="175">
             </div>
 
-            <div class="tool-description">
-                BMI is a general screening measurement.
-            </div>
+        </div>
 
-        `;
+        <button
+            class="btn-calc-tool"
+            onclick="calcBMI()">
+            Calculate BMI
+        </button>
+
+        <div
+            class="tool-result-box"
+            id="toolResult">
+            Enter your details
+        </div>
+
+        <div class="tool-description">
+            BMI is a general screening measurement.
+        </div>`;
 
         return;
     }
 
+    if(type==="discount"){
 
-    if(type === "discount"){
+        body.innerHTML=`
 
-        body.innerHTML += `
+        <div class="tool-row">
 
-            <div class="tool-row">
-
-                <div class="tool-group">
-
-                    <label>
-                        Original Price
-                    </label>
-
-                    <input
-                        id="discPrice"
-                        class="tool-input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="₹ 1000"
-                    >
-
-                </div>
-
-                <div class="tool-group">
-
-                    <label>
-                        Discount %
-                    </label>
-
-                    <input
-                        id="discPercent"
-                        class="tool-input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="20"
-                    >
-
-                </div>
-
+            <div class="tool-group">
+                <label>Original Price</label>
+                <input
+                    type="number"
+                    id="discPrice"
+                    class="tool-input"
+                    placeholder="Price">
             </div>
 
-            <button
-                class="btn-calc-tool"
-                onclick="calcDiscount()"
-            >
-                Calculate Discount
-            </button>
-
-            <div
-                class="tool-result-box"
-                id="toolResult"
-            >
-                Enter price and discount
+            <div class="tool-group">
+                <label>Discount (%)</label>
+                <input
+                    type="number"
+                    id="discPercent"
+                    class="tool-input"
+                    placeholder="%">
             </div>
 
-        `;
+        </div>
+
+        <button
+            class="btn-calc-tool"
+            onclick="calcDiscount()">
+            Calculate Discount
+        </button>
+
+        <div
+            class="tool-result-box"
+            id="toolResult">
+            Enter price and discount
+        </div>`;
 
         return;
     }
 
+    if(type==="date"){
 
-    if(type === "date"){
+        body.innerHTML=`
 
-        body.innerHTML += `
+        <div class="tool-group">
+            <label>Start Date</label>
+            <input
+                type="date"
+                id="dateStart"
+                class="tool-input">
+        </div>
 
-            <div class="tool-group">
+        <div class="tool-group">
+            <label>End Date</label>
+            <input
+                type="date"
+                id="dateEnd"
+                class="tool-input">
+        </div>
 
-                <label>
-                    Start Date
-                </label>
+        <button
+            class="btn-calc-tool"
+            onclick="calcDateDiff()">
+            Calculate Difference
+        </button>
 
-                <input
-                    id="dateStart"
-                    class="tool-input"
-                    type="date"
-                >
-
-            </div>
-
-            <div class="tool-group">
-
-                <label>
-                    End Date
-                </label>
-
-                <input
-                    id="dateEnd"
-                    class="tool-input"
-                    type="date"
-                >
-
-            </div>
-
-            <button
-                class="btn-calc-tool"
-                onclick="calcDateDiff()"
-            >
-                Calculate Difference
-            </button>
-
-            <div
-                class="tool-result-box"
-                id="toolResult"
-            >
-                Select both dates
-            </div>
-
-            <div
-                class="quick-stats"
-                id="dateStats"
-            ></div>
-
-        `;
+        <div
+            class="tool-result-box"
+            id="toolResult">
+            Select both dates
+        </div>`;
 
         setToday("dateEnd");
 
         return;
     }
 
+    if(type==="age"){
 
-    if(type === "age"){
+        body.innerHTML=`
 
-        body.innerHTML += `
+        <div class="tool-group">
+            <label>🎂 Date of Birth</label>
+            <input
+                type="date"
+                id="dobInput"
+                class="tool-input">
+        </div>
 
-            <div class="tool-group">
+        <div class="tool-group">
+            <label>📅 Calculate Age On</label>
+            <input
+                type="date"
+                id="targetDateInput"
+                class="tool-input">
+        </div>
 
-                <label>
-                    🎂 Date of Birth
-                </label>
+        <button
+            class="btn-calc-tool"
+            onclick="calcAge()">
+            Calculate Exact Age
+        </button>
 
-                <input
-                    id="dobInput"
-                    class="tool-input"
-                    type="date"
-                >
+        <div
+            class="tool-result-box"
+            id="toolResult">
+            Select your Date of Birth
+        </div>`;
 
-            </div>
+        setToday("targetDateInput");
 
-            <div class="tool-group">
+        return;
+    }
 
-                <label>
-                    📅 Calculate Age On
-                </label>
+    /* TRADER */
 
-                <input
-                    id="targetDateInput"
-                    class="tool-input"
-                    type="date"
-                >
+    if(type==="pnl"){
+        renderCryptoPnl();
+        return;
+    }
 
-            </div>
+    if(type==="futures"){
+        renderFutures();
+        return;
+    }
 
-            <button
-                class="btn-calc-tool"
-                onclick="calcAge()"
-            >
-                Calculate Exact Age
-            </button>
+    if(type==="risk"){
+        renderRisk();
+        return;
+    }
 
-            <div
-                class="tool-result-box"
-                id="toolResult"
-            >
-                Select your Date of Birth
-            </div>
+    if(type==="rr"){
+        renderRR();
+        return;
+    }
 
-            <div class="tool-description">
-                Calculates completed years, months and days.
-            </div>
+    if(type==="fees"){
+        renderFees();
+        return;
+    }
 
-        `;
+    if(type==="dca"){
+        renderDCA();
+        return;
+    }
 
-        setToday(
-            "targetDateInput"
-        );
+    if(type==="crypto"){
+        renderCrypto();
+        return;
+    }
 
+    if(type==="gold"){
+        renderGold();
+        return;
+    }
+
+    if(type==="pip"){
+        renderPip();
+        return;
+    }
+
+    if(type==="usdt"){
+        renderUSDT();
+        return;
+    }
+
+    if(type==="journal"){
+        renderJournal();
+        return;
+    }
+
+    /* P2P */
+
+    if(type==="p2pbook"){
+        renderP2PBook();
+        return;
+    }
+
+    if(type==="p2pquick"){
+        renderP2PQuick();
+        return;
+    }
+
+    if(type==="p2pcalc"){
+        renderP2PCalc();
         return;
     }
 }
 
-
 /* =========================================================
-   UNIT CONVERTER
+UNIT CONVERTER
 ========================================================= */
 
 function renderUnitConverter(
     type,
-    body
+    title,
+    units
 ){
 
-    const unitsMap = {
-
-        distance:[
-            "Meters",
-            "Kilometers",
-            "Centimeters",
-            "Miles",
-            "Feet",
-            "Inches",
-            "Yards"
-        ],
-
-        area:[
-            "Square Meters",
-            "Square Kilometers",
-            "Square Feet",
-            "Acres",
-            "Hectares"
-        ],
-
-        data:[
-            "Bytes",
-            "KB",
-            "MB",
-            "GB",
-            "TB"
-        ],
-
-        mass:[
-            "Kilograms",
-            "Grams",
-            "Milligrams",
-            "Pounds",
-            "Ounces"
-        ],
-
-        speed:[
-            "km/h",
-            "m/s",
-            "mph",
-            "Knots"
-        ],
-
-        temp:[
-            "Celsius",
-            "Fahrenheit",
-            "Kelvin"
-        ],
-
-        time:[
-            "Seconds",
-            "Minutes",
-            "Hours",
-            "Days",
-            "Weeks"
-        ],
-
-        volume:[
-            "Liters",
-            "Milliliters",
-            "Gallons (US)",
-            "Cubic Meters"
-        ]
-
-    };
-
-    const units =
-        unitsMap[type];
+    const body =
+        document.getElementById(
+            "toolBody"
+        );
 
     const options =
-        units
-            .map(
-                unit =>
-                    `<option value="${unit}">${unit}</option>`
-            )
-            .join("");
+        units.map(
+            u=>`
+            <option value="${u}">
+                ${u}
+            </option>`
+        ).join("");
 
-    body.innerHTML += `
+    body.innerHTML=`
+
+    <div class="tool-group">
+
+        <label>${title}</label>
+
+        <input
+            type="number"
+            id="unitVal"
+            class="tool-input"
+            placeholder="Enter value"
+            oninput="convertUnits('${type}')">
+
+    </div>
+
+    <div class="tool-row">
 
         <div class="tool-group">
 
-            <label>
-                Value
-            </label>
+            <label>From</label>
 
-            <input
-                id="unitVal"
-                class="tool-input"
-                type="number"
-                inputmode="decimal"
-                placeholder="Enter value"
-                oninput="convertUnits('${type}')"
-            >
+            <select
+                id="unitFrom"
+                class="tool-select"
+                onchange="convertUnits('${type}')">
+                ${options}
+            </select>
 
         </div>
 
-        <div class="tool-row">
+        <div class="tool-group">
 
-            <div class="tool-group">
+            <label>To</label>
 
-                <label>
-                    From
-                </label>
-
-                <select
-                    id="unitFrom"
-                    class="tool-select"
-                    onchange="convertUnits('${type}')"
-                >
-                    ${options}
-                </select>
-
-            </div>
-
-            <button
-                class="converter-swap"
-                onclick="swapUnits('${type}')"
-                title="Swap units"
-            >
-                ⇄
-            </button>
-
-            <div class="tool-group">
-
-                <label>
-                    To
-                </label>
-
-                <select
-                    id="unitTo"
-                    class="tool-select"
-                    onchange="convertUnits('${type}')"
-                >
-                    ${options}
-                </select>
-
-            </div>
+            <select
+                id="unitTo"
+                class="tool-select"
+                onchange="convertUnits('${type}')">
+                ${options}
+            </select>
 
         </div>
 
-        <div
-            class="tool-result-box"
-            id="toolResult"
-        >
-            Result will appear here
-        </div>
+    </div>
 
-    `;
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Result will appear here
+    </div>`;
 
-    if(units.length > 1){
-
-        document
-            .getElementById("unitTo")
-            .selectedIndex = 1;
-
-    }
-
-}
-
-function swapUnits(type){
-
-    const from =
-        document.getElementById(
-            "unitFrom"
-        );
-
-    const to =
+    if(units.length>1)
         document.getElementById(
             "unitTo"
-        );
-
-    const temp =
-        from.value;
-
-    from.value =
-        to.value;
-
-    to.value =
-        temp;
-
-    convertUnits(type);
-
+        ).selectedIndex=1;
 }
-
-
-/* =========================================================
-   DATE
-========================================================= */
 
 function setToday(id){
 
     const input =
         document.getElementById(id);
 
-    if(!input){
-        return;
-    }
+    if(!input) return;
 
-    const today =
-        new Date();
+    const today=new Date();
 
     input.value =
-        [
-            today.getFullYear(),
-            String(
-                today.getMonth()+1
-            ).padStart(2,"0"),
-            String(
-                today.getDate()
-            ).padStart(2,"0")
-        ].join("-");
-
+        `${today.getFullYear()}-${
+            String(today.getMonth()+1)
+            .padStart(2,"0")
+        }-${
+            String(today.getDate())
+            .padStart(2,"0")
+        }`;
 }
-
-function parseLocalDate(value){
-
-    const [
-        year,
-        month,
-        day
-    ] =
-        value
-            .split("-")
-            .map(Number);
-
-    return new Date(
-        year,
-        month-1,
-        day
-    );
-
-}
-
 
 /* =========================================================
-   AGE
+AGE
 ========================================================= */
 
 function calcAge(){
 
     const dob =
-        document
-            .getElementById(
-                "dobInput"
-            )
-            .value;
+        document.getElementById(
+            "dobInput"
+        ).value;
 
     const target =
-        document
-            .getElementById(
-                "targetDateInput"
-            )
-            .value;
+        document.getElementById(
+            "targetDateInput"
+        ).value;
 
-    const result =
+    const box =
         document.getElementById(
             "toolResult"
         );
 
-    if(!dob){
+    if(!dob || !target){
 
-        result.innerText =
-            "Please select Date of Birth";
-
-        return;
-    }
-
-    if(!target){
-
-        result.innerText =
-            "Please select target date";
+        box.innerText =
+            "Select both dates";
 
         return;
     }
 
-    const birth =
-        parseLocalDate(dob);
+    const birth=parseLocalDate(dob);
+    const end=parseLocalDate(target);
 
-    const end =
-        parseLocalDate(target);
+    if(birth>end){
 
-    if(birth > end){
-
-        result.innerText =
-            "Date of Birth cannot be after target date";
+        box.innerText =
+            "Date of Birth cannot be in the future";
 
         return;
     }
@@ -4632,7 +3120,7 @@ function calcAge(){
         end.getDate() -
         birth.getDate();
 
-    if(days < 0){
+    if(days<0){
 
         months--;
 
@@ -4643,129 +3131,92 @@ function calcAge(){
                 0
             );
 
-        days +=
-            previousMonth.getDate();
-
+        days+=previousMonth.getDate();
     }
 
-    if(months < 0){
+    if(months<0){
 
         years--;
-
-        months += 12;
-
+        months+=12;
     }
 
-    result.innerText =
-        `${years} Years • ${months} Months • ${days} Days`;
-
+    box.innerText =
+        `${years} Years, ${months} Months, ${days} Days`;
 }
 
-
 /* =========================================================
-   BMI
+BMI
 ========================================================= */
 
 function calcBMI(){
 
-    const weight =
-        parseFloat(
-            document
-                .getElementById(
-                    "bmiWeight"
-                )
-                .value
-        );
+    const w=parseFloat(
+        document.getElementById(
+            "bmiWeight"
+        ).value
+    );
 
-    const height =
-        parseFloat(
-            document
-                .getElementById(
-                    "bmiHeight"
-                )
-                .value
-        );
+    const h=parseFloat(
+        document.getElementById(
+            "bmiHeight"
+        ).value
+    );
 
-    const result =
+    const box=
         document.getElementById(
             "toolResult"
         );
 
     if(
-        !weight ||
-        !height ||
-        weight <= 0 ||
-        height <= 0
+        !w ||
+        !h ||
+        w<=0 ||
+        h<=0
     ){
 
-        result.innerText =
+        box.innerText=
             "Enter valid positive values";
 
         return;
     }
 
-    const bmi =
-        weight /
-        (
-            (height/100) *
-            (height/100)
-        );
+    const bmi=
+        w/((h/100)*(h/100));
 
-    let category;
+    let category="";
 
-    if(bmi < 18.5){
+    if(bmi<18.5)
+        category="Underweight";
+    else if(bmi<25)
+        category="Normal range";
+    else if(bmi<30)
+        category="Overweight";
+    else
+        category="Obesity range";
 
-        category =
-            "Underweight";
-
-    }else if(bmi < 25){
-
-        category =
-            "Normal range";
-
-    }else if(bmi < 30){
-
-        category =
-            "Overweight";
-
-    }else{
-
-        category =
-            "Obesity range";
-
-    }
-
-    result.innerText =
-        `BMI: ${bmi.toFixed(2)} • ${category}`;
-
+    box.innerText=
+        `BMI: ${bmi.toFixed(2)} (${category})`;
 }
 
-
 /* =========================================================
-   DISCOUNT
+DISCOUNT
 ========================================================= */
 
 function calcDiscount(){
 
-    const price =
-        parseFloat(
-            document
-                .getElementById(
-                    "discPrice"
-                )
-                .value
-        );
+    const price=parseFloat(
+        document.getElementById(
+            "discPrice"
+        ).value
+    );
 
-    const discount =
-        parseFloat(
-            document
-                .getElementById(
-                    "discPercent"
-                )
-                .value
-        );
+    const discount=parseFloat(
+        document.getElementById(
+            "discPercent"
+        ).value
+    );
 
-    const result =
+    const box=
         document.getElementById(
             "toolResult"
         );
@@ -4773,158 +3224,120 @@ function calcDiscount(){
     if(
         isNaN(price) ||
         isNaN(discount) ||
-        price < 0 ||
-        discount < 0 ||
-        discount > 100
+        price<0 ||
+        discount<0
     ){
 
-        result.innerText =
-            "Enter valid price and discount";
+        box.innerText=
+            "Enter valid numbers";
 
         return;
     }
 
-    const saved =
-        price *
-        discount /
-        100;
+    if(discount>100){
 
-    const finalPrice =
-        price -
-        saved;
+        box.innerText=
+            "Discount cannot exceed 100%";
 
-    result.innerText =
-        `Final: ${finalPrice.toFixed(2)} • Saved: ${saved.toFixed(2)}`;
+        return;
+    }
 
+    const saved=
+        price*(discount/100);
+
+    const finalPrice=
+        price-saved;
+
+    box.innerText=
+        `Final Price: ${finalPrice.toFixed(2)} • Saved: ${saved.toFixed(2)}`;
 }
 
-
 /* =========================================================
-   DATE DIFFERENCE
+DATE DIFFERENCE
 ========================================================= */
 
 function calcDateDiff(){
 
-    const start =
-        document
-            .getElementById(
-                "dateStart"
-            )
-            .value;
+    const d1=
+        document.getElementById(
+            "dateStart"
+        ).value;
 
-    const end =
-        document
-            .getElementById(
-                "dateEnd"
-            )
-            .value;
+    const d2=
+        document.getElementById(
+            "dateEnd"
+        ).value;
 
-    const result =
+    const box=
         document.getElementById(
             "toolResult"
         );
 
-    if(!start || !end){
+    if(!d1 || !d2){
 
-        result.innerText =
+        box.innerText=
             "Select both dates";
 
         return;
     }
 
-    const d1 =
-        parseLocalDate(start);
-
-    const d2 =
-        parseLocalDate(end);
-
-    const days =
+    const diff=
         Math.abs(
-            Math.round(
-                (d2-d1) /
-                86400000
-            )
+            parseLocalDate(d2) -
+            parseLocalDate(d1)
         );
 
-    const weeks =
-        Math.floor(
-            days/7
+    const days=
+        Math.round(
+            diff/
+            (1000*60*60*24)
         );
 
-    const remaining =
-        days % 7;
-
-    result.innerText =
-        `${days} Days • ${weeks} Weeks ${remaining} Days`;
-
-    const stats =
-        document.getElementById(
-            "dateStats"
-        );
-
-    if(stats){
-
-        stats.innerHTML = `
-
-            <div class="quick-stat">
-                <strong>${days}</strong>
-                <span>Days</span>
-            </div>
-
-            <div class="quick-stat">
-                <strong>${weeks}</strong>
-                <span>Weeks</span>
-            </div>
-
-            <div class="quick-stat">
-                <strong>${remaining}</strong>
-                <span>Extra Days</span>
-            </div>
-
-        `;
-
-    }
-
+    box.innerText=
+        `${days} Days • ${Math.floor(days/7)} Weeks, ${days%7} Days`;
 }
 
+function parseLocalDate(value){
+
+    const [
+        y,
+        m,
+        d
+    ]=value.split("-").map(Number);
+
+    return new Date(y,m-1,d);
+}
 
 /* =========================================================
-   CONVERSIONS
+UNIT ENGINE
 ========================================================= */
 
 function convertUnits(type){
 
-    const val =
-        parseFloat(
-            document
-                .getElementById(
-                    "unitVal"
-                )
-                .value
-        );
+    const val=parseFloat(
+        document.getElementById(
+            "unitVal"
+        ).value
+    );
 
-    const from =
-        document
-            .getElementById(
-                "unitFrom"
-            )
-            .value;
+    const from=
+        document.getElementById(
+            "unitFrom"
+        ).value;
 
-    const to =
-        document
-            .getElementById(
-                "unitTo"
-            )
-            .value;
+    const to=
+        document.getElementById(
+            "unitTo"
+        ).value;
 
-    const resultBox =
+    const box=
         document.getElementById(
             "toolResult"
         );
 
     if(isNaN(val)){
 
-        resultBox.innerText =
+        box.innerText=
             "Enter a valid value";
 
         return;
@@ -4932,13 +3345,9 @@ function convertUnits(type){
 
     let result;
 
+    if(type==="distance"){
 
-    /* DISTANCE */
-
-    if(type === "distance"){
-
-        const map = {
-
+        const m={
             "Meters":1,
             "Kilometers":1000,
             "Centimeters":.01,
@@ -4946,701 +3355,2568 @@ function convertUnits(type){
             "Feet":.3048,
             "Inches":.0254,
             "Yards":.9144
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="area"){
 
-    /* AREA */
-
-    else if(type === "area"){
-
-        const map = {
-
+        const m={
             "Square Meters":1,
             "Square Kilometers":1000000,
             "Square Feet":.09290304,
             "Acres":4046.8564224,
             "Hectares":10000
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="data"){
 
-    /* DATA */
-
-    else if(type === "data"){
-
-        const map = {
-
+        const m={
             "Bytes":1,
             "KB":1024,
             "MB":1024**2,
             "GB":1024**3,
             "TB":1024**4
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="mass"){
 
-    /* MASS */
-
-    else if(type === "mass"){
-
-        const map = {
-
+        const m={
             "Kilograms":1,
             "Grams":.001,
             "Milligrams":.000001,
             "Pounds":.45359237,
             "Ounces":.028349523125
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="speed"){
 
-    /* SPEED */
-
-    else if(type === "speed"){
-
-        const map = {
-
+        const m={
             "m/s":1,
             "km/h":1000/3600,
             "mph":1609.344/3600,
             "Knots":1852/3600
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="temp"){
 
-    /* TEMPERATURE */
+        if(from===to)
+            result=val;
 
-    else if(type === "temp"){
+        else if(from==="Celsius"){
 
-        if(from === to){
-
-            result = val;
-
-        }else if(from === "Celsius"){
-
-            result =
-                to === "Fahrenheit"
+            result=
+                to==="Fahrenheit"
                     ? val*9/5+32
                     : val+273.15;
 
-        }else if(from === "Fahrenheit"){
+        }else if(from==="Fahrenheit"){
 
-            result =
-                to === "Celsius"
+            result=
+                to==="Celsius"
                     ? (val-32)*5/9
                     : (val-32)*5/9+273.15;
 
         }else{
 
-            result =
-                to === "Celsius"
+            result=
+                to==="Celsius"
                     ? val-273.15
                     : (val-273.15)*9/5+32;
-
         }
-
     }
 
+    else if(type==="time"){
 
-    /* TIME */
-
-    else if(type === "time"){
-
-        const map = {
-
+        const m={
             "Seconds":1,
             "Minutes":60,
             "Hours":3600,
             "Days":86400,
             "Weeks":604800
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    else if(type==="volume"){
 
-    /* VOLUME */
-
-    else if(type === "volume"){
-
-        const map = {
-
+        const m={
             "Liters":1,
             "Milliliters":.001,
             "Gallons (US)":3.785411784,
             "Cubic Meters":1000
-
         };
 
-        result =
-            val * map[from] / map[to];
-
+        result=
+            val*m[from]/m[to];
     }
 
+    if(typeof result==="number"){
 
-    if(
-        typeof result === "number" &&
-        Number.isFinite(result)
-    ){
-
-        result =
+        result=
             parseFloat(
                 result.toFixed(
-                    type === "temp"
-                        ? 6
-                        : 10
+                    type==="temp"
+                        ? 4
+                        : 8
                 )
             );
-
     }
 
-    resultBox.innerText =
+    box.innerText=
         `${val} ${from} = ${result} ${to}`;
-
 }
-
 
 /* =========================================================
-   PRIVATE VAULT
+CRYPTO ASSETS
 ========================================================= */
 
-function openVault(){
+const cryptoAssets=[
+    "BTC","ETH","SOL","BNB","XRP",
+    "DOGE","ADA","AVAX","LINK",
+    "DOT","LTC","BCH","UNI","ATOM",
+    "NEAR","APT","SUI","TRX","TON",
+    "PEPE","SHIB","POL","FIL","ARB",
+    "OP","INJ","TIA","SEI","ETC",
+    "HBAR","XLM","ALGO"
+];
 
-    document
-        .getElementById(
-            "vaultOverlay"
-        )
-        .classList.add("active");
+function cryptoOptions(){
 
-    renderGallery();
-
+    return cryptoAssets.map(
+        x=>`<option value="${x}">${x}</option>`
+    ).join("");
 }
-
-function closeVault(){
-
-    document
-        .getElementById(
-            "vaultOverlay"
-        )
-        .classList.remove("active");
-
-    equalClickCount = 0;
-
-}
-
-function handleFileSelect(event){
-
-    const files =
-        event.target.files;
-
-    let items =
-        JSON.parse(
-            localStorage.getItem(
-                "vaultItems"
-            )
-        ) || [];
-
-    for(const file of files){
-
-        const reader =
-            new FileReader();
-
-        reader.onload =
-            function(e){
-
-                items.push({
-
-                    type:
-                        file.type.startsWith(
-                            "video"
-                        )
-                            ? "video"
-                            : "image",
-
-                    data:
-                        e.target.result
-
-                });
-
-                try{
-
-                    localStorage.setItem(
-                        "vaultItems",
-                        JSON.stringify(items)
-                    );
-
-                    renderGallery();
-
-                }catch(error){
-
-                    showToast(
-                        "Vault storage limit reached"
-                    );
-
-                }
-
-            };
-
-        reader.readAsDataURL(file);
-
-    }
-
-    event.target.value = "";
-
-}
-
-function renderGallery(){
-
-    const grid =
-        document.getElementById(
-            "galleryGrid"
-        );
-
-    grid.innerHTML = "";
-
-    let items =
-        JSON.parse(
-            localStorage.getItem(
-                "vaultItems"
-            )
-        ) || [];
-
-    items.forEach(
-        (item,index) => {
-
-            const container =
-                document.createElement(
-                    "div"
-                );
-
-            container.className =
-                "gallery-item";
-
-            if(
-                item.type === "video"
-            ){
-
-                const video =
-                    document.createElement(
-                        "video"
-                    );
-
-                video.src =
-                    item.data;
-
-                video.controls = true;
-
-                container.appendChild(
-                    video
-                );
-
-            }else{
-
-                const img =
-                    document.createElement(
-                        "img"
-                    );
-
-                img.src =
-                    item.data;
-
-                container.appendChild(
-                    img
-                );
-
-            }
-
-            const deleteBtn =
-                document.createElement(
-                    "button"
-                );
-
-            deleteBtn.className =
-                "delete-item-btn";
-
-            deleteBtn.innerText =
-                "×";
-
-            deleteBtn.onclick =
-                () => {
-
-                    items.splice(
-                        index,
-                        1
-                    );
-
-                    localStorage.setItem(
-                        "vaultItems",
-                        JSON.stringify(items)
-                    );
-
-                    renderGallery();
-
-                };
-
-            container.appendChild(
-                deleteBtn
-            );
-
-            grid.appendChild(
-                container
-            );
-
-        }
-    );
-
-}
-
 
 /* =========================================================
-   SETTINGS
+CRYPTO P&L
 ========================================================= */
 
-function openSettings(){
+function renderCryptoPnl(){
 
-    document
-        .getElementById(
-            "settingsPanel"
-        )
-        .classList.add("active");
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-row">
+
+        <div class="tool-group">
+            <label>Asset</label>
+
+            <select
+                id="pnlAsset"
+                class="tool-select">
+                ${cryptoOptions()}
+            </select>
+        </div>
+
+        <div class="tool-group">
+            <label>Side</label>
+
+            <select
+                id="pnlSide"
+                class="tool-select">
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Entry Price</label>
+            <input
+                id="pnlEntry"
+                class="tool-input"
+                type="number"
+                placeholder="e.g. 60000">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit Price</label>
+            <input
+                id="pnlExit"
+                class="tool-input"
+                type="number"
+                placeholder="e.g. 62000">
+        </div>
+
+        <div class="tool-group">
+            <label>Quantity</label>
+            <input
+                id="pnlQty"
+                class="tool-input"
+                type="number"
+                placeholder="BTC amount">
+        </div>
+
+        <div class="tool-group">
+            <label>Leverage</label>
+            <input
+                id="pnlLev"
+                class="tool-input"
+                type="number"
+                value="1"
+                min="1">
+        </div>
+
+        <div class="tool-group">
+            <label>Entry Fee %</label>
+            <input
+                id="pnlEntryFee"
+                class="tool-input"
+                type="number"
+                value="0">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit Fee %</label>
+            <input
+                id="pnlExitFee"
+                class="tool-input"
+                type="number"
+                value="0">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcCryptoPnl()">
+        Calculate P&L
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter trade details
+    </div>`;
 
 }
 
-function closeSettings(){
+function calcCryptoPnl(){
 
-    document
-        .getElementById(
-            "settingsPanel"
-        )
-        .classList.remove("active");
+    const side=
+        document.getElementById("pnlSide").value;
 
-}
+    const entry=
+        num("pnlEntry");
 
-function closeSettingsOutside(event){
+    const exit=
+        num("pnlExit");
+
+    const qty=
+        num("pnlQty");
+
+    const lev=
+        num("pnlLev") || 1;
+
+    const entryFee=
+        num("pnlEntryFee");
+
+    const exitFee=
+        num("pnlExitFee");
+
+    const box=
+        document.getElementById("toolResult");
 
     if(
-        event.target.id ===
-        "settingsPanel"
+        entry<=0 ||
+        exit<=0 ||
+        qty<=0
     ){
 
-        closeSettings();
+        box.innerText=
+            "Enter valid trade values";
 
+        return;
     }
 
+    const entryValue=entry*qty;
+    const exitValue=exit*qty;
+
+    const gross=
+        side==="long"
+            ? (exit-entry)*qty
+            : (entry-exit)*qty;
+
+    const fees=
+        entryValue*(entryFee/100)+
+        exitValue*(exitFee/100);
+
+    const net=gross-fees;
+
+    const margin=
+        entryValue/lev;
+
+    const roi=
+        margin>0
+            ? net/margin*100
+            : 0;
+
+    box.innerHTML=
+        `
+        ${formatResult(
+            "Gross P&L",
+            money(gross),
+            gross
+        )}<br>
+        Fees: ${money(fees)}<br>
+        Net P&L: <b>${money(net)}</b><br>
+        Notional: ${money(entryValue)} → ${money(exitValue)}<br>
+        Margin: ${money(margin)}<br>
+        ROI: ${roi.toFixed(2)}%
+        `;
 }
-
-function toggleHaptics(){
-
-    haptics = !haptics;
-
-    localStorage.setItem(
-        "calcHaptics",
-        haptics
-    );
-
-    showToast(
-        haptics
-            ? "Haptics enabled"
-            : "Haptics disabled"
-    );
-
-}
-
-function resetPreferences(){
-
-    localStorage.removeItem(
-        "calcTheme"
-    );
-
-    localStorage.removeItem(
-        "angleMode"
-    );
-
-    localStorage.removeItem(
-        "calcHaptics"
-    );
-
-    location.reload();
-
-}
-
 
 /* =========================================================
-   THEMES
+FUTURES
 ========================================================= */
 
-function setTheme(theme){
+function renderFutures(){
 
-    const root =
-        document.documentElement;
+    const body=
+        document.getElementById("toolBody");
 
-    if(theme === "cyan"){
+    body.innerHTML=`
 
-        root.style.setProperty(
-            "--accent",
-            "#38bdf8"
-        );
+    <div class="tool-row">
 
-        root.style.setProperty(
-            "--accent2",
-            "#2563eb"
-        );
+        <div class="tool-group">
+            <label>Asset</label>
 
-        root.style.setProperty(
-            "--accentRGB",
-            "56,189,248"
-        );
+            <select
+                id="fAsset"
+                class="tool-select">
+                ${cryptoOptions()}
+            </select>
+        </div>
 
-    }
+        <div class="tool-group">
+            <label>Direction</label>
 
-    if(theme === "purple"){
+            <select
+                id="fSide"
+                class="tool-select">
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+            </select>
+        </div>
 
-        root.style.setProperty(
-            "--accent",
-            "#c084fc"
-        );
+    </div>
 
-        root.style.setProperty(
-            "--accent2",
-            "#7c3aed"
-        );
+    <div class="tool-grid">
 
-        root.style.setProperty(
-            "--accentRGB",
-            "192,132,252"
-        );
+        <div class="tool-group">
+            <label>Entry Price</label>
+            <input
+                id="fEntry"
+                class="tool-input"
+                type="number">
+        </div>
 
-    }
+        <div class="tool-group">
+            <label>Mark / Exit Price</label>
+            <input
+                id="fExit"
+                class="tool-input"
+                type="number">
+        </div>
 
-    if(theme === "green"){
+        <div class="tool-group">
+            <label>Quantity</label>
+            <input
+                id="fQty"
+                class="tool-input"
+                type="number">
+        </div>
 
-        root.style.setProperty(
-            "--accent",
-            "#34d399"
-        );
+        <div class="tool-group">
+            <label>Leverage</label>
+            <input
+                id="fLev"
+                class="tool-input"
+                type="number"
+                value="20">
+        </div>
 
-        root.style.setProperty(
-            "--accent2",
-            "#059669"
-        );
+        <div class="tool-group">
+            <label>Maintenance Margin %</label>
+            <input
+                id="fMM"
+                class="tool-input"
+                type="number"
+                value=".5">
+        </div>
 
-        root.style.setProperty(
-            "--accentRGB",
-            "52,211,153"
-        );
+        <div class="tool-group">
+            <label>Total Fees %</label>
+            <input
+                id="fFee"
+                class="tool-input"
+                type="number"
+                value="0">
+        </div>
 
-    }
+    </div>
 
-    if(theme === "orange"){
+    <button
+        class="btn-calc-tool"
+        onclick="calcFutures()">
+        Calculate Futures
+    </button>
 
-        root.style.setProperty(
-            "--accent",
-            "#fb923c"
-        );
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter futures details
+    </div>
 
-        root.style.setProperty(
-            "--accent2",
-            "#ea580c"
-        );
-
-        root.style.setProperty(
-            "--accentRGB",
-            "251,146,60"
-        );
-
-    }
-
-    localStorage.setItem(
-        "calcTheme",
-        theme
-    );
-
-    showToast(
-        theme.toUpperCase() +
-        " theme activated"
-    );
+    <div class="tool-description">
+        Liquidation price shown is a simplified estimate.
+        Actual exchange liquidation depends on maintenance
+        tiers, fees and exchange rules.
+    </div>`;
 
 }
 
+function calcFutures(){
 
-/* =========================================================
-   LOAD THEME
-========================================================= */
+    const side=
+        document.getElementById("fSide").value;
 
-(function(){
+    const entry=num("fEntry");
+    const exit=num("fExit");
+    const qty=num("fQty");
+    const lev=num("fLev");
+    const mm=num("fMM");
+    const fee=num("fFee");
 
-    const theme =
-        localStorage.getItem(
-            "calcTheme"
-        );
+    const box=
+        document.getElementById("toolResult");
 
-    if(theme){
+    if(
+        entry<=0 ||
+        exit<=0 ||
+        qty<=0 ||
+        lev<=0
+    ){
 
-        setTheme(theme);
+        box.innerText=
+            "Enter valid values";
 
+        return;
     }
 
-})();
+    const gross=
+        side==="long"
+            ? (exit-entry)*qty
+            : (entry-exit)*qty;
 
+    const notional=entry*qty;
+    const fees=
+        notional*(fee/100);
+
+    const net=gross-fees;
+    const margin=notional/lev;
+
+    let liq;
+
+    if(side==="long"){
+
+        liq=
+            entry*
+            (
+                1-
+                1/lev+
+                mm/100
+            );
+
+    }else{
+
+        liq=
+            entry*
+            (
+                1+
+                1/lev-
+                mm/100
+            );
+    }
+
+    box.innerHTML=
+        `
+        Gross P&L: <b>${money(gross)}</b><br>
+        Fees: ${money(fees)}<br>
+        Net P&L: <b>${money(net)}</b><br>
+        Margin: ${money(margin)}<br>
+        Est. Liquidation: ${money(liq)}
+        `;
+}
 
 /* =========================================================
-   TOAST
+RISK MANAGER
 ========================================================= */
 
-let toastTimer;
+function renderRisk(){
 
-function showToast(message){
+    const body=
+        document.getElementById("toolBody");
 
-    const toast =
+    body.innerHTML=`
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Account Balance</label>
+            <input
+                id="riskBalance"
+                class="tool-input"
+                type="number"
+                placeholder="1000">
+        </div>
+
+        <div class="tool-group">
+            <label>Risk %</label>
+            <input
+                id="riskPercent"
+                class="tool-input"
+                type="number"
+                value="1">
+        </div>
+
+        <div class="tool-group">
+            <label>Entry Price</label>
+            <input
+                id="riskEntry"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Stop Loss</label>
+            <input
+                id="riskSL"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Leverage</label>
+            <input
+                id="riskLev"
+                class="tool-input"
+                type="number"
+                value="1">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcRisk()">
+        Calculate Position Size
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter account and trade risk
+    </div>`;
+
+}
+
+function calcRisk(){
+
+    const balance=num("riskBalance");
+    const riskPct=num("riskPercent");
+    const entry=num("riskEntry");
+    const sl=num("riskSL");
+    const lev=num("riskLev")||1;
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(
+        balance<=0 ||
+        riskPct<=0 ||
+        entry<=0 ||
+        sl<=0
+    ){
+
+        box.innerText=
+            "Enter valid values";
+
+        return;
+    }
+
+    const riskAmount=
+        balance*riskPct/100;
+
+    const distance=
+        Math.abs(entry-sl);
+
+    if(distance===0){
+
+        box.innerText=
+            "Entry and Stop Loss cannot be equal";
+
+        return;
+    }
+
+    const quantity=
+        riskAmount/distance;
+
+    const notional=
+        quantity*entry;
+
+    const margin=
+        notional/lev;
+
+    box.innerHTML=
+        `
+        Risk Amount: ${money(riskAmount)}<br>
+        Stop Distance: ${distance.toFixed(8)}<br>
+        Position Size: <b>${quantity.toFixed(8)}</b><br>
+        Notional: ${money(notional)}<br>
+        Approx. Margin @ ${lev}×: ${money(margin)}
+        `;
+}
+
+/* =========================================================
+RISK REWARD
+========================================================= */
+
+function renderRR(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-row">
+
+        <div class="tool-group">
+            <label>Direction</label>
+
+            <select
+                id="rrSide"
+                class="tool-select">
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+            </select>
+        </div>
+
+        <div class="tool-group">
+            <label>Quantity</label>
+            <input
+                id="rrQty"
+                class="tool-input"
+                type="number"
+                placeholder="Optional">
+        </div>
+
+    </div>
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Entry</label>
+            <input
+                id="rrEntry"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Stop Loss</label>
+            <input
+                id="rrSL"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Take Profit</label>
+            <input
+                id="rrTP"
+                class="tool-input"
+                type="number">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcRR()">
+        Calculate Risk : Reward
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter Entry, SL and TP
+    </div>`;
+
+}
+
+function calcRR(){
+
+    const side=
+        document.getElementById("rrSide").value;
+
+    const entry=num("rrEntry");
+    const sl=num("rrSL");
+    const tp=num("rrTP");
+    const qty=num("rrQty");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(
+        entry<=0 ||
+        sl<=0 ||
+        tp<=0
+    ){
+
+        box.innerText=
+            "Enter valid prices";
+
+        return;
+    }
+
+    let risk;
+    let reward;
+
+    if(side==="long"){
+
+        risk=entry-sl;
+        reward=tp-entry;
+
+    }else{
+
+        risk=sl-entry;
+        reward=entry-tp;
+    }
+
+    if(risk<=0 || reward<=0){
+
+        box.innerText=
+            "Check SL/TP for selected direction";
+
+        return;
+    }
+
+    const ratio=
+        reward/risk;
+
+    let html=
+        `
+        Risk / Unit: ${money(risk)}<br>
+        Reward / Unit: ${money(reward)}<br>
+        R:R = <b>1 : ${ratio.toFixed(2)}</b>
+        `;
+
+    if(qty>0){
+
+        html+=
+            `<br>Potential Risk: ${money(risk*qty)}
+             <br>Potential Reward: ${money(reward*qty)}`;
+    }
+
+    box.innerHTML=html;
+}
+
+/* =========================================================
+FEES
+========================================================= */
+
+function renderFees(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Buy / Entry Notional</label>
+            <input
+                id="feeBuy"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Sell / Exit Notional</label>
+            <input
+                id="feeSell"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Entry Fee %</label>
+            <input
+                id="feeEntry"
+                class="tool-input"
+                type="number"
+                value=".1">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit Fee %</label>
+            <input
+                id="feeExit"
+                class="tool-input"
+                type="number"
+                value=".1">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcFees()">
+        Calculate Fees
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter trade notional
+    </div>`;
+
+}
+
+function calcFees(){
+
+    const buy=num("feeBuy");
+    const sell=num("feeSell");
+    const ef=num("feeEntry");
+    const xf=num("feeExit");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(buy<0 || sell<0){
+
+        box.innerText=
+            "Enter valid amounts";
+
+        return;
+    }
+
+    const entryFee=
+        buy*ef/100;
+
+    const exitFee=
+        sell*xf/100;
+
+    box.innerHTML=
+        `
+        Entry Fee: ${money(entryFee)}<br>
+        Exit Fee: ${money(exitFee)}<br>
+        Total Fees: <b>${money(entryFee+exitFee)}</b>
+        `;
+}
+
+/* =========================================================
+DCA
+========================================================= */
+
+function renderDCA(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div
+        id="dcaRows"
+        class="p2p-section">
+    </div>
+
+    <button
+        class="add-row"
+        onclick="addDCARow()">
+        + Add Buy
+    </button>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcDCA()">
+        Calculate Average Entry
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Add your purchases
+    </div>`;
+
+    addDCARow();
+    addDCARow();
+}
+
+function addDCARow(){
+
+    const container=
         document.getElementById(
-            "toast"
+            "dcaRows"
         );
 
-    toast.innerText =
-        message;
+    if(!container) return;
 
-    toast.classList.add(
-        "show"
-    );
+    const row=
+        document.createElement("div");
 
-    clearTimeout(
-        toastTimer
-    );
+    row.className="p2p-row";
 
-    toastTimer =
-        setTimeout(
-            () => {
+    row.innerHTML=`
 
-                toast.classList.remove(
-                    "show"
-                );
+    <input
+        class="tool-input dcaQty"
+        type="number"
+        placeholder="Quantity">
 
-            },
-            1800
+    <input
+        class="tool-input dcaPrice"
+        type="number"
+        placeholder="Price">
+
+    <button
+        class="remove-row"
+        onclick="this.parentElement.remove()">
+        ×
+    </button>`;
+
+    container.appendChild(row);
+}
+
+function calcDCA(){
+
+    const quantities=
+        [...document.querySelectorAll(
+            ".dcaQty"
+        )];
+
+    const prices=
+        [...document.querySelectorAll(
+            ".dcaPrice"
+        )];
+
+    let qty=0;
+    let cost=0;
+
+    for(let i=0;i<quantities.length;i++){
+
+        const q=parseFloat(
+            quantities[i].value
         );
+
+        const p=parseFloat(
+            prices[i].value
+        );
+
+        if(q>0 && p>0){
+
+            qty+=q;
+            cost+=q*p;
+        }
+    }
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(qty<=0){
+
+        box.innerText=
+            "Enter at least one valid purchase";
+
+        return;
+    }
+
+    box.innerHTML=
+        `
+        Total Quantity: ${qty.toFixed(8)}<br>
+        Total Cost: ${money(cost)}<br>
+        Average Entry: <b>${money(cost/qty)}</b>
+        `;
+}
+
+/* =========================================================
+CRYPTO NOTIONAL
+========================================================= */
+
+function renderCrypto(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-group">
+
+        <label>Cryptocurrency</label>
+
+        <select
+            id="cryptoAsset"
+            class="tool-select">
+            ${cryptoOptions()}
+        </select>
+
+    </div>
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Amount / Quantity</label>
+            <input
+                id="cryptoQty"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Price in USD</label>
+            <input
+                id="cryptoUSD"
+                class="tool-input"
+                type="number"
+                placeholder="Enter price">
+        </div>
+
+        <div class="tool-group">
+            <label>USD → INR Rate</label>
+            <input
+                id="cryptoFX"
+                class="tool-input"
+                type="number"
+                placeholder="Optional">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcCrypto()">
+        Calculate Notional
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter quantity and price
+    </div>
+
+    <div class="tool-description">
+        Prices are manual inputs; this calculator does not
+        provide live market prices.
+    </div>`;
 
 }
 
+function calcCrypto(){
+
+    const qty=num("cryptoQty");
+    const price=num("cryptoUSD");
+    const fx=num("cryptoFX");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(qty<=0 || price<=0){
+
+        box.innerText=
+            "Enter valid quantity and price";
+
+        return;
+    }
+
+    const usd=qty*price;
+
+    let html=
+        `Notional: $${usd.toFixed(2)}`;
+
+    if(fx>0)
+        html+=
+            `<br>INR Value: ${money(usd*fx)}`;
+
+    box.innerHTML=html;
+}
 
 /* =========================================================
-   KEYBOARD ENGINE
+XAUUSD
+========================================================= */
+
+function renderGold(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-row">
+
+        <div class="tool-group">
+            <label>Direction</label>
+
+            <select
+                id="goldSide"
+                class="tool-select">
+                <option value="long">Buy / Long</option>
+                <option value="short">Sell / Short</option>
+            </select>
+        </div>
+
+        <div class="tool-group">
+            <label>Lot Size (oz)</label>
+
+            <input
+                id="goldLot"
+                class="tool-input"
+                type="number"
+                value="100">
+        </div>
+
+    </div>
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Entry XAUUSD</label>
+            <input
+                id="goldEntry"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit XAUUSD</label>
+            <input
+                id="goldExit"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Lots</label>
+            <input
+                id="goldLots"
+                class="tool-input"
+                type="number"
+                value="1">
+        </div>
+
+        <div class="tool-group">
+            <label>Fee $</label>
+            <input
+                id="goldFee"
+                class="tool-input"
+                type="number"
+                value="0">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcGold()">
+        Calculate XAUUSD P&L
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter gold trade details
+    </div>`;
+
+}
+
+function calcGold(){
+
+    const side=
+        document.getElementById(
+            "goldSide"
+        ).value;
+
+    const entry=num("goldEntry");
+    const exit=num("goldExit");
+    const lot=num("goldLot");
+    const lots=num("goldLots");
+    const fee=num("goldFee");
+
+    const box=
+        document.getElementById(
+            "toolResult"
+        );
+
+    if(
+        entry<=0 ||
+        exit<=0 ||
+        lot<=0 ||
+        lots<=0
+    ){
+
+        box.innerText=
+            "Enter valid XAUUSD values";
+
+        return;
+    }
+
+    const ounces=lot*lots;
+
+    const gross=
+        side==="long"
+            ? (exit-entry)*ounces
+            : (entry-exit)*ounces;
+
+    const net=gross-fee;
+
+    box.innerHTML=
+        `
+        Exposure: ${ounces.toFixed(2)} oz<br>
+        Gross P&L: ${money(gross)}<br>
+        Fees: ${money(fee)}<br>
+        Net P&L: <b>${money(net)}</b>
+        `;
+}
+
+/* =========================================================
+PIP / POINT
+========================================================= */
+
+function renderPip(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Entry Price</label>
+            <input
+                id="pipEntry"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit Price</label>
+            <input
+                id="pipExit"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Pip / Point Size</label>
+            <input
+                id="pipSize"
+                class="tool-input"
+                type="number"
+                value=".01">
+        </div>
+
+        <div class="tool-group">
+            <label>Units / Position</label>
+            <input
+                id="pipUnits"
+                class="tool-input"
+                type="number"
+                value="1">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcPip()">
+        Calculate Points / Pips
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter price movement
+    </div>`;
+
+}
+
+function calcPip(){
+
+    const entry=num("pipEntry");
+    const exit=num("pipExit");
+    const size=num("pipSize");
+    const units=num("pipUnits");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(
+        entry<=0 ||
+        exit<=0 ||
+        size<=0
+    ){
+
+        box.innerText=
+            "Enter valid values";
+
+        return;
+    }
+
+    const movement=
+        Math.abs(exit-entry);
+
+    const pips=
+        movement/size;
+
+    const value=
+        movement*units;
+
+    box.innerHTML=
+        `
+        Price Movement: ${movement.toFixed(8)}<br>
+        Pips / Points: <b>${pips.toFixed(4)}</b><br>
+        Position Value Change: ${money(value)}
+        `;
+}
+
+/* =========================================================
+USDT INR
+========================================================= */
+
+function renderUSDT(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-group">
+
+        <label>Mode</label>
+
+        <select
+            id="usdtMode"
+            class="tool-select">
+            <option value="usdt">USDT → INR</option>
+            <option value="inr">INR → USDT</option>
+        </select>
+
+    </div>
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Amount</label>
+            <input
+                id="usdtAmount"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Rate ₹ / USDT</label>
+            <input
+                id="usdtRate"
+                class="tool-input"
+                type="number"
+                placeholder="e.g. 90">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcUSDT()">
+        Convert
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter amount and rate
+    </div>`;
+
+}
+
+function calcUSDT(){
+
+    const mode=
+        document.getElementById(
+            "usdtMode"
+        ).value;
+
+    const amount=num("usdtAmount");
+    const rate=num("usdtRate");
+
+    const box=
+        document.getElementById(
+            "toolResult"
+        );
+
+    if(amount<=0 || rate<=0){
+
+        box.innerText=
+            "Enter valid amount and rate";
+
+        return;
+    }
+
+    if(mode==="usdt"){
+
+        box.innerHTML=
+            `${amount.toFixed(4)} USDT = <b>${money(amount*rate)}</b>`;
+
+    }else{
+
+        box.innerHTML=
+            `${money(amount)} = <b>${(amount/rate).toFixed(6)} USDT</b>`;
+    }
+}
+
+/* =========================================================
+TRADE JOURNAL
+========================================================= */
+
+function renderJournal(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>Asset</label>
+
+            <select
+                id="journalAsset"
+                class="tool-select">
+                ${cryptoOptions()}
+            </select>
+        </div>
+
+        <div class="tool-group">
+            <label>Side</label>
+
+            <select
+                id="journalSide"
+                class="tool-select">
+                <option>Long</option>
+                <option>Short</option>
+            </select>
+        </div>
+
+        <div class="tool-group">
+            <label>Entry</label>
+            <input
+                id="journalEntry"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Exit</label>
+            <input
+                id="journalExit"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Quantity</label>
+            <input
+                id="journalQty"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Note</label>
+            <input
+                id="journalNote"
+                class="tool-input"
+                type="text"
+                placeholder="Setup / reason">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="saveJournalTrade()">
+        Save Trade
+    </button>
+
+    <button
+        class="btn-danger"
+        onclick="clearJournal()">
+        Clear Journal
+    </button>
+
+    <div
+        class="journal-list"
+        id="journalList">
+    </div>`;
+
+    renderJournalList();
+}
+
+function saveJournalTrade(){
+
+    const asset=
+        document.getElementById(
+            "journalAsset"
+        ).value;
+
+    const side=
+        document.getElementById(
+            "journalSide"
+        ).value;
+
+    const entry=num("journalEntry");
+    const exit=num("journalExit");
+    const qty=num("journalQty");
+
+    const note=
+        document.getElementById(
+            "journalNote"
+        ).value;
+
+    if(
+        entry<=0 ||
+        exit<=0 ||
+        qty<=0
+    ){
+
+        alert("Enter valid trade details");
+        return;
+    }
+
+    const pnl=
+        side==="Long"
+            ? (exit-entry)*qty
+            : (entry-exit)*qty;
+
+    let journal=
+        JSON.parse(
+            localStorage.getItem(
+                "tradeJournal"
+            )
+        ) || [];
+
+    journal.unshift({
+
+        date:new Date().toLocaleString(),
+
+        asset,
+        side,
+        entry,
+        exit,
+        qty,
+        pnl,
+        note
+    });
+
+    localStorage.setItem(
+        "tradeJournal",
+        JSON.stringify(journal)
+    );
+
+    renderJournalList();
+}
+
+function renderJournalList(){
+
+    const list=
+        document.getElementById(
+            "journalList"
+        );
+
+    if(!list) return;
+
+    let journal=
+        JSON.parse(
+            localStorage.getItem(
+                "tradeJournal"
+            )
+        ) || [];
+
+    if(journal.length===0){
+
+        list.innerHTML=
+            `<div class="empty-history">
+                No trades recorded
+            </div>`;
+
+        return;
+    }
+
+    list.innerHTML=
+        journal.map(
+            (t,i)=>`
+
+            <div class="journal-item">
+
+                <div class="journal-top">
+
+                    <b>
+                        ${t.asset} • ${t.side}
+                    </b>
+
+                    <span class="${
+                        t.pnl>=0
+                            ? "journal-profit"
+                            : "journal-loss"
+                    }">
+                        ${money(t.pnl)}
+                    </span>
+
+                </div>
+
+                <div>
+                    Entry: ${t.entry}
+                    • Exit: ${t.exit}
+                    • Qty: ${t.qty}
+                </div>
+
+                <div>
+                    ${t.note || "No note"}
+                </div>
+
+                <div
+                    style="color:#475569;margin-top:4px;">
+                    ${t.date}
+                </div>
+
+            </div>`
+        ).join("");
+}
+
+function clearJournal(){
+
+    localStorage.removeItem(
+        "tradeJournal"
+    );
+
+    renderJournalList();
+}
+
+/* =========================================================
+P2P DATA
+========================================================= */
+
+let p2pData =
+    JSON.parse(
+        localStorage.getItem(
+            "p2pTradeBook"
+        )
+    ) || {
+        buys:[],
+        sells:[]
+    };
+
+function saveP2P(){
+
+    localStorage.setItem(
+        "p2pTradeBook",
+        JSON.stringify(p2pData)
+    );
+}
+
+/* =========================================================
+P2P BOOK
+========================================================= */
+
+function renderP2PBook(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="p2p-section">
+
+        <div class="p2p-card">
+
+            <h4 class="buy-title">
+                🟢 USDT BUY ENTRIES
+            </h4>
+
+            <div id="p2pBuyRows"></div>
+
+            <button
+                class="add-row"
+                onclick="addP2PBuyRow()">
+                + Add USDT Buy
+            </button>
+
+        </div>
+
+        <div class="p2p-card">
+
+            <h4 class="sell-title">
+                🔵 USDT SELL ENTRIES
+            </h4>
+
+            <div id="p2pSellRows"></div>
+
+            <button
+                class="add-row"
+                onclick="addP2PSellRow()">
+                + Add USDT Sell
+            </button>
+
+        </div>
+
+        <div class="tool-grid">
+
+            <div class="tool-group">
+                <label>Buy Fee %</label>
+                <input
+                    id="p2pBuyFee"
+                    class="tool-input"
+                    type="number"
+                    value="0">
+            </div>
+
+            <div class="tool-group">
+                <label>Sell Fee %</label>
+                <input
+                    id="p2pSellFee"
+                    class="tool-input"
+                    type="number"
+                    value="0">
+            </div>
+
+        </div>
+
+        <div class="tool-row">
+
+            <button
+                class="btn-calc-tool"
+                onclick="calculateP2PBook()">
+                Calculate P2P
+            </button>
+
+            <button
+                class="btn-secondary"
+                onclick="saveP2PBook()">
+                💾 Save
+            </button>
+
+        </div>
+
+        <button
+            class="btn-danger"
+            onclick="resetP2PBook()">
+            Reset P2P Book
+        </button>
+
+        <div
+            id="p2pSummary"
+            class="p2p-summary">
+        </div>
+
+    </div>`;
+
+    loadP2PRows();
+}
+
+function addP2PBuyRow(
+    qty="",
+    rate=""
+){
+
+    const container=
+        document.getElementById(
+            "p2pBuyRows"
+        );
+
+    if(!container) return;
+
+    const row=
+        document.createElement("div");
+
+    row.className="p2p-row";
+
+    row.innerHTML=`
+
+    <input
+        class="tool-input p2pBuyQty"
+        type="number"
+        value="${qty}"
+        placeholder="USDT">
+
+    <input
+        class="tool-input p2pBuyRate"
+        type="number"
+        value="${rate}"
+        placeholder="₹ / USDT">
+
+    <button
+        class="remove-row"
+        onclick="this.parentElement.remove()">
+        ×
+    </button>`;
+
+    container.appendChild(row);
+}
+
+function addP2PSellRow(
+    qty="",
+    rate=""
+){
+
+    const container=
+        document.getElementById(
+            "p2pSellRows"
+        );
+
+    if(!container) return;
+
+    const row=
+        document.createElement("div");
+
+    row.className="p2p-row";
+
+    row.innerHTML=`
+
+    <input
+        class="tool-input p2pSellQty"
+        type="number"
+        value="${qty}"
+        placeholder="USDT">
+
+    <input
+        class="tool-input p2pSellRate"
+        type="number"
+        value="${rate}"
+        placeholder="₹ / USDT">
+
+    <button
+        class="remove-row"
+        onclick="this.parentElement.remove()">
+        ×
+    </button>`;
+
+    container.appendChild(row);
+}
+
+function loadP2PRows(){
+
+    const buyRows=
+        document.getElementById(
+            "p2pBuyRows"
+        );
+
+    const sellRows=
+        document.getElementById(
+            "p2pSellRows"
+        );
+
+    buyRows.innerHTML="";
+    sellRows.innerHTML="";
+
+    if(p2pData.buys.length===0){
+
+        addP2PBuyRow();
+
+    }else{
+
+        p2pData.buys.forEach(
+            x=>addP2PBuyRow(
+                x.qty,
+                x.rate
+            )
+        );
+    }
+
+    if(p2pData.sells.length===0){
+
+        addP2PSellRow();
+
+    }else{
+
+        p2pData.sells.forEach(
+            x=>addP2PSellRow(
+                x.qty,
+                x.rate
+            )
+        );
+    }
+}
+
+function collectP2P(){
+
+    const buyQty=
+        [...document.querySelectorAll(
+            ".p2pBuyQty"
+        )];
+
+    const buyRate=
+        [...document.querySelectorAll(
+            ".p2pBuyRate"
+        )];
+
+    const sellQty=
+        [...document.querySelectorAll(
+            ".p2pSellQty"
+        )];
+
+    const sellRate=
+        [...document.querySelectorAll(
+            ".p2pSellRate"
+        )];
+
+    const buys=[];
+    const sells=[];
+
+    for(
+        let i=0;
+        i<buyQty.length;
+        i++
+    ){
+
+        const qty=parseFloat(
+            buyQty[i].value
+        );
+
+        const rate=parseFloat(
+            buyRate[i].value
+        );
+
+        if(
+            qty>0 &&
+            rate>0
+        ){
+
+            buys.push({
+                qty,
+                rate
+            });
+        }
+    }
+
+    for(
+        let i=0;
+        i<sellQty.length;
+        i++
+    ){
+
+        const qty=parseFloat(
+            sellQty[i].value
+        );
+
+        const rate=parseFloat(
+            sellRate[i].value
+        );
+
+        if(
+            qty>0 &&
+            rate>0
+        ){
+
+            sells.push({
+                qty,
+                rate
+            });
+        }
+    }
+
+    return {
+        buys,
+        sells
+    };
+}
+
+function calculateP2PBook(){
+
+    const data=collectP2P();
+
+    const buyFee=
+        num("p2pBuyFee");
+
+    const sellFee=
+        num("p2pSellFee");
+
+    let bought=0;
+    let spent=0;
+
+    data.buys.forEach(x=>{
+
+        bought+=x.qty;
+        spent+=x.qty*x.rate;
+
+    });
+
+    let sold=0;
+    let revenue=0;
+
+    data.sells.forEach(x=>{
+
+        sold+=x.qty;
+        revenue+=x.qty*x.rate;
+
+    });
+
+    if(bought<=0){
+
+        document.getElementById(
+            "p2pSummary"
+        ).innerHTML=
+            `<div class="summary-item">
+                <span class="summary-label">
+                    Status
+                </span>
+                <span class="summary-value red">
+                    Add at least one USDT buy
+                </span>
+            </div>`;
+
+        return;
+    }
+
+    const avgBuy=
+        spent/bought;
+
+    const avgSell=
+        sold>0
+            ? revenue/sold
+            : 0;
+
+    const buyFees=
+        spent*buyFee/100;
+
+    const sellFees=
+        revenue*sellFee/100;
+
+    /*
+     * Realized P2P profit is based on the
+     * average cost of the USDT sold.
+     */
+
+    const costOfSold=
+        sold*avgBuy;
+
+    const grossProfit=
+        revenue-costOfSold;
+
+    const totalFees=
+        buyFees+sellFees;
+
+    const netProfit=
+        grossProfit-totalFees;
+
+    const remaining=
+        bought-sold;
+
+    const roi=
+        costOfSold>0
+            ? netProfit/costOfSold*100
+            : 0;
+
+    const box=
+        document.getElementById(
+            "p2pSummary"
+        );
+
+    box.innerHTML=`
+
+        <div class="summary-item">
+            <span class="summary-label">
+                TOTAL BOUGHT
+            </span>
+            <span class="summary-value green">
+                ${bought.toFixed(6)} USDT
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                TOTAL SPENT
+            </span>
+            <span class="summary-value">
+                ${money(spent)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                AVERAGE BUY RATE
+            </span>
+            <span class="summary-value green">
+                ₹${avgBuy.toFixed(4)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                TOTAL SOLD
+            </span>
+            <span class="summary-value blue">
+                ${sold.toFixed(6)} USDT
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                TOTAL REVENUE
+            </span>
+            <span class="summary-value">
+                ${money(revenue)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                AVERAGE SELL RATE
+            </span>
+            <span class="summary-value blue">
+                ${sold>0
+                    ? "₹"+avgSell.toFixed(4)
+                    : "—"}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                REMAINING USDT
+            </span>
+            <span class="summary-value yellow">
+                ${remaining.toFixed(6)} USDT
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                GROSS PROFIT
+            </span>
+            <span class="summary-value ${
+                grossProfit>=0
+                    ? "green"
+                    : "red"
+            }">
+                ${money(grossProfit)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                TOTAL FEES
+            </span>
+            <span class="summary-value">
+                ${money(totalFees)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                NET PROFIT
+            </span>
+            <span class="summary-value ${
+                netProfit>=0
+                    ? "green"
+                    : "red"
+            }">
+                ${money(netProfit)}
+            </span>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                ROI ON SOLD INVENTORY
+            </span>
+            <span class="summary-value ${
+                roi>=0
+                    ? "green"
+                    : "red"
+            }">
+                ${roi.toFixed(2)}%
+            </span>
+        </div>
+    `;
+}
+
+function saveP2PBook(){
+
+    p2pData=collectP2P();
+
+    saveP2P();
+
+    alert("P2P book saved on this device.");
+}
+
+function resetP2PBook(){
+
+    p2pData={
+        buys:[],
+        sells:[]
+    };
+
+    saveP2P();
+
+    renderP2PBook();
+}
+
+/* =========================================================
+P2P QUICK
+========================================================= */
+
+function renderP2PQuick(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-grid">
+
+        <div class="tool-group">
+            <label>USDT Amount</label>
+            <input
+                id="quickQty"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Buy Rate ₹</label>
+            <input
+                id="quickBuy"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Sell Rate ₹</label>
+            <input
+                id="quickSell"
+                class="tool-input"
+                type="number">
+        </div>
+
+        <div class="tool-group">
+            <label>Total Fee %</label>
+            <input
+                id="quickFee"
+                class="tool-input"
+                type="number"
+                value="0">
+        </div>
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcP2PQuick()">
+        Calculate P2P Profit
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter amount and rates
+    </div>`;
+
+}
+
+function calcP2PQuick(){
+
+    const qty=num("quickQty");
+    const buy=num("quickBuy");
+    const sell=num("quickSell");
+    const fee=num("quickFee");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(
+        qty<=0 ||
+        buy<=0 ||
+        sell<=0
+    ){
+
+        box.innerText=
+            "Enter valid values";
+
+        return;
+    }
+
+    const cost=qty*buy;
+    const revenue=qty*sell;
+
+    const fees=
+        (cost+revenue)*fee/100;
+
+    const profit=
+        revenue-cost-fees;
+
+    const roi=
+        cost>0
+            ? profit/cost*100
+            : 0;
+
+    box.innerHTML=
+        `
+        Buy Cost: ${money(cost)}<br>
+        Sell Revenue: ${money(revenue)}<br>
+        Fees: ${money(fees)}<br>
+        Net Profit: <b>${money(profit)}</b><br>
+        ROI: ${roi.toFixed(2)}%
+        `;
+}
+
+/* =========================================================
+P2P CALCULATOR
+========================================================= */
+
+function renderP2PCalc(){
+
+    const body=
+        document.getElementById("toolBody");
+
+    body.innerHTML=`
+
+    <div class="tool-group">
+
+        <label>USDT Amount</label>
+
+        <input
+            id="p2pCalcQty"
+            class="tool-input"
+            type="number"
+            placeholder="100">
+
+    </div>
+
+    <div class="tool-row">
+
+        <div class="tool-group">
+
+            <label>Buy Rate ₹ / USDT</label>
+
+            <input
+                id="p2pCalcBuy"
+                class="tool-input"
+                type="number"
+                placeholder="89">
+
+        </div>
+
+        <div class="tool-group">
+
+            <label>Sell Rate ₹ / USDT</label>
+
+            <input
+                id="p2pCalcSell"
+                class="tool-input"
+                type="number"
+                placeholder="90">
+
+        </div>
+
+    </div>
+
+    <div class="tool-group">
+
+        <label>Fee %</label>
+
+        <input
+            id="p2pCalcFee"
+            class="tool-input"
+            type="number"
+            value="0">
+
+    </div>
+
+    <button
+        class="btn-calc-tool"
+        onclick="calcP2PCalc()">
+        Calculate
+    </button>
+
+    <div
+        class="tool-result-box"
+        id="toolResult">
+        Enter P2P details
+    </div>`;
+
+}
+
+function calcP2PCalc(){
+
+    const qty=num("p2pCalcQty");
+    const buy=num("p2pCalcBuy");
+    const sell=num("p2pCalcSell");
+    const fee=num("p2pCalcFee");
+
+    const box=
+        document.getElementById("toolResult");
+
+    if(
+        qty<=0 ||
+        buy<=0 ||
+        sell<=0
+    ){
+
+        box.innerText=
+            "Enter valid values";
+
+        return;
+    }
+
+    const investment=qty*buy;
+    const revenue=qty*sell;
+
+    const fees=
+        (investment+revenue)*
+        fee/100;
+
+    const profit=
+        revenue-investment-fees;
+
+    box.innerHTML=
+        `
+        Investment: ${money(investment)}<br>
+        Revenue: ${money(revenue)}<br>
+        Fees: ${money(fees)}<br>
+        Net P&L: <b>${money(profit)}</b>
+        `;
+}
+
+/* =========================================================
+HELPER FUNCTIONS
+========================================================= */
+
+function num(id){
+
+    const el=
+        document.getElementById(id);
+
+    if(!el)
+        return 0;
+
+    const value=
+        parseFloat(el.value);
+
+    return Number.isFinite(value)
+        ? value
+        : 0;
+}
+
+function money(value){
+
+    const sign=
+        value<0 ? "-" : "";
+
+    return (
+        sign+
+        "₹"+
+        Math.abs(value)
+            .toLocaleString(
+                "en-IN",
+                {
+                    minimumFractionDigits:2,
+                    maximumFractionDigits:2
+                }
+            )
+    );
+}
+
+function formatResult(
+    label,
+    value,
+    numeric
+){
+
+    return `
+        ${label}:
+        <b class="${
+            numeric>=0
+                ? "result-positive"
+                : "result-negative"
+        }">
+            ${value}
+        </b>
+    `;
+}
+
+/* =========================================================
+KEYBOARD SUPPORT
 ========================================================= */
 
 document.addEventListener(
     "keydown",
-    function(event){
+    event=>{
 
-        const key =
-            event.key;
+        const key=event.key;
 
-        if(
-            /^[0-9.]$/.test(key)
-        ){
+        if(/^[0-9.]$/.test(key)){
 
             appendNumber(key);
             return;
-
         }
 
         if(
-            ["+","-","*","/","%"].includes(
-                key
-            )
+            ["+","-","*","/","%"]
+            .includes(key)
         ){
 
             appendOperator(key);
             return;
-
         }
 
         if(
-            key === "Enter" ||
-            key === "="
+            key==="Enter" ||
+            key==="="
         ){
 
             event.preventDefault();
-
             calculate();
-
             return;
-
         }
 
-        if(
-            key === "Backspace"
-        ){
+        if(key==="Backspace"){
 
             deleteLast();
             return;
-
         }
 
-        if(
-            key === "Escape"
-        ){
+        if(key==="Escape"){
 
             clearDisplay();
             return;
-
         }
-
-    }
-);
-
-
-/* =========================================================
-   EXTRA SHORTCUTS
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.ctrlKey &&
-            event.key.toLowerCase() === "c"
-        ){
-
-            if(
-                document.activeElement.tagName !==
-                "INPUT"
-            ){
-
-                copyResult();
-
-            }
-
-        }
-
     }
 );
 
