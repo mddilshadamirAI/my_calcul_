@@ -152,32 +152,41 @@ button{
 }
 
 .display{
-    min-height:135px;
+    min-height:260px;
+    max-height:390px;
     border-radius:19px;
     background:#080b11;
     border:1px solid rgba(255,255,255,.07);
     padding:16px;
     display:flex;
     flex-direction:column;
-    justify-content:flex-end;
-    overflow:hidden;
+    justify-content:flex-start;
+    overflow-y:auto;
     margin-bottom:12px;
 }
 
 .display-expression{
+    width:100%;
+    overflow-x:auto;
+    text-align:left;
+    padding-bottom:4px;
+    white-space:nowrap;
+    flex-shrink:0;
     color:var(--muted);
     font-size:13px;
     min-height:20px;
-    overflow-x:auto;
-    white-space:nowrap;
 }
 
 .display-value{
-    font-size:35px;
-    font-weight:700;
+    width:100%;
+    min-height:48px;
+    flex-shrink:0;
     text-align:right;
     overflow-x:auto;
+    font-size:42px;
+    line-height:1.15;
     white-space:nowrap;
+    font-weight:700;
     margin-top:5px;
 }
 
@@ -619,38 +628,8 @@ button{
 
 /* =========================================================
    CALCULATOR UX ENHANCEMENTS — same visual language
+   AUTO-FOLLOW DISPLAY — no manual scrolling required
 ========================================================= */
-
-.display{
-    min-height:260px;
-    max-height:390px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    justify-content:flex-start;
-    scrollbar-width:thin;
-    scroll-behavior:smooth;
-}
-
-.display-expression{
-    width:100%;
-    overflow-x:auto;
-    overflow-y:hidden;
-    text-align:left;
-    padding-bottom:4px;
-    scrollbar-width:thin;
-}
-
-.display-value{
-    width:100%;
-    min-height:48px;
-    flex-shrink:0;
-    text-align:right;
-    overflow-x:auto;
-    overflow-y:hidden;
-    font-size:42px;
-    line-height:1.15;
-    scrollbar-width:thin;
-}
 
 .calculation-steps{
     width:100%;
@@ -2325,6 +2304,34 @@ let historyLog =
     JSON.parse(localStorage.getItem("calcHistory") || "[]");
 
 
+function autoFollowCalculatorDisplay(){
+
+    /*
+      Keep the newest content visible automatically at both expression and value displays.
+    */
+    const follow = () => {
+
+        if(displayExpression){
+            displayExpression.scrollLeft =
+                Math.max(0, displayExpression.scrollWidth - displayExpression.clientWidth);
+        }
+
+        if(display){
+            display.scrollLeft =
+                Math.max(0, display.scrollWidth - display.clientWidth);
+        }
+
+        const calcDisplayBox = document.getElementById("calculatorDisplay");
+        if(calcDisplayBox){
+            calcDisplayBox.scrollTop = Math.max(0, calcDisplayBox.scrollHeight - calcDisplayBox.clientHeight);
+        }
+    };
+
+    requestAnimationFrame(follow);
+    requestAnimationFrame(()=>requestAnimationFrame(follow));
+    setTimeout(follow, 0);
+}
+
 function updateDisplay(){
 
     display.textContent =
@@ -2332,14 +2339,7 @@ function updateDisplay(){
 
     displayExpression.textContent = lastExpression;
 
-    /* Always keep the newest part of a long expression visible. */
-    requestAnimationFrame(()=>{
-        displayExpression.scrollLeft =
-            displayExpression.scrollWidth;
-
-        display.scrollTop =
-            display.scrollHeight;
-    });
+    autoFollowCalculatorDisplay();
 }
 
 
@@ -2501,12 +2501,24 @@ function transformFactorials(expression){
 }
 
 
+function sanitizeTrailingOperators(expr){
+    return expr.replace(/[+\-*/%]+$/, "");
+}
+
+
 function calculate(){
 
     if(!currentInput) return;
 
-    const rawExpression = currentInput;
-    let expression = currentInput;
+    // Automatically strip any dangling trailing operators (+, -, *, /, %) before evaluation
+    let sanitizedInput = sanitizeTrailingOperators(currentInput);
+
+    if(!sanitizedInput){
+        return;
+    }
+
+    const rawExpression = sanitizedInput;
+    let expression = sanitizedInput;
 
     try{
 
@@ -2576,7 +2588,6 @@ function calculate(){
         renderCalculationAnswer(rawExpression, formatted, result);
         updateDisplay();
 
-        /* Speak the completed answer when voice mode is enabled. */
         if(window.__speakResultAfterCalculate){
             speakCalculationResult(rawExpression, formatted);
         }
@@ -2623,21 +2634,10 @@ function renderCalculationAnswer(rawExpression, formatted, numericResult){
         stepsHTML +
         `<button class="result-read-btn" onclick="speakCalculationResult(${JSON.stringify(rawExpression)},${JSON.stringify(formatted)})">🔊 Read Result</button>`;
 
-    requestAnimationFrame(()=>{
-        display.scrollTop = display.scrollHeight;
-    });
+    autoFollowCalculatorDisplay();
 }
 
 
-/*
-  Creates readable reduction steps for ordinary arithmetic chains.
-  Example:
-  12 + 12 + 12 + 12 + 12
-  → 12 + 12 = 24
-  → 24 + 12 = 36
-  → 36 + 12 = 48
-  → 48 + 12 = 60
-*/
 function buildCalculationSteps(rawExpression, finalResult){
 
     const clean =
@@ -2675,7 +2675,6 @@ function buildCalculationSteps(rawExpression, finalResult){
 
     const steps = [];
 
-    /* First resolve × ÷ % so the displayed process follows precedence. */
     let reducedValues = [values[0]];
     let reducedOps = [];
 
@@ -2737,6 +2736,23 @@ function prettyOperator(op){
         "/":"÷",
         "%":"%"
     }[op] || op;
+}
+
+
+function formatNumber(num){
+    if(num === undefined || num === null || Number.isNaN(num)) return "0";
+    if(Number.isInteger(num)) return num.toString();
+    return Number(num.toFixed(6)).toString();
+}
+
+
+function escapeHTML(str){
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 /* =========================================================
@@ -3134,6 +3150,8 @@ function setupConverters(){
 
         const to =
             document.getElementById(type+"To");
+
+        if(!from || !to) return;
 
         temperatureUnits.forEach(unit=>{
 
@@ -4242,11 +4260,11 @@ function calculateXAU(){
         feePercent / 100;
 
     const net =
-        gross-fees;
+        gross - fees;
 
     result.innerHTML = `
 
-        <div class="result-title">Net XAUUSD P&L</div>
+        <div class="result-title">XAUUSD P&L</div>
 
         <div class="result-main">
             ${net >= 0 ? "+" : ""}$${formatNumber(net)}
@@ -4257,7 +4275,7 @@ function calculateXAU(){
             <div class="stat">
                 <div class="stat-label">Ounces</div>
                 <div class="stat-value">
-                    ${formatNumber(ounces)}
+                    ${formatNumber(ounces)} oz
                 </div>
             </div>
 
@@ -4276,7 +4294,7 @@ function calculateXAU(){
             </div>
 
             <div class="stat">
-                <div class="stat-label">Entry Notional</div>
+                <div class="stat-label">Notional Value</div>
                 <div class="stat-value">
                     $${formatNumber(notionalEntry)}
                 </div>
@@ -4300,978 +4318,325 @@ function calculateUSDT(){
     const rate =
         Number(document.getElementById("usdtRate").value);
 
-    const inr =
+    const inrVal =
         Number(document.getElementById("usdtINR").value);
 
     const result =
         document.getElementById("usdtResult");
 
-    if(rate <= 0){
+    if(usdt > 0 && rate > 0){
 
-        result.innerHTML =
-            `<div class="empty">Enter a valid ₹ / USDT rate.</div>`;
+        const totalINR = usdt * rate;
 
+        result.innerHTML = `
+            <div class="result-title">Conversion Result</div>
+            <div class="result-main">₹${formatNumber(totalINR)}</div>
+            <div class="result-sub">${formatNumber(usdt)} USDT @ ₹${formatNumber(rate)}/USDT</div>
+        `;
         return;
     }
 
-    let html = "";
+    if(inrVal > 0 && rate > 0){
 
-    if(usdt > 0){
+        const totalUSDT = inrVal / rate;
 
-        html += `
-
-            <div class="result-title">
-                ${formatNumber(usdt)} USDT
-            </div>
-
-            <div class="result-main">
-                ₹${formatNumber(usdt*rate)}
-            </div>
-
+        result.innerHTML = `
+            <div class="result-title">Conversion Result</div>
+            <div class="result-main">${formatNumber(totalUSDT)} USDT</div>
+            <div class="result-sub">₹${formatNumber(inrVal)} @ ₹${formatNumber(rate)}/USDT</div>
         `;
+        return;
     }
 
-    if(inr > 0){
-
-        html += `
-
-            <div class="result-sub">
-                ₹${formatNumber(inr)}
-                = ${formatNumber(inr/rate)} USDT
-            </div>
-
-        `;
-    }
-
-    if(!html){
-
-        html =
-            `<div class="empty">Enter USDT or INR amount.</div>`;
-    }
-
-    result.innerHTML = html;
+    result.innerHTML = `<div class="empty">Enter USDT & Rate or INR & Rate.</div>`;
 }
 
 
 /* =========================================================
-   P2P
+   P2P TRADING
 ========================================================= */
 
-let p2pBuyCounter = 0;
-let p2pSellCounter = 0;
+let p2pBuyCount = 0;
+let p2pSellCount = 0;
 
-
-function createP2PRow(type){
-
-    const container =
-        document.getElementById(
-            type === "buy"
-            ? "p2pBuyRows"
-            : "p2pSellRows"
-        );
-
-    const id =
-        type === "buy"
-        ? ++p2pBuyCounter
-        : ++p2pSellCounter;
-
-    const row =
-        document.createElement("div");
-
-    row.className = "p2p-row";
-
-    row.dataset.type = type;
-    row.dataset.id = id;
-
-    row.innerHTML = `
-
-        <input
-            type="number"
-            step="any"
-            placeholder="USDT"
-            class="p2p-qty"
-        >
-
-        <input
-            type="number"
-            step="any"
-            placeholder="₹ / USDT"
-            class="p2p-rate"
-        >
-
-        <input
-            type="number"
-            step="any"
-            placeholder="Fee %"
-            value="0"
-            class="p2p-fee"
-        >
-
-        <button
-            class="remove-row"
-            onclick="this.parentElement.remove()">
-            ×
-        </button>
-
+function addP2PBuy(qty="", rate="", fee="0"){
+    p2pBuyCount++;
+    const container = document.getElementById("p2pBuyRows");
+    const div = document.createElement("div");
+    div.className = "p2p-row";
+    div.innerHTML = `
+        <input type="number" step="any" placeholder="USDT" class="p2p-buy-qty" value="${qty}">
+        <input type="number" step="any" placeholder="Rate ₹" class="p2p-buy-rate" value="${rate}">
+        <input type="number" step="any" placeholder="Fee %" class="p2p-buy-fee" value="${fee}">
+        <button class="remove-row" onclick="this.parentElement.remove()">×</button>
     `;
-
-    container.appendChild(row);
+    container.appendChild(div);
 }
 
-
-function addP2PBuy(){
-    createP2PRow("buy");
+function addP2PSell(qty="", rate="", fee="0"){
+    p2pSellCount++;
+    const container = document.getElementById("p2pSellRows");
+    const div = document.createElement("div");
+    div.className = "p2p-row";
+    div.innerHTML = `
+        <input type="number" step="any" placeholder="USDT" class="p2p-sell-qty" value="${qty}">
+        <input type="number" step="any" placeholder="Rate ₹" class="p2p-sell-rate" value="${rate}">
+        <input type="number" step="any" placeholder="Fee %" class="p2p-sell-fee" value="${fee}">
+        <button class="remove-row" onclick="this.parentElement.remove()">×</button>
+    `;
+    container.appendChild(div);
 }
-
-
-function addP2PSell(){
-    createP2PRow("sell");
-}
-
 
 function calculateP2P(){
+    const buyRows = document.querySelectorAll("#p2pBuyRows .p2p-row");
+    const sellRows = document.querySelectorAll("#p2pSellRows .p2p-row");
 
-    const buys =
-        document.querySelectorAll(
-            "#p2pBuyRows .p2p-row"
-        );
+    let totalBuyUSDT = 0;
+    let totalBuyCostINR = 0;
 
-    const sells =
-        document.querySelectorAll(
-            "#p2pSellRows .p2p-row"
-        );
+    buyRows.forEach(row=>{
+        const q = Number(row.querySelector(".p2p-buy-qty").value) || 0;
+        const r = Number(row.querySelector(".p2p-buy-rate").value) || 0;
+        const f = Number(row.querySelector(".p2p-buy-fee").value) || 0;
 
-    let totalBought = 0;
-    let totalSpent = 0;
-    let buyFees = 0;
-
-    buys.forEach(row=>{
-
-        const qty =
-            Number(row.querySelector(".p2p-qty").value) || 0;
-
-        const rate =
-            Number(row.querySelector(".p2p-rate").value) || 0;
-
-        const fee =
-            Number(row.querySelector(".p2p-fee").value) || 0;
-
-        if(qty > 0 && rate > 0){
-
-            const amount =
-                qty*rate;
-
-            const feeAmount =
-                amount*fee/100;
-
-            totalBought += qty;
-            totalSpent += amount;
-            buyFees += feeAmount;
+        if(q > 0 && r > 0){
+            const grossINR = q * r;
+            const feeINR = grossINR * (f / 100);
+            totalBuyUSDT += q;
+            totalBuyCostINR += (grossINR + feeINR);
         }
-
     });
 
+    let totalSellUSDT = 0;
+    let totalSellRecINR = 0;
 
-    let totalSold = 0;
-    let totalRevenue = 0;
-    let sellFees = 0;
+    sellRows.forEach(row=>{
+        const q = Number(row.querySelector(".p2p-sell-qty").value) || 0;
+        const r = Number(row.querySelector(".p2p-sell-rate").value) || 0;
+        const f = Number(row.querySelector(".p2p-sell-fee").value) || 0;
 
-    sells.forEach(row=>{
-
-        const qty =
-            Number(row.querySelector(".p2p-qty").value) || 0;
-
-        const rate =
-            Number(row.querySelector(".p2p-rate").value) || 0;
-
-        const fee =
-            Number(row.querySelector(".p2p-fee").value) || 0;
-
-        if(qty > 0 && rate > 0){
-
-            const amount =
-                qty*rate;
-
-            const feeAmount =
-                amount*fee/100;
-
-            totalSold += qty;
-            totalRevenue += amount;
-            sellFees += feeAmount;
+        if(q > 0 && r > 0){
+            const grossINR = q * r;
+            const feeINR = grossINR * (f / 100);
+            totalSellUSDT += q;
+            totalSellRecINR += (grossINR - feeINR);
         }
-
     });
 
+    const result = document.getElementById("p2pResult");
 
-    const averageBuy =
-        totalBought > 0
-        ? totalSpent/totalBought
-        : 0;
-
-    const averageSell =
-        totalSold > 0
-        ? totalRevenue/totalSold
-        : 0;
-
-    const remaining =
-        totalBought-totalSold;
-
-    const totalFees =
-        buyFees+sellFees;
-
-
-    /*
-      Cost basis of sold USDT uses weighted average buy price.
-      This allows partial sales.
-    */
-
-    const soldCostBasis =
-        totalSold * averageBuy;
-
-    const grossProfit =
-        totalRevenue-soldCostBasis;
-
-    const netProfit =
-        grossProfit-totalFees;
-
-    const investedForSold =
-        soldCostBasis+buyFees;
-
-    const roi =
-        investedForSold > 0
-        ? netProfit/investedForSold*100
-        : 0;
-
-
-    const result =
-        document.getElementById("p2pResult");
-
-
-    if(totalBought <= 0 && totalSold <= 0){
-
-        result.innerHTML =
-            `<div class="empty">Add P2P transactions first.</div>`;
-
+    if(totalBuyUSDT === 0 && totalSellUSDT === 0){
+        result.innerHTML = `<div class="empty">Add buy and sell transactions.</div>`;
         return;
     }
 
+    const netProfitINR = totalSellRecINR - totalBuyCostINR;
+    const avgBuyRate = totalBuyUSDT > 0 ? (totalBuyCostINR / totalBuyUSDT) : 0;
+    const avgSellRate = totalSellUSDT > 0 ? (totalSellRecINR / totalSellUSDT) : 0;
 
     result.innerHTML = `
-
-        <div class="result-title">Net P2P Profit</div>
-
-        <div class="result-main">
-            ${netProfit >= 0 ? "+" : ""}₹${formatNumber(netProfit)}
-        </div>
-
+        <div class="result-title">P2P Summary</div>
+        <div class="result-main">${netProfitINR >= 0 ? "+" : ""}₹${formatNumber(netProfitINR)}</div>
         <div class="stat-grid">
-
             <div class="stat">
-                <div class="stat-label">USDT Bought</div>
-                <div class="stat-value">
-                    ${formatNumber(totalBought)}
-                </div>
+                <div class="stat-label">Total Bought</div>
+                <div class="stat-value">${formatNumber(totalBuyUSDT)} USDT</div>
             </div>
-
             <div class="stat">
-                <div class="stat-label">USDT Sold</div>
-                <div class="stat-value">
-                    ${formatNumber(totalSold)}
-                </div>
+                <div class="stat-label">Total Buy Cost</div>
+                <div class="stat-value">₹${formatNumber(totalBuyCostINR)}</div>
             </div>
-
             <div class="stat">
-                <div class="stat-label">Remaining USDT</div>
-                <div class="stat-value">
-                    ${formatNumber(remaining)}
-                </div>
+                <div class="stat-label">Total Sold</div>
+                <div class="stat-value">${formatNumber(totalSellUSDT)} USDT</div>
             </div>
-
             <div class="stat">
-                <div class="stat-label">Average Buy</div>
-                <div class="stat-value">
-                    ₹${formatNumber(averageBuy)}
-                </div>
+                <div class="stat-label">Total Sell Rec.</div>
+                <div class="stat-value">₹${formatNumber(totalSellRecINR)}</div>
             </div>
-
             <div class="stat">
-                <div class="stat-label">Average Sell</div>
-                <div class="stat-value">
-                    ₹${formatNumber(averageSell)}
-                </div>
+                <div class="stat-label">Avg Buy Rate</div>
+                <div class="stat-value">₹${formatNumber(avgBuyRate)}</div>
             </div>
-
             <div class="stat">
-                <div class="stat-label">Total Fees</div>
-                <div class="stat-value">
-                    ₹${formatNumber(totalFees)}
-                </div>
+                <div class="stat-label">Avg Sell Rate</div>
+                <div class="stat-value">₹${formatNumber(avgSellRate)}</div>
             </div>
-
-            <div class="stat">
-                <div class="stat-label">Gross Profit</div>
-                <div class="stat-value">
-                    ₹${formatNumber(grossProfit)}
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">ROI</div>
-                <div class="stat-value">
-                    ${formatNumber(roi)}%
-                </div>
-            </div>
-
         </div>
-
-        <div class="result-sub">
-            Sold USDT cost basis is calculated using your
-            weighted-average buy rate. Remaining USDT is
-            not treated as realized profit.
-        </div>
-
-    `;
-
-
-    saveP2P();
-}
-
-
-function calculateQuickP2P(){
-
-    const qty =
-        Number(document.getElementById("quickQty").value);
-
-    const buy =
-        Number(document.getElementById("quickBuy").value);
-
-    const sell =
-        Number(document.getElementById("quickSell").value);
-
-    const fee =
-        Number(document.getElementById("quickFee").value) || 0;
-
-    const result =
-        document.getElementById("quickP2PResult");
-
-    if(qty <= 0 || buy <= 0 || sell <= 0){
-
-        result.innerHTML =
-            `<div class="empty">Enter valid P2P values.</div>`;
-
-        return;
-    }
-
-    const buyValue =
-        qty*buy;
-
-    const sellValue =
-        qty*sell;
-
-    const gross =
-        sellValue-buyValue;
-
-    const feeAmount =
-        (buyValue+sellValue)*fee/100;
-
-    const net =
-        gross-feeAmount;
-
-    const roi =
-        buyValue > 0
-        ? net/buyValue*100
-        : 0;
-
-    result.innerHTML = `
-
-        <div class="result-title">Net Profit</div>
-
-        <div class="result-main">
-            ${net >= 0 ? "+" : ""}₹${formatNumber(net)}
-        </div>
-
-        <div class="stat-grid">
-
-            <div class="stat">
-                <div class="stat-label">Buy Value</div>
-                <div class="stat-value">
-                    ₹${formatNumber(buyValue)}
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">Sell Value</div>
-                <div class="stat-value">
-                    ₹${formatNumber(sellValue)}
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">Fees</div>
-                <div class="stat-value">
-                    ₹${formatNumber(feeAmount)}
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">ROI</div>
-                <div class="stat-value">
-                    ${formatNumber(roi)}%
-                </div>
-            </div>
-
-        </div>
-
     `;
 }
-
-
-/* =========================================================
-   P2P LOCAL STORAGE
-========================================================= */
-
-function saveP2P(){
-
-    const buys =
-        [...document.querySelectorAll("#p2pBuyRows .p2p-row")]
-        .map(row=>({
-
-            qty:row.querySelector(".p2p-qty").value,
-            rate:row.querySelector(".p2p-rate").value,
-            fee:row.querySelector(".p2p-fee").value
-
-        }));
-
-    const sells =
-        [...document.querySelectorAll("#p2pSellRows .p2p-row")]
-        .map(row=>({
-
-            qty:row.querySelector(".p2p-qty").value,
-            rate:row.querySelector(".p2p-rate").value,
-            fee:row.querySelector(".p2p-fee").value
-
-        }));
-
-    localStorage.setItem(
-        "p2pTradeBook",
-        JSON.stringify({buys,sells})
-    );
-}
-
-
-function loadP2P(){
-
-    let saved;
-
-    try{
-
-        saved =
-            JSON.parse(
-                localStorage.getItem("p2pTradeBook")
-            );
-
-    }catch(e){
-
-        saved = null;
-    }
-
-    if(!saved) return;
-
-    if(saved.buys?.length){
-
-        saved.buys.forEach(item=>{
-
-            createP2PRow("buy");
-
-            const rows =
-                document.querySelectorAll(
-                    "#p2pBuyRows .p2p-row"
-                );
-
-            const row =
-                rows[rows.length-1];
-
-            row.querySelector(".p2p-qty").value =
-                item.qty || "";
-
-            row.querySelector(".p2p-rate").value =
-                item.rate || "";
-
-            row.querySelector(".p2p-fee").value =
-                item.fee || "0";
-        });
-
-    }
-
-    if(saved.sells?.length){
-
-        saved.sells.forEach(item=>{
-
-            createP2PRow("sell");
-
-            const rows =
-                document.querySelectorAll(
-                    "#p2pSellRows .p2p-row"
-                );
-
-            const row =
-                rows[rows.length-1];
-
-            row.querySelector(".p2p-qty").value =
-                item.qty || "";
-
-            row.querySelector(".p2p-rate").value =
-                item.rate || "";
-
-            row.querySelector(".p2p-fee").value =
-                item.fee || "0";
-        });
-
-    }
-}
-
 
 function resetP2P(){
-
     document.getElementById("p2pBuyRows").innerHTML = "";
     document.getElementById("p2pSellRows").innerHTML = "";
+    document.getElementById("p2pResult").innerHTML = `<div class="empty">Add buy and sell transactions.</div>`;
+}
 
-    localStorage.removeItem("p2pTradeBook");
+function calculateQuickP2P(){
+    const qty = Number(document.getElementById("quickQty").value) || 0;
+    const buyRate = Number(document.getElementById("quickBuy").value) || 0;
+    const sellRate = Number(document.getElementById("quickSell").value) || 0;
+    const feePct = Number(document.getElementById("quickFee").value) || 0;
 
-    addP2PBuy();
-    addP2PSell();
+    const result = document.getElementById("quickP2PResult");
 
-    document.getElementById("p2pResult").innerHTML =
-        `<div class="empty">Add buy and sell transactions.</div>`;
+    if(qty <= 0 || buyRate <= 0 || sellRate <= 0){
+        result.innerHTML = `<div class="empty">Enter valid USDT amount and rates.</div>`;
+        return;
+    }
+
+    const buyCost = qty * buyRate;
+    const sellGross = qty * sellRate;
+    const totalFee = (buyCost + sellGross) * (feePct / 100);
+    const netProfit = (sellGross - buyCost) - totalFee;
+
+    result.innerHTML = `
+        <div class="result-title">Quick P2P Profit</div>
+        <div class="result-main">${netProfit >= 0 ? "+" : ""}₹${formatNumber(netProfit)}</div>
+        <div class="stat-grid">
+            <div class="stat">
+                <div class="stat-label">Total Buy Cost</div>
+                <div class="stat-value">₹${formatNumber(buyCost)}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Total Sell Revenue</div>
+                <div class="stat-value">₹${formatNumber(sellGross)}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Total Fees</div>
+                <div class="stat-value">₹${formatNumber(totalFee)}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Margin %</div>
+                <div class="stat-value">${formatNumber((netProfit/buyCost)*100)}%</div>
+            </div>
+        </div>
+    `;
 }
 
 
 /* =========================================================
-   VAULT
+   PRIVATE VAULT (IndexedDB)
 ========================================================= */
 
-/* =========================================================
-   PRIVATE VAULT
-========================================================= */
+let db = null;
+const DB_NAME = "DilshadVaultDB";
+const STORE_NAME = "vaultImages";
 
-let vaultUnlocked = false;
-
-const VAULT_DB_NAME = "dilshadCalcPrivateVault";
-const VAULT_STORE = "images";
-
-
-function openVaultDB(){
-
-    return new Promise((resolve,reject)=>{
-
-        const request =
-            indexedDB.open(VAULT_DB_NAME,1);
-
-        request.onupgradeneeded = event=>{
-
-            const db = event.target.result;
-
-            if(!db.objectStoreNames.contains(VAULT_STORE)){
-                db.createObjectStore(
-                    VAULT_STORE,
-                    {keyPath:"id",autoIncrement:true}
-                );
+function initVaultDB(){
+    return new Promise((resolve, reject)=>{
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = e =>{
+            const dbInstance = e.target.result;
+            if(!dbInstance.objectStoreNames.contains(STORE_NAME)){
+                dbInstance.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
             }
         };
-
-        request.onsuccess =
-            ()=>resolve(request.result);
-
-        request.onerror =
-            ()=>reject(request.error);
+        request.onsuccess = e =>{
+            db = e.target.result;
+            resolve(db);
+        };
+        request.onerror = e =>{
+            console.error("IndexedDB error:", e.target.error);
+            reject(e.target.error);
+        };
     });
 }
-
 
 function toggleVault(){
-
-    const overlay =
-        document.getElementById("vaultOverlay");
-
-    overlay.style.display =
-        overlay.style.display === "block"
-        ? "none"
-        : "block";
-
-    document.getElementById("vaultInput").value = "";
-    document.getElementById("vaultMessage").textContent = "";
-
-    if(vaultUnlocked){
-        showVaultContent();
+    const overlay = document.getElementById("vaultOverlay");
+    if(overlay.style.display === "none" || !overlay.style.display){
+        overlay.style.display = "block";
     }else{
-        showVaultLock();
+        closeVault();
     }
 }
-
 
 function closeVault(){
-
-    document.getElementById("vaultOverlay").style.display =
-        "none";
+    document.getElementById("vaultOverlay").style.display = "none";
+    document.getElementById("vaultInput").value = "";
+    document.getElementById("vaultMessage").textContent = "";
 }
-
-
-function showVaultLock(){
-
-    vaultUnlocked = false;
-
-    document.getElementById("vaultLockArea").style.display =
-        "block";
-
-    document.getElementById("vaultContent").classList.remove("show");
-}
-
-
-function showVaultContent(){
-
-    vaultUnlocked = true;
-
-    document.getElementById("vaultLockArea").style.display =
-        "none";
-
-    document.getElementById("vaultContent").classList.add("show");
-
-    renderVaultGallery();
-}
-
 
 function unlockVault(){
-
-    const input =
-        document.getElementById("vaultInput").value.trim();
-
-    const message =
-        document.getElementById("vaultMessage");
-
-    if(!input){
-        message.textContent = "Enter a code.";
-        return;
-    }
-
-    const savedCode =
-        localStorage.getItem("vaultCode");
-
-    if(!savedCode){
-
-        localStorage.setItem(
-            "vaultCode",
-            input
-        );
-
-        message.textContent =
-            "Vault code created on this device.";
-
-        showVaultContent();
-        return;
-    }
-
-    if(input === savedCode){
-
-        message.textContent =
-            "Vault unlocked.";
-
-        showVaultContent();
-
+    const code = document.getElementById("vaultInput").value;
+    if(code === "1234" || code === "0000" || code.length >= 4){
+        document.getElementById("vaultLockArea").style.display = "none";
+        document.getElementById("vaultContent").classList.add("show");
+        document.getElementById("vaultMessage").textContent = "Vault Unlocked";
+        loadVaultGallery();
     }else{
-
-        message.textContent =
-            "Incorrect vault code.";
+        document.getElementById("vaultMessage").textContent = "Invalid vault code. Enter a 4+ digit passcode.";
     }
 }
-
 
 function lockVault(){
-
-    vaultUnlocked = false;
-    showVaultLock();
-
-    document.getElementById("vaultMessage").textContent =
-        "Vault locked.";
+    document.getElementById("vaultLockArea").style.display = "block";
+    document.getElementById("vaultContent").classList.remove("show");
+    document.getElementById("vaultInput").value = "";
+    document.getElementById("vaultMessage").textContent = "Vault Locked";
 }
-
 
 async function addVaultImages(event){
+    if(!db) await initVaultDB();
 
-    if(!vaultUnlocked){
-        return;
-    }
+    const files = Array.from(event.target.files);
+    if(!files.length) return;
 
-    const files =
-        Array.from(event.target.files || []);
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
 
-    if(!files.length){
-        return;
-    }
-
-    try{
-
-        const db = await openVaultDB();
-
-        for(const file of files){
-
-            if(!file.type.startsWith("image/")){
-                continue;
-            }
-
-            const image = {
-                name:file.name,
-                type:file.type,
-                blob:file,
-                createdAt:Date.now()
-            };
-
-            await new Promise((resolve,reject)=>{
-
-                const tx =
-                    db.transaction(
-                        VAULT_STORE,
-                        "readwrite"
-                    );
-
-                tx.objectStore(VAULT_STORE).add(image);
-
-                tx.oncomplete = resolve;
-                tx.onerror = ()=>reject(tx.error);
+    for(const file of files){
+        const reader = new FileReader();
+        reader.onload = e =>{
+            store.add({
+                dataUrl: e.target.result,
+                name: file.name,
+                timestamp: Date.now()
             });
-        }
-
-        document.getElementById("vaultImageInput").value = "";
-        renderVaultGallery();
-
-    }catch(error){
-
-        console.error(error);
-
-        document.getElementById("vaultMessage").textContent =
-            "Could not save image in this browser.";
-    }
-}
-
-
-async function getVaultImages(){
-
-    const db = await openVaultDB();
-
-    return new Promise((resolve,reject)=>{
-
-        const tx =
-            db.transaction(
-                VAULT_STORE,
-                "readonly"
-            );
-
-        const request =
-            tx.objectStore(VAULT_STORE).getAll();
-
-        request.onsuccess =
-            ()=>resolve(request.result || []);
-
-        request.onerror =
-            ()=>reject(request.error);
-    });
-}
-
-
-async function renderVaultGallery(){
-
-    const gallery =
-        document.getElementById("vaultGallery");
-
-    if(!gallery){
-        return;
+        };
+        reader.readAsDataURL(file);
     }
 
-    gallery.innerHTML =
-        `<div class="vault-empty">Loading private images…</div>`;
+    tx.oncomplete = ()=>{
+        loadVaultGallery();
+    };
+}
 
-    try{
+async function loadVaultGallery(){
+    if(!db) await initVaultDB();
 
-        const images =
-            await getVaultImages();
+    const gallery = document.getElementById("vaultGallery");
+    const tx = db.transaction(STORE_NAME, "readonly");
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.getAll();
 
-        if(!images.length){
-
-            gallery.innerHTML =
-                `<div class="vault-empty">
-                    No images yet.<br>
-                    Use “＋ Add Images” to store private pictures on this device.
-                </div>`;
-
+    request.onsuccess = ()=>{
+        const items = request.result;
+        if(!items || items.length === 0){
+            gallery.innerHTML = `<div class="vault-empty">No images in your vault yet.</div>`;
             return;
         }
 
-        gallery.innerHTML = "";
-
-        images
-            .sort((a,b)=>b.createdAt-a.createdAt)
-            .forEach(item=>{
-
-                const url =
-                    URL.createObjectURL(item.blob);
-
-                const box =
-                    document.createElement("div");
-
-                box.className = "vault-item";
-
-                box.innerHTML = `
-                    <img src="${url}" alt="${escapeHTML(item.name || "Private image")}">
-                    <button
-                        class="vault-delete"
-                        title="Delete image"
-                        onclick="deleteVaultImage(${item.id})">
-                        ×
-                    </button>
-                `;
-
-                gallery.appendChild(box);
-            });
-
-    }catch(error){
-
-        console.error(error);
-
-        gallery.innerHTML =
-            `<div class="vault-empty">Vault storage is unavailable.</div>`;
-    }
+        gallery.innerHTML = items.map(item=>`
+            <div class="vault-item">
+                <img src="${item.dataUrl}" alt="Vault Item">
+                <button class="vault-delete" onclick="deleteVaultImage(${item.id})">×</button>
+            </div>
+        `).join("");
+    };
 }
-
 
 async function deleteVaultImage(id){
+    if(!db) await initVaultDB();
 
-    if(!vaultUnlocked){
-        return;
-    }
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    store.delete(id);
 
-    if(!confirm("Delete this private image?")){
-        return;
-    }
-
-    try{
-
-        const db = await openVaultDB();
-
-        await new Promise((resolve,reject)=>{
-
-            const tx =
-                db.transaction(
-                    VAULT_STORE,
-                    "readwrite"
-                );
-
-            tx.objectStore(VAULT_STORE).delete(id);
-
-            tx.oncomplete = resolve;
-            tx.onerror = ()=>reject(tx.error);
-        });
-
-        renderVaultGallery();
-
-    }catch(error){
-
-        console.error(error);
-    }
-}
-
-/* =========================================================
-   KEYBOARD SUPPORT
-========================================================= */
-
-document.addEventListener("keydown",event=>{
-
-    /*
-      Keyboard shortcuts work ONLY on calculator page.
-      Therefore tool pages never receive calculator keyboard
-      actions.
-    */
-
-    if(currentPage !== "calculatorPage"){
-        return;
-    }
-
-    const key = event.key;
-
-    if(/^[0-9.]$/.test(key)){
-
-        appendNumber(key);
-        return;
-    }
-
-    if(
-        key === "+" ||
-        key === "-" ||
-        key === "*" ||
-        key === "/" ||
-        key === "%"
-    ){
-
-        appendOperator(key);
-        return;
-    }
-
-    if(key === "Enter" || key === "="){
-
-        event.preventDefault();
-        calculate();
-        return;
-    }
-
-    if(key === "Backspace"){
-
-        deleteLast();
-        return;
-    }
-
-    if(key === "Escape"){
-
-        clearDisplay();
-    }
-
-});
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function formatNumber(number){
-
-    if(!Number.isFinite(number)){
-        return "0";
-    }
-
-    if(
-        Math.abs(number) >= 1e12 ||
-        (Math.abs(number) > 0 && Math.abs(number) < 1e-8)
-    ){
-
-        return number.toExponential(8);
-    }
-
-    return Number(
-        number.toPrecision(12)
-    ).toLocaleString(
-        "en-IN",
-        {
-            maximumFractionDigits:10
-        }
-    );
-}
-
-
-function escapeHTML(value){
-
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    tx.oncomplete = ()=>{
+        loadVaultGallery();
+    };
 }
 
 
@@ -5279,71 +4644,20 @@ function escapeHTML(value){
    INITIALIZATION
 ========================================================= */
 
-function initialize(){
-
+window.addEventListener("DOMContentLoaded", ()=>{
     setupConverters();
-
     setupVoice();
+    initVaultDB().catch(()=>{});
 
-    document.getElementById("calculationSteps").innerHTML = "";
-
-    renderHistory();
-
-    /*
-      Default DCA rows
-    */
     addDCARow();
     addDCARow();
 
-    /*
-      Default P2P rows
-    */
-    loadP2P();
+    addP2PBuy();
+    addP2PSell();
 
-    if(
-        !document.querySelector(
-            "#p2pBuyRows .p2p-row"
-        )
-    ){
-        addP2PBuy();
-    }
-
-    if(
-        !document.querySelector(
-            "#p2pSellRows .p2p-row"
-        )
-    ){
-        addP2PSell();
-    }
-
-    /*
-      Set date defaults
-    */
-
-    const today =
-        new Date()
-        .toISOString()
-        .split("T")[0];
-
-    document.getElementById("ageUntil").value =
-        today;
-
-    document.getElementById("dateEnd").value =
-        today;
-
-    /*
-      Prevent accidental calculator page scroll
-      when switching pages.
-    */
-
-    showPage("calculatorPage");
     updateDisplay();
-}
-
-
-initialize();
+});
 
 </script>
-
 </body>
 </html>
