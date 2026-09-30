@@ -616,6 +616,203 @@ button{
         font-size:30px;
     }
 }
+
+/* =========================================================
+   CALCULATOR UX ENHANCEMENTS — same visual language
+========================================================= */
+
+.display{
+    min-height:260px;
+    max-height:390px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    justify-content:flex-start;
+    scrollbar-width:thin;
+    scroll-behavior:smooth;
+}
+
+.display-expression{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    text-align:left;
+    padding-bottom:4px;
+    scrollbar-width:thin;
+}
+
+.display-value{
+    width:100%;
+    min-height:48px;
+    flex-shrink:0;
+    text-align:right;
+    overflow-x:auto;
+    overflow-y:hidden;
+    font-size:42px;
+    line-height:1.15;
+    scrollbar-width:thin;
+}
+
+.calculation-steps{
+    width:100%;
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.07);
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.calculation-steps:empty{
+    display:none;
+}
+
+.process-label{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.process-step{
+    width:100%;
+    padding:9px 11px;
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.025);
+    border-radius:11px;
+    color:#dce5ef;
+    font-size:13px;
+    line-height:1.45;
+    text-align:left;
+    word-break:break-word;
+}
+
+.process-step strong{
+    color:var(--accent);
+}
+
+.result-read-btn{
+    margin-top:9px;
+    border:1px solid rgba(110,231,183,.2);
+    background:rgba(110,231,183,.07);
+    color:var(--accent);
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.voice-listening{
+    border-color:rgba(251,113,133,.45)!important;
+    color:#fb7185!important;
+    animation:voicePulse 1.2s infinite;
+}
+
+@keyframes voicePulse{
+    50%{box-shadow:0 0 0 5px rgba(251,113,133,.08);}
+}
+
+/* Private Vault gallery */
+.vault-content{
+    display:none;
+    margin-top:14px;
+}
+
+.vault-content.show{
+    display:block;
+}
+
+.vault-toolbar{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.vault-upload{
+    flex:1;
+    border:1px dashed rgba(110,231,183,.35);
+    background:rgba(110,231,183,.06);
+    color:var(--accent);
+    border-radius:12px;
+    padding:11px;
+    cursor:pointer;
+    text-align:center;
+    font-size:12px;
+}
+
+.vault-upload input{
+    display:none;
+}
+
+.vault-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    max-height:330px;
+    overflow:auto;
+}
+
+.vault-item{
+    position:relative;
+    aspect-ratio:1;
+    overflow:hidden;
+    border-radius:13px;
+    background:#080c13;
+    border:1px solid var(--border);
+}
+
+.vault-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.vault-delete{
+    position:absolute;
+    right:5px;
+    top:5px;
+    width:27px;
+    height:27px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:50%;
+    background:rgba(0,0,0,.65);
+    color:white;
+    cursor:pointer;
+}
+
+.vault-empty{
+    grid-column:1/-1;
+    text-align:center;
+    color:var(--muted);
+    padding:25px 10px;
+    font-size:12px;
+    border:1px dashed var(--border);
+    border-radius:13px;
+}
+
+.vault-note{
+    color:#697587;
+    font-size:10px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+@media(max-width:600px){
+    .display{
+        min-height:245px;
+        max-height:370px;
+    }
+
+    .display-value{
+        font-size:36px;
+    }
+
+    .vault-gallery{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
 </style>
 </head>
 
@@ -644,16 +841,18 @@ button{
 
 <div class="card calculator-card">
 
-    <div class="display">
+    <div class="display" id="calculatorDisplay">
         <div id="displayExpression" class="display-expression"></div>
         <div id="display" class="display-value">0</div>
+
+        <div id="calculationSteps" class="calculation-steps" aria-live="polite"></div>
     </div>
 
     <div class="action-row">
         <button class="action-btn" onclick="toggleScientific()">SCI</button>
         <button class="action-btn" onclick="toggleHistory()">History</button>
         <button class="action-btn" onclick="openTools()">🧰 Tools</button>
-        <button class="action-btn" onclick="reviseCalculation()">🔊 Revise</button>
+        <button class="action-btn" id="voiceButton" onclick="toggleVoiceInput()">🎙 Voice</button>
     </div>
 
     <div id="scientificPanel" class="scientific">
@@ -1976,7 +2175,7 @@ Calculate Quick P2P
 
 
 <!-- =========================================================
-     VAULT
+     PRIVATE VAULT
 ========================================================= -->
 <div id="vaultOverlay"
 style="
@@ -1987,11 +2186,12 @@ z-index:9999;
 background:rgba(0,0,0,.82);
 backdrop-filter:blur(12px);
 padding:20px;
+overflow:auto;
 ">
 
 <div style="
-max-width:400px;
-margin:12vh auto;
+max-width:500px;
+margin:7vh auto;
 background:#10151f;
 border:1px solid rgba(255,255,255,.1);
 border-radius:24px;
@@ -2001,13 +2201,15 @@ padding:20px;
 <h2 style="margin-top:0">🔐 Private Vault</h2>
 
 <p style="color:#8e99aa;font-size:13px">
-Enter a vault code. This is local browser storage only.
+Your vault stays on this browser. Add private images after unlocking.
 </p>
 
+<div id="vaultLockArea">
 <input
 id="vaultInput"
 type="password"
 placeholder="Vault code"
+autocomplete="off"
 style="
 width:100%;
 padding:13px;
@@ -2021,6 +2223,30 @@ outline:none;
 <button class="calculate-btn" onclick="unlockVault()">
 Unlock
 </button>
+</div>
+
+<div id="vaultContent" class="vault-content">
+
+<div class="vault-toolbar">
+<label class="vault-upload">
+    ＋ Add Images
+    <input id="vaultImageInput" type="file" accept="image/*" multiple onchange="addVaultImages(event)">
+</label>
+
+<button class="reset-btn" style="width:auto;margin:0;padding:11px 13px"
+onclick="lockVault()">
+Lock
+</button>
+</div>
+
+<div id="vaultGallery" class="vault-gallery"></div>
+
+<div class="vault-note">
+Images are stored locally in this browser using IndexedDB. Clearing browser/site data can remove them.
+This vault is a convenience/privacy feature, not encrypted cloud storage.
+</div>
+
+</div>
 
 <button class="reset-btn" onclick="closeVault()">
 Close
@@ -2105,6 +2331,15 @@ function updateDisplay(){
         currentInput === "" ? "0" : currentInput;
 
     displayExpression.textContent = lastExpression;
+
+    /* Always keep the newest part of a long expression visible. */
+    requestAnimationFrame(()=>{
+        displayExpression.scrollLeft =
+            displayExpression.scrollWidth;
+
+        display.scrollTop =
+            display.scrollHeight;
+    });
 }
 
 
@@ -2114,6 +2349,9 @@ function appendNumber(value){
         currentInput = "";
         clearOnNextInput = false;
         lastExpression = "";
+
+        const steps = document.getElementById("calculationSteps");
+        if(steps) steps.innerHTML = "";
     }
 
     if(value === "."){
@@ -2168,6 +2406,9 @@ function appendScientific(value){
         currentInput = "";
         clearOnNextInput = false;
         lastExpression = "";
+
+        const steps = document.getElementById("calculationSteps");
+        if(steps) steps.innerHTML = "";
     }
 
     currentInput += value;
@@ -2180,6 +2421,12 @@ function clearDisplay(){
     currentInput = "";
     lastExpression = "";
     clearOnNextInput = false;
+
+    const steps = document.getElementById("calculationSteps");
+
+    if(steps){
+        steps.innerHTML = "";
+    }
 
     updateDisplay();
 }
@@ -2258,6 +2505,7 @@ function calculate(){
 
     if(!currentInput) return;
 
+    const rawExpression = currentInput;
     let expression = currentInput;
 
     try{
@@ -2318,25 +2566,31 @@ function calculate(){
             ? String(result)
             : Number(result.toPrecision(12)).toString();
 
-        lastExpression = currentInput + " =";
+        lastExpression = rawExpression + " =";
 
-        saveHistory(
-            currentInput,
-            formatted
-        );
+        saveHistory(rawExpression,formatted);
 
         currentInput = formatted;
         clearOnNextInput = true;
 
+        renderCalculationAnswer(rawExpression, formatted, result);
         updateDisplay();
+
+        /* Speak the completed answer when voice mode is enabled. */
+        if(window.__speakResultAfterCalculate){
+            speakCalculationResult(rawExpression, formatted);
+        }
 
     }catch(error){
 
         displayExpression.textContent =
-            currentInput;
+            rawExpression;
 
         display.textContent =
             "Error";
+
+        document.getElementById("calculationSteps").innerHTML =
+            `<div class="process-step">Could not evaluate this expression. Check the operators, brackets, or function input.</div>`;
 
         clearOnNextInput = true;
 
@@ -2344,6 +2598,146 @@ function calculate(){
     }
 }
 
+
+function renderCalculationAnswer(rawExpression, formatted, numericResult){
+
+    const steps = buildCalculationSteps(rawExpression, numericResult);
+
+    const stepsHTML = steps.length
+        ? `
+            <div class="process-label">Calculation process</div>
+            ${steps.map((step,index)=>`
+                <div class="process-step">
+                    <strong>Step ${index + 1}</strong> · ${escapeHTML(step)}
+                </div>
+            `).join("")}
+        `
+        : `
+            <div class="process-label">Calculation process</div>
+            <div class="process-step">
+                <strong>Result</strong> · Evaluated using the calculator engine.
+            </div>
+        `;
+
+    document.getElementById("calculationSteps").innerHTML =
+        stepsHTML +
+        `<button class="result-read-btn" onclick="speakCalculationResult(${JSON.stringify(rawExpression)},${JSON.stringify(formatted)})">🔊 Read Result</button>`;
+
+    requestAnimationFrame(()=>{
+        display.scrollTop = display.scrollHeight;
+    });
+}
+
+
+/*
+  Creates readable reduction steps for ordinary arithmetic chains.
+  Example:
+  12 + 12 + 12 + 12 + 12
+  → 12 + 12 = 24
+  → 24 + 12 = 36
+  → 36 + 12 = 48
+  → 48 + 12 = 60
+*/
+function buildCalculationSteps(rawExpression, finalResult){
+
+    const clean =
+        rawExpression
+            .replaceAll("×","*")
+            .replaceAll("÷","/")
+            .replace(/\s+/g,"");
+
+    if(!/^-?\d*\.?\d+(?:[+\-*/%]-?\d*\.?\d+)+$/.test(clean)){
+        return [];
+    }
+
+    const normalized =
+        clean.startsWith("-")
+        ? "0" + clean
+        : clean;
+
+    const tokens =
+        normalized.match(/\d*\.?\d+|[+\-*/%]/g);
+
+    if(!tokens || tokens.length < 3 || tokens.length % 2 === 0){
+        return [];
+    }
+
+    const values = [];
+    const operators = [];
+
+    for(let i=0;i<tokens.length;i++){
+        if(i % 2 === 0){
+            values.push(Number(tokens[i]));
+        }else{
+            operators.push(tokens[i]);
+        }
+    }
+
+    const steps = [];
+
+    /* First resolve × ÷ % so the displayed process follows precedence. */
+    let reducedValues = [values[0]];
+    let reducedOps = [];
+
+    for(let i=0;i<operators.length;i++){
+        const op = operators[i];
+        const right = values[i+1];
+
+        if(op === "*" || op === "/" || op === "%"){
+            const left = reducedValues.pop();
+            let value;
+
+            if(op === "*") value = left * right;
+            if(op === "/") value = left / right;
+            if(op === "%") value = left % right;
+
+            if(!Number.isFinite(value)) return [];
+            reducedValues.push(value);
+
+            steps.push(
+                `${formatNumber(left)} ${prettyOperator(op)} ${formatNumber(right)} = ${formatNumber(value)}`
+            );
+        }else{
+            reducedOps.push(op);
+            reducedValues.push(right);
+        }
+    }
+
+    let total = reducedValues[0];
+
+    for(let i=0;i<reducedOps.length;i++){
+        const op = reducedOps[i];
+        const right = reducedValues[i+1];
+
+        const before = total;
+
+        if(op === "+") total += right;
+        if(op === "-") total -= right;
+
+        steps.push(
+            `${formatNumber(before)} ${prettyOperator(op)} ${formatNumber(right)} = ${formatNumber(total)}`
+        );
+    }
+
+    if(
+        Math.abs(total - Number(finalResult)) > Math.max(1e-9,Math.abs(Number(finalResult))*1e-9)
+    ){
+        return [];
+    }
+
+    return steps;
+}
+
+
+function prettyOperator(op){
+    return {
+        "+":"+",
+        "-":"−",
+        "*":"×",
+        "/":"÷",
+        "%":"%"
+    }[op] || op;
+}
 
 /* =========================================================
    HISTORY
@@ -2441,29 +2835,198 @@ function toggleHistory(){
 }
 
 
+/* =========================================================
+   VOICE
+========================================================= */
+
+let speechRecognition = null;
+let voiceListening = false;
+
+function setupVoice(){
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition){
+        return;
+    }
+
+    speechRecognition =
+        new SpeechRecognition();
+
+    speechRecognition.lang = "en-IN";
+    speechRecognition.continuous = false;
+    speechRecognition.interimResults = false;
+
+    speechRecognition.onstart = ()=>{
+        voiceListening = true;
+        const btn = document.getElementById("voiceButton");
+
+        if(btn){
+            btn.classList.add("voice-listening");
+            btn.textContent = "⏹ Listening";
+        }
+    };
+
+    speechRecognition.onresult = event=>{
+
+        const transcript =
+            event.results[0][0].transcript;
+
+        const converted =
+            speechToExpression(transcript);
+
+        if(converted){
+            if(clearOnNextInput){
+                currentInput = "";
+                clearOnNextInput = false;
+                lastExpression = "";
+            }
+
+            currentInput += converted;
+            updateDisplay();
+        }
+    };
+
+    speechRecognition.onerror = event=>{
+        console.warn("Voice recognition:",event.error);
+    };
+
+    speechRecognition.onend = ()=>{
+        voiceListening = false;
+
+        const btn = document.getElementById("voiceButton");
+
+        if(btn){
+            btn.classList.remove("voice-listening");
+            btn.textContent = "🎙 Voice";
+        }
+    };
+}
+
+
+function toggleVoiceInput(){
+
+    if(!speechRecognition){
+        alert("Voice input is not supported in this browser. Try Chrome or Edge.");
+        return;
+    }
+
+    if(voiceListening){
+        speechRecognition.stop();
+        return;
+    }
+
+    try{
+        speechRecognition.start();
+    }catch(error){
+        console.warn(error);
+    }
+}
+
+
+function speechToExpression(text){
+
+    let value =
+        text
+            .toLowerCase()
+            .trim();
+
+    const replacements = [
+        [/\bmultiplied by\b/g,"*"],
+        [/\btimes\b/g,"*"],
+        [/\binto\b/g,"*"],
+        [/\bdivided by\b/g,"/"],
+        [/\bover\b/g,"/"],
+        [/\bplus\b/g,"+"],
+        [/\badd\b/g,"+"],
+        [/\bminus\b/g,"-"],
+        [/\bsubtract\b/g,"-"],
+        [/\bmodulo\b/g,"%"],
+        [/\bmod\b/g,"%"],
+        [/\bpercent\b/g,"%"],
+        [/\bsquare root of\b/g,"sqrt("],
+        [/\bsquare root\b/g,"sqrt("],
+        [/\bsqrt\b/g,"sqrt("],
+        [/\bpi\b/g,"π"],
+        [/\bpoint\b/g,"."],
+    ];
+
+    replacements.forEach(([pattern,replacement])=>{
+        value = value.replace(pattern,replacement);
+    });
+
+    const words = {
+        zero:"0", one:"1", two:"2", three:"3", four:"4",
+        five:"5", six:"6", seven:"7", eight:"8", nine:"9",
+        ten:"10", eleven:"11", twelve:"12", thirteen:"13",
+        fourteen:"14", fifteen:"15", sixteen:"16",
+        seventeen:"17", eighteen:"18", nineteen:"19",
+        twenty:"20", thirty:"30", forty:"40", fifty:"50",
+        sixty:"60", seventy:"70", eighty:"80", ninety:"90"
+    };
+
+    Object.entries(words).forEach(([word,number])=>{
+        value =
+            value.replace(
+                new RegExp("\\b"+word+"\\b","g"),
+                number
+            );
+    });
+
+    value =
+        value
+            .replace(/[^0-9+\-*/%.π()a-z]/g,"")
+            .replace(/sqrt\(([^()+\-*/%]+)\)/g,"sqrt($1)");
+
+    return value;
+}
+
+
+function speakCalculationResult(expression,result){
+
+    if(!("speechSynthesis" in window)){
+        alert("Speech output is not supported in this browser.");
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const spokenExpression =
+        expression
+            .replaceAll("+"," plus ")
+            .replaceAll("-"," minus ")
+            .replaceAll("*"," multiplied by ")
+            .replaceAll("/"," divided by ")
+            .replaceAll("%"," percent ");
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            `Calculation: ${spokenExpression}. The answer is ${result}.`
+        );
+
+    speech.lang = "en-IN";
+    speech.rate = .95;
+    speech.pitch = 1;
+
+    window.speechSynthesis.speak(speech);
+}
+
+
 function reviseCalculation(){
 
     if(!currentInput){
         return;
     }
 
-    if("speechSynthesis" in window){
-
-        const speech =
-            new SpeechSynthesisUtterance(
-                "The result is " + currentInput
-            );
-
-        speech.lang = "en-IN";
-
-        window.speechSynthesis.speak(speech);
-
-    }else{
-
-        alert("Speech synthesis is not supported.");
-    }
+    speakCalculationResult(
+        lastExpression
+            ? lastExpression.replace(/\s*=\s*$/,"")
+            : currentInput,
+        currentInput
+    );
 }
-
 
 /* =========================================================
    UNIT CONVERTERS
@@ -4287,6 +4850,44 @@ function resetP2P(){
    VAULT
 ========================================================= */
 
+/* =========================================================
+   PRIVATE VAULT
+========================================================= */
+
+let vaultUnlocked = false;
+
+const VAULT_DB_NAME = "dilshadCalcPrivateVault";
+const VAULT_STORE = "images";
+
+
+function openVaultDB(){
+
+    return new Promise((resolve,reject)=>{
+
+        const request =
+            indexedDB.open(VAULT_DB_NAME,1);
+
+        request.onupgradeneeded = event=>{
+
+            const db = event.target.result;
+
+            if(!db.objectStoreNames.contains(VAULT_STORE)){
+                db.createObjectStore(
+                    VAULT_STORE,
+                    {keyPath:"id",autoIncrement:true}
+                );
+            }
+        };
+
+        request.onsuccess =
+            ()=>resolve(request.result);
+
+        request.onerror =
+            ()=>reject(request.error);
+    });
+}
+
+
 function toggleVault(){
 
     const overlay =
@@ -4299,6 +4900,12 @@ function toggleVault(){
 
     document.getElementById("vaultInput").value = "";
     document.getElementById("vaultMessage").textContent = "";
+
+    if(vaultUnlocked){
+        showVaultContent();
+    }else{
+        showVaultLock();
+    }
 }
 
 
@@ -4309,19 +4916,40 @@ function closeVault(){
 }
 
 
+function showVaultLock(){
+
+    vaultUnlocked = false;
+
+    document.getElementById("vaultLockArea").style.display =
+        "block";
+
+    document.getElementById("vaultContent").classList.remove("show");
+}
+
+
+function showVaultContent(){
+
+    vaultUnlocked = true;
+
+    document.getElementById("vaultLockArea").style.display =
+        "none";
+
+    document.getElementById("vaultContent").classList.add("show");
+
+    renderVaultGallery();
+}
+
+
 function unlockVault(){
 
     const input =
-        document.getElementById("vaultInput").value;
+        document.getElementById("vaultInput").value.trim();
 
     const message =
         document.getElementById("vaultMessage");
 
     if(!input){
-
-        message.textContent =
-            "Enter a code.";
-
+        message.textContent = "Enter a code.";
         return;
     }
 
@@ -4338,6 +4966,7 @@ function unlockVault(){
         message.textContent =
             "Vault code created on this device.";
 
+        showVaultContent();
         return;
     }
 
@@ -4346,9 +4975,7 @@ function unlockVault(){
         message.textContent =
             "Vault unlocked.";
 
-        setTimeout(()=>{
-            closeVault();
-        },700);
+        showVaultContent();
 
     }else{
 
@@ -4357,6 +4984,199 @@ function unlockVault(){
     }
 }
 
+
+function lockVault(){
+
+    vaultUnlocked = false;
+    showVaultLock();
+
+    document.getElementById("vaultMessage").textContent =
+        "Vault locked.";
+}
+
+
+async function addVaultImages(event){
+
+    if(!vaultUnlocked){
+        return;
+    }
+
+    const files =
+        Array.from(event.target.files || []);
+
+    if(!files.length){
+        return;
+    }
+
+    try{
+
+        const db = await openVaultDB();
+
+        for(const file of files){
+
+            if(!file.type.startsWith("image/")){
+                continue;
+            }
+
+            const image = {
+                name:file.name,
+                type:file.type,
+                blob:file,
+                createdAt:Date.now()
+            };
+
+            await new Promise((resolve,reject)=>{
+
+                const tx =
+                    db.transaction(
+                        VAULT_STORE,
+                        "readwrite"
+                    );
+
+                tx.objectStore(VAULT_STORE).add(image);
+
+                tx.oncomplete = resolve;
+                tx.onerror = ()=>reject(tx.error);
+            });
+        }
+
+        document.getElementById("vaultImageInput").value = "";
+        renderVaultGallery();
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("vaultMessage").textContent =
+            "Could not save image in this browser.";
+    }
+}
+
+
+async function getVaultImages(){
+
+    const db = await openVaultDB();
+
+    return new Promise((resolve,reject)=>{
+
+        const tx =
+            db.transaction(
+                VAULT_STORE,
+                "readonly"
+            );
+
+        const request =
+            tx.objectStore(VAULT_STORE).getAll();
+
+        request.onsuccess =
+            ()=>resolve(request.result || []);
+
+        request.onerror =
+            ()=>reject(request.error);
+    });
+}
+
+
+async function renderVaultGallery(){
+
+    const gallery =
+        document.getElementById("vaultGallery");
+
+    if(!gallery){
+        return;
+    }
+
+    gallery.innerHTML =
+        `<div class="vault-empty">Loading private images…</div>`;
+
+    try{
+
+        const images =
+            await getVaultImages();
+
+        if(!images.length){
+
+            gallery.innerHTML =
+                `<div class="vault-empty">
+                    No images yet.<br>
+                    Use “＋ Add Images” to store private pictures on this device.
+                </div>`;
+
+            return;
+        }
+
+        gallery.innerHTML = "";
+
+        images
+            .sort((a,b)=>b.createdAt-a.createdAt)
+            .forEach(item=>{
+
+                const url =
+                    URL.createObjectURL(item.blob);
+
+                const box =
+                    document.createElement("div");
+
+                box.className = "vault-item";
+
+                box.innerHTML = `
+                    <img src="${url}" alt="${escapeHTML(item.name || "Private image")}">
+                    <button
+                        class="vault-delete"
+                        title="Delete image"
+                        onclick="deleteVaultImage(${item.id})">
+                        ×
+                    </button>
+                `;
+
+                gallery.appendChild(box);
+            });
+
+    }catch(error){
+
+        console.error(error);
+
+        gallery.innerHTML =
+            `<div class="vault-empty">Vault storage is unavailable.</div>`;
+    }
+}
+
+
+async function deleteVaultImage(id){
+
+    if(!vaultUnlocked){
+        return;
+    }
+
+    if(!confirm("Delete this private image?")){
+        return;
+    }
+
+    try{
+
+        const db = await openVaultDB();
+
+        await new Promise((resolve,reject)=>{
+
+            const tx =
+                db.transaction(
+                    VAULT_STORE,
+                    "readwrite"
+                );
+
+            tx.objectStore(VAULT_STORE).delete(id);
+
+            tx.oncomplete = resolve;
+            tx.onerror = ()=>reject(tx.error);
+        });
+
+        renderVaultGallery();
+
+    }catch(error){
+
+        console.error(error);
+    }
+}
 
 /* =========================================================
    KEYBOARD SUPPORT
@@ -4462,6 +5282,10 @@ function escapeHTML(value){
 function initialize(){
 
     setupConverters();
+
+    setupVoice();
+
+    document.getElementById("calculationSteps").innerHTML = "";
 
     renderHistory();
 
