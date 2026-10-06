@@ -152,8 +152,8 @@ button{
 }
 
 .display{
-    min-height:260px;
-    max-height:390px;
+    min-height:220px;
+    max-height:300px;
     border-radius:19px;
     background:#080b11;
     border:1px solid rgba(255,255,255,.07);
@@ -188,6 +188,16 @@ button{
     white-space:nowrap;
     font-weight:700;
     margin-top:5px;
+}
+
+.display-live-preview {
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    color: var(--accent);
+    min-height: 24px;
+    margin-top: 4px;
+    font-weight: 600;
 }
 
 .action-row{
@@ -270,24 +280,44 @@ button{
     margin-bottom:10px;
 }
 
-.history-item{
-    padding:10px;
-    border-bottom:1px solid var(--border);
-    cursor:pointer;
+.history-container {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
-.history-item:last-child{
-    border-bottom:0;
+.history-item{
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,.02);
+    cursor:pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 4.5em; /* 2-3-4-5 lined layout */
+    overflow: hidden;
+}
+
+.history-item:hover{
+    background: rgba(255,255,255,.05);
 }
 
 .history-expression{
     color:var(--muted);
-    font-size:12px;
+    font-size:11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .history-result{
     font-weight:700;
-    margin-top:3px;
+    font-size:14px;
+    color: var(--accent);
 }
 
 .empty{
@@ -626,49 +656,7 @@ button{
     }
 }
 
-/* =========================================================
-   CALCULATOR UX ENHANCEMENTS — same visual language
-   AUTO-FOLLOW DISPLAY — no manual scrolling required
-========================================================= */
-
-.calculation-steps{
-    width:100%;
-    margin-top:14px;
-    padding-top:12px;
-    border-top:1px solid rgba(255,255,255,.07);
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
-.calculation-steps:empty{
-    display:none;
-}
-
-.process-label{
-    color:var(--muted);
-    font-size:10px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-}
-
-.process-step{
-    width:100%;
-    padding:9px 11px;
-    border:1px solid rgba(255,255,255,.06);
-    background:rgba(255,255,255,.025);
-    border-radius:11px;
-    color:#dce5ef;
-    font-size:13px;
-    line-height:1.45;
-    text-align:left;
-    word-break:break-word;
-}
-
-.process-step strong{
-    color:var(--accent);
-}
-
+/* SPEECH & VAULT BUTTONS STYLING */
 .result-read-btn{
     margin-top:9px;
     border:1px solid rgba(110,231,183,.2);
@@ -777,21 +765,6 @@ button{
     margin-top:10px;
 }
 
-@media(max-width:600px){
-    .display{
-        min-height:245px;
-        max-height:370px;
-    }
-
-    .display-value{
-        font-size:36px;
-    }
-
-    .vault-gallery{
-        grid-template-columns:repeat(3,1fr);
-    }
-}
-
 </style>
 </head>
 
@@ -823,8 +796,8 @@ button{
     <div class="display" id="calculatorDisplay">
         <div id="displayExpression" class="display-expression"></div>
         <div id="display" class="display-value">0</div>
-
-        <div id="calculationSteps" class="calculation-steps" aria-live="polite"></div>
+        <!-- Live quick typing preview answer -->
+        <div id="displayLivePreview" class="display-live-preview"></div>
     </div>
 
     <div class="action-row">
@@ -832,6 +805,11 @@ button{
         <button class="action-btn" onclick="toggleHistory()">History</button>
         <button class="action-btn" onclick="openTools()">🧰 Tools</button>
         <button class="action-btn" id="voiceButton" onclick="toggleVoiceInput()">🎙 Voice</button>
+    </div>
+
+    <!-- Dedicated Speak Calculation Button -->
+    <div style="margin-bottom: 8px;">
+        <button class="action-btn" style="width:100%; background: rgba(110,231,183,0.08); border-color: rgba(110,231,183,0.25); color: var(--accent); font-weight: 600;" onclick="speakCurrentCalculation()">🔊 Speak Entire Calculation</button>
     </div>
 
     <div id="scientificPanel" class="scientific">
@@ -889,7 +867,7 @@ button{
 
     <div id="historyPanel" class="panel">
         <div class="panel-title">Calculation History</div>
-        <div id="historyList"></div>
+        <div class="history-container" id="historyList"></div>
         <button class="reset-btn" onclick="clearHistory()">Clear History</button>
     </div>
 
@@ -1284,9 +1262,7 @@ button{
 </div>
 </div>
 
-<button class="calculate-btn" onclick="convertGeneric('mass')">
-
-Convert</button>
+<button class="calculate-btn" onclick="convertGeneric('mass')">Convert</button>
 
 <div id="massResult" class="result-box">
 <div class="empty">Choose units.</div>
@@ -1322,9 +1298,7 @@ Convert</button>
 </div>
 </div>
 
-<button class="calculate-btn" onclick="convertGeneric('speed')">
-
-Convert</button>
+<button class="calculate-btn" onclick="convertGeneric('speed')">Convert</button>
 
 <div id="speedResult" class="result-box">
 <div class="empty">Choose units.</div>
@@ -1360,9 +1334,7 @@ Convert</button>
 </div>
 </div>
 
-<button class="calculate-btn" onclick="convertGeneric('temperature')">
-
-Convert</button>
+<button class="calculate-btn" onclick="convertGeneric('temperature')">Convert</button>
 
 <div id="temperatureResult" class="result-box">
 <div class="empty">Choose units.</div>
@@ -1398,9 +1370,7 @@ Convert</button>
 </div>
 </div>
 
-<button class="calculate-btn" onclick="convertGeneric('time')">
-
-Convert</button>
+<button class="calculate-btn" onclick="convertGeneric('time')">Convert</button>
 
 <div id="timeResult" class="result-box">
 <div class="empty">Choose units.</div>
@@ -1436,9 +1406,7 @@ Convert</button>
 </div>
 </div>
 
-<button class="calculate-btn" onclick="convertGeneric('volume')">
-
-Convert</button>
+<button class="calculate-btn" onclick="convertGeneric('volume')">Convert</button>
 
 <div id="volumeResult" class="result-box">
 <div class="empty">Choose units.</div>
@@ -2295,6 +2263,7 @@ function openTool(pageId){
 
 let display = document.getElementById("display");
 let displayExpression = document.getElementById("displayExpression");
+let displayLivePreview = document.getElementById("displayLivePreview");
 
 let currentInput = "";
 let lastExpression = "";
@@ -2305,39 +2274,60 @@ let historyLog =
 
 
 function autoFollowCalculatorDisplay(){
-
-    /*
-      Keep the newest content visible automatically at both expression and value displays.
-    */
     const follow = () => {
-
         if(displayExpression){
             displayExpression.scrollLeft =
                 Math.max(0, displayExpression.scrollWidth - displayExpression.clientWidth);
         }
-
         if(display){
             display.scrollLeft =
                 Math.max(0, display.scrollWidth - display.clientWidth);
         }
-
-        const calcDisplayBox = document.getElementById("calculatorDisplay");
-        if(calcDisplayBox){
-            calcDisplayBox.scrollTop = Math.max(0, calcDisplayBox.scrollHeight - calcDisplayBox.clientHeight);
-        }
     };
-
     requestAnimationFrame(follow);
-    requestAnimationFrame(()=>requestAnimationFrame(follow));
-    setTimeout(follow, 0);
 }
 
+
+// Safely evaluate expressions for live typing preview
+function evaluateExpressionLive(expr) {
+    if (!expr) return "";
+    let sanitized = sanitizeTrailingOperators(expr);
+    if (!sanitized) return "";
+    try {
+        let expFormatted = sanitized
+            .replaceAll("×","*")
+            .replaceAll("÷","/")
+            .replaceAll("π","Math.PI")
+            .replaceAll("^","**")
+            .replace(/e\^\(/g, "Math.exp(")
+            .replace(/\be\b/g, "Math.E");
+        
+        expFormatted = transformFactorials(expFormatted);
+
+        const fn = new Function(
+            "sin", "cos", "tan", "log", "ln", "sqrt", "fact", "Math",
+            `"use strict"; return (${expFormatted});`
+        );
+        let res = fn(sin, cos, tan, log10, ln, sqrt, factorial, Math);
+        if (!Number.isFinite(res)) return "";
+        return Number.isInteger(res) ? String(res) : Number(res.toPrecision(10)).toString();
+    } catch(e) {
+        return "";
+    }
+}
+
+
 function updateDisplay(){
-
-    display.textContent =
-        currentInput === "" ? "0" : currentInput;
-
+    display.textContent = currentInput === "" ? "0" : currentInput;
     displayExpression.textContent = lastExpression;
+
+    // Live typing quick preview answer update
+    if (currentInput !== "" && !clearOnNextInput) {
+        let preview = evaluateExpressionLive(currentInput);
+        displayLivePreview.textContent = preview ? "= " + preview : "";
+    } else {
+        displayLivePreview.textContent = "";
+    }
 
     autoFollowCalculatorDisplay();
 }
@@ -2349,9 +2339,6 @@ function appendNumber(value){
         currentInput = "";
         clearOnNextInput = false;
         lastExpression = "";
-
-        const steps = document.getElementById("calculationSteps");
-        if(steps) steps.innerHTML = "";
     }
 
     if(value === "."){
@@ -2406,9 +2393,6 @@ function appendScientific(value){
         currentInput = "";
         clearOnNextInput = false;
         lastExpression = "";
-
-        const steps = document.getElementById("calculationSteps");
-        if(steps) steps.innerHTML = "";
     }
 
     currentInput += value;
@@ -2421,13 +2405,6 @@ function clearDisplay(){
     currentInput = "";
     lastExpression = "";
     clearOnNextInput = false;
-
-    const steps = document.getElementById("calculationSteps");
-
-    if(steps){
-        steps.innerHTML = "";
-    }
-
     updateDisplay();
 }
 
@@ -2510,7 +2487,6 @@ function calculate(){
 
     if(!currentInput) return;
 
-    // Automatically strip any dangling trailing operators (+, -, *, /, %) before evaluation
     let sanitizedInput = sanitizeTrailingOperators(currentInput);
 
     if(!sanitizedInput){
@@ -2584,13 +2560,9 @@ function calculate(){
 
         currentInput = formatted;
         clearOnNextInput = true;
+        displayLivePreview.textContent = "";
 
-        renderCalculationAnswer(rawExpression, formatted, result);
         updateDisplay();
-
-        if(window.__speakResultAfterCalculate){
-            speakCalculationResult(rawExpression, formatted);
-        }
 
     }catch(error){
 
@@ -2600,142 +2572,11 @@ function calculate(){
         display.textContent =
             "Error";
 
-        document.getElementById("calculationSteps").innerHTML =
-            `<div class="process-step">Could not evaluate this expression. Check the operators, brackets, or function input.</div>`;
-
+        displayLivePreview.textContent = "";
         clearOnNextInput = true;
 
         console.error(error);
     }
-}
-
-
-function renderCalculationAnswer(rawExpression, formatted, numericResult){
-
-    const steps = buildCalculationSteps(rawExpression, numericResult);
-
-    const stepsHTML = steps.length
-        ? `
-            <div class="process-label">Calculation process</div>
-            ${steps.map((step,index)=>`
-                <div class="process-step">
-                    <strong>Step ${index + 1}</strong> · ${escapeHTML(step)}
-                </div>
-            `).join("")}
-        `
-        : `
-            <div class="process-label">Calculation process</div>
-            <div class="process-step">
-                <strong>Result</strong> · Evaluated using the calculator engine.
-            </div>
-        `;
-
-    document.getElementById("calculationSteps").innerHTML =
-        stepsHTML +
-        `<button class="result-read-btn" onclick="speakCalculationResult(${JSON.stringify(rawExpression)},${JSON.stringify(formatted)})">🔊 Read Result</button>`;
-
-    autoFollowCalculatorDisplay();
-}
-
-
-function buildCalculationSteps(rawExpression, finalResult){
-
-    const clean =
-        rawExpression
-            .replaceAll("×","*")
-            .replaceAll("÷","/")
-            .replace(/\s+/g,"");
-
-    if(!/^-?\d*\.?\d+(?:[+\-*/%]-?\d*\.?\d+)+$/.test(clean)){
-        return [];
-    }
-
-    const normalized =
-        clean.startsWith("-")
-        ? "0" + clean
-        : clean;
-
-    const tokens =
-        normalized.match(/\d*\.?\d+|[+\-*/%]/g);
-
-    if(!tokens || tokens.length < 3 || tokens.length % 2 === 0){
-        return [];
-    }
-
-    const values = [];
-    const operators = [];
-
-    for(let i=0;i<tokens.length;i++){
-        if(i % 2 === 0){
-            values.push(Number(tokens[i]));
-        }else{
-            operators.push(tokens[i]);
-        }
-    }
-
-    const steps = [];
-
-    let reducedValues = [values[0]];
-    let reducedOps = [];
-
-    for(let i=0;i<operators.length;i++){
-        const op = operators[i];
-        const right = values[i+1];
-
-        if(op === "*" || op === "/" || op === "%"){
-            const left = reducedValues.pop();
-            let value;
-
-            if(op === "*") value = left * right;
-            if(op === "/") value = left / right;
-            if(op === "%") value = left % right;
-
-            if(!Number.isFinite(value)) return [];
-            reducedValues.push(value);
-
-            steps.push(
-                `${formatNumber(left)} ${prettyOperator(op)} ${formatNumber(right)} = ${formatNumber(value)}`
-            );
-        }else{
-            reducedOps.push(op);
-            reducedValues.push(right);
-        }
-    }
-
-    let total = reducedValues[0];
-
-    for(let i=0;i<reducedOps.length;i++){
-        const op = reducedOps[i];
-        const right = reducedValues[i+1];
-
-        const before = total;
-
-        if(op === "+") total += right;
-        if(op === "-") total -= right;
-
-        steps.push(
-            `${formatNumber(before)} ${prettyOperator(op)} ${formatNumber(right)} = ${formatNumber(total)}`
-        );
-    }
-
-    if(
-        Math.abs(total - Number(finalResult)) > Math.max(1e-9,Math.abs(Number(finalResult))*1e-9)
-    ){
-        return [];
-    }
-
-    return steps;
-}
-
-
-function prettyOperator(op){
-    return {
-        "+":"+",
-        "-":"−",
-        "*":"×",
-        "/":"÷",
-        "%":"%"
-    }[op] || op;
 }
 
 
@@ -3030,19 +2871,19 @@ function speakCalculationResult(expression,result){
 }
 
 
-function reviseCalculation(){
-
-    if(!currentInput){
-        return;
+function speakCurrentCalculation(){
+    let exprToSpeak = currentInput;
+    let resToSpeak = evaluateExpressionLive(currentInput);
+    if(!exprToSpeak) {
+        exprToSpeak = "0";
+        resToSpeak = "0";
     }
-
-    speakCalculationResult(
-        lastExpression
-            ? lastExpression.replace(/\s*=\s*$/,"")
-            : currentInput,
-        currentInput
-    );
+    if(!resToSpeak) {
+        resToSpeak = exprToSpeak;
+    }
+    speakCalculationResult(exprToSpeak, resToSpeak);
 }
+
 
 /* =========================================================
    UNIT CONVERTERS
@@ -3976,6 +3817,9 @@ function calculateFees(){
     const sellPercent =
         Number(document.getElementById("feeSellPercent").value) || 0;
 
+    const result =
+        document.getElementById("feesResult");
+
     const buyFee =
         buy * buyPercent / 100;
 
@@ -3985,7 +3829,7 @@ function calculateFees(){
     const total =
         buyFee + sellFee;
 
-    document.getElementById("feesResult").innerHTML = `
+    result.innerHTML = `
 
         <div class="result-title">Total Trading Fees</div>
 
@@ -4019,86 +3863,62 @@ function calculateFees(){
    DCA
 ========================================================= */
 
-let dcaCounter = 0;
+let dcaRowsCount = 0;
 
+function addDCARow(qty = "", price = ""){
 
-function addDCARow(qty="",price=""){
+    dcaRowsCount++;
 
-    dcaCounter++;
+    const id = dcaRowsCount;
 
-    const row =
+    const container =
+        document.getElementById("dcaRows");
+
+    const div =
         document.createElement("div");
 
-    row.className = "dynamic-row";
+    div.className = "dynamic-row";
+    div.id = `dcaRow-${id}`;
 
-    row.dataset.id =
-        dcaCounter;
-
-    row.innerHTML = `
-
-        <input
-            type="number"
-            step="any"
-            placeholder="Quantity"
-            class="dca-qty"
-            value="${qty}"
-        >
-
-        <input
-            type="number"
-            step="any"
-            placeholder="Price"
-            class="dca-price"
-            value="${price}"
-        >
-
-        <button
-            class="remove-row"
-            onclick="this.parentElement.remove()">
-            ×
-        </button>
-
+    div.innerHTML = `
+        <input type="number" placeholder="Quantity" class="dca-qty" step="any" value="${qty}">
+        <input type="number" placeholder="Price" class="dca-price" step="any" value="${price}">
+        <button class="remove-row" onclick="document.getElementById('dcaRow-${id}').remove()">✕</button>
     `;
 
-    document
-        .getElementById("dcaRows")
-        .appendChild(row);
+    container.appendChild(div);
 }
 
 
 function calculateDCA(){
 
     const rows =
-        document.querySelectorAll(
-            "#dcaRows .dynamic-row"
-        );
-
-    let totalQty = 0;
-    let totalCost = 0;
-
-    rows.forEach(row=>{
-
-        const qty =
-            Number(
-                row.querySelector(".dca-qty").value
-            );
-
-        const price =
-            Number(
-                row.querySelector(".dca-price").value
-            );
-
-        if(qty > 0 && price > 0){
-
-            totalQty += qty;
-            totalCost += qty*price;
-        }
-    });
+        document.querySelectorAll("#dcaRows .dynamic-row");
 
     const result =
         document.getElementById("dcaResult");
 
-    if(totalQty <= 0){
+    let totalQty = 0;
+    let totalCost = 0;
+    let count = 0;
+
+    rows.forEach(row=>{
+
+        const qty =
+            Number(row.querySelector(".dca-qty").value);
+
+        const price =
+            Number(row.querySelector(".dca-price").value);
+
+        if(qty > 0 && price > 0){
+            totalQty += qty;
+            totalCost += qty * price;
+            count++;
+        }
+
+    });
+
+    if(count === 0 || totalQty === 0){
 
         result.innerHTML =
             `<div class="empty">Enter valid purchases.</div>`;
@@ -4106,7 +3926,7 @@ function calculateDCA(){
         return;
     }
 
-    const average =
+    const avgPrice =
         totalCost / totalQty;
 
     result.innerHTML = `
@@ -4114,7 +3934,7 @@ function calculateDCA(){
         <div class="result-title">Average Entry Price</div>
 
         <div class="result-main">
-            ${formatNumber(average)}
+            ${formatNumber(avgPrice)}
         </div>
 
         <div class="stat-grid">
@@ -4140,13 +3960,10 @@ function calculateDCA(){
 
 
 /* =========================================================
-   CRYPTO
+   CRYPTO CONVERTER
 ========================================================= */
 
 function calculateCrypto(){
-
-    const asset =
-        document.getElementById("cryptoAsset").value;
 
     const amount =
         Number(document.getElementById("cryptoAmount").value);
@@ -4154,8 +3971,11 @@ function calculateCrypto(){
     const price =
         Number(document.getElementById("cryptoPrice").value);
 
-    const usdInr =
-        Number(document.getElementById("cryptoUSDINR").value);
+    const usdinr =
+        Number(document.getElementById("cryptoUSDINR").value) || 0;
+
+    const asset =
+        document.getElementById("cryptoAsset").value;
 
     const result =
         document.getElementById("cryptoResult");
@@ -4163,41 +3983,55 @@ function calculateCrypto(){
     if(amount <= 0 || price <= 0){
 
         result.innerHTML =
-            `<div class="empty">Enter amount and price.</div>`;
+            `<div class="empty">Enter valid amount and price.</div>`;
 
         return;
     }
 
-    const usdValue =
+    const usdTotal =
         amount * price;
 
-    let html = `
+    let inrHTML = "";
 
-        <div class="result-title">
-            ${formatNumber(amount)} ${asset}
-        </div>
-
-        <div class="result-main">
-            $${formatNumber(usdValue)}
-        </div>
-    `;
-
-    if(usdInr > 0){
-
-        const inr =
-            usdValue * usdInr;
-
-        html += `
-
-            <div class="result-sub">
-                Approx. ₹${formatNumber(inr)}
-                at ₹${formatNumber(usdInr)}/USD
+    if(usdinr > 0){
+        const inrTotal = usdTotal * usdinr;
+        inrHTML = `
+            <div class="stat" style="grid-column:1/-1;margin-top:5px;">
+                <div class="stat-label">Total in INR (at ${usdinr})</div>
+                <div class="stat-value">₹${formatNumber(inrTotal)}</div>
             </div>
-
         `;
     }
 
-    result.innerHTML = html;
+    result.innerHTML = `
+
+        <div class="result-title">Total Value</div>
+
+        <div class="result-main">
+            $${formatNumber(usdTotal)} USD
+        </div>
+
+        <div class="stat-grid">
+
+            <div class="stat">
+                <div class="stat-label">Asset</div>
+                <div class="stat-value">
+                    ${amount} ${asset}
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">Price / Coin</div>
+                <div class="stat-value">
+                    $${formatNumber(price)}
+                </div>
+            </div>
+
+            ${inrHTML}
+
+        </div>
+
+    `;
 }
 
 
@@ -4228,43 +4062,34 @@ function calculateXAU(){
     const result =
         document.getElementById("xauResult");
 
-    if(
-        entry <= 0 ||
-        exit <= 0 ||
-        lots <= 0 ||
-        lotSize <= 0
-    ){
+    if(entry <= 0 || exit <= 0 || lots <= 0 || lotSize <= 0){
 
         result.innerHTML =
-            `<div class="empty">Enter valid XAUUSD values.</div>`;
+            `<div class="empty">Enter valid gold position values.</div>`;
 
         return;
     }
 
-    const ounces =
+    const oz =
         lots * lotSize;
 
-    const gross =
+    const priceDiff =
         direction === "long"
-        ? (exit-entry)*ounces
-        : (entry-exit)*ounces;
+        ? exit - entry
+        : entry - exit;
 
-    const notionalEntry =
-        entry * ounces;
-
-    const notionalExit =
-        exit * ounces;
+    const gross =
+        priceDiff * oz;
 
     const fees =
-        (notionalEntry + notionalExit) *
-        feePercent / 100;
+        (entry * oz + exit * oz) * feePercent / 100;
 
     const net =
         gross - fees;
 
     result.innerHTML = `
 
-        <div class="result-title">XAUUSD P&L</div>
+        <div class="result-title">Gold Net P&L</div>
 
         <div class="result-main">
             ${net >= 0 ? "+" : ""}$${formatNumber(net)}
@@ -4273,16 +4098,9 @@ function calculateXAU(){
         <div class="stat-grid">
 
             <div class="stat">
-                <div class="stat-label">Ounces</div>
+                <div class="stat-label">Total Ounces</div>
                 <div class="stat-value">
-                    ${formatNumber(ounces)} oz
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">Gross P&L</div>
-                <div class="stat-value">
-                    $${formatNumber(gross)}
+                    ${formatNumber(oz)} oz
                 </div>
             </div>
 
@@ -4290,13 +4108,6 @@ function calculateXAU(){
                 <div class="stat-label">Fees</div>
                 <div class="stat-value">
                     $${formatNumber(fees)}
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">Notional Value</div>
-                <div class="stat-value">
-                    $${formatNumber(notionalEntry)}
                 </div>
             </div>
 
@@ -4312,43 +4123,74 @@ function calculateXAU(){
 
 function calculateUSDT(){
 
-    const usdt =
+    const amount =
         Number(document.getElementById("usdtAmount").value);
 
     const rate =
         Number(document.getElementById("usdtRate").value);
 
-    const inrVal =
-        Number(document.getElementById("usdtINR").value);
+    const inrInput =
+        Number(document.getElementById("usdtINR").value) || 0;
 
     const result =
         document.getElementById("usdtResult");
 
-    if(usdt > 0 && rate > 0){
+    if(amount > 0 && rate > 0){
 
-        const totalINR = usdt * rate;
-
-        result.innerHTML = `
-            <div class="result-title">Conversion Result</div>
-            <div class="result-main">₹${formatNumber(totalINR)}</div>
-            <div class="result-sub">${formatNumber(usdt)} USDT @ ₹${formatNumber(rate)}/USDT</div>
-        `;
-        return;
-    }
-
-    if(inrVal > 0 && rate > 0){
-
-        const totalUSDT = inrVal / rate;
+        const totalINR =
+            amount * rate;
 
         result.innerHTML = `
-            <div class="result-title">Conversion Result</div>
-            <div class="result-main">${formatNumber(totalUSDT)} USDT</div>
-            <div class="result-sub">₹${formatNumber(inrVal)} @ ₹${formatNumber(rate)}/USDT</div>
-        `;
-        return;
-    }
 
-    result.innerHTML = `<div class="empty">Enter USDT & Rate or INR & Rate.</div>`;
+            <div class="result-title">Total INR Value</div>
+
+            <div class="result-main">
+                ₹${formatNumber(totalINR)}
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-label">USDT</div>
+                    <div class="stat-value">${formatNumber(amount)}</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Rate</div>
+                    <div class="stat-value">₹${formatNumber(rate)}</div>
+                </div>
+            </div>
+
+        `;
+
+    }else if(inrInput > 0 && rate > 0){
+
+        const totalUSDT =
+            inrInput / rate;
+
+        result.innerHTML = `
+
+            <div class="result-title">Total USDT Amount</div>
+
+            <div class="result-main">
+                ${formatNumber(totalUSDT)} USDT
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-label">INR</div>
+                    <div class="stat-value">₹${formatNumber(inrInput)}</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Rate</div>
+                    <div class="stat-value">₹${formatNumber(rate)}</div>
+                </div>
+            </div>
+
+        `;
+
+    }else{
+        result.innerHTML =
+            `<div class="empty">Enter USDT amount & rate, or INR amount & rate.</div>`;
+    }
 }
 
 
@@ -4359,30 +4201,34 @@ function calculateUSDT(){
 let p2pBuyCount = 0;
 let p2pSellCount = 0;
 
-function addP2PBuy(qty="", rate="", fee="0"){
+function addP2PBuy(qty = "", rate = "", fee = ""){
     p2pBuyCount++;
+    const id = p2pBuyCount;
     const container = document.getElementById("p2pBuyRows");
     const div = document.createElement("div");
     div.className = "p2p-row";
+    div.id = `p2pBuy-${id}`;
     div.innerHTML = `
-        <input type="number" step="any" placeholder="USDT" class="p2p-buy-qty" value="${qty}">
-        <input type="number" step="any" placeholder="Rate ₹" class="p2p-buy-rate" value="${rate}">
-        <input type="number" step="any" placeholder="Fee %" class="p2p-buy-fee" value="${fee}">
-        <button class="remove-row" onclick="this.parentElement.remove()">×</button>
+        <input type="number" placeholder="USDT" class="p2p-buy-qty" step="any" value="${qty}">
+        <input type="number" placeholder="Rate ₹" class="p2p-buy-rate" step="any" value="${rate}">
+        <input type="number" placeholder="Fee %" class="p2p-buy-fee" step="any" value="${fee}">
+        <button class="remove-row" onclick="document.getElementById('p2pBuy-${id}').remove()">✕</button>
     `;
     container.appendChild(div);
 }
 
-function addP2PSell(qty="", rate="", fee="0"){
+function addP2PSell(qty = "", rate = "", fee = ""){
     p2pSellCount++;
+    const id = p2pSellCount;
     const container = document.getElementById("p2pSellRows");
     const div = document.createElement("div");
     div.className = "p2p-row";
+    div.id = `p2pSell-${id}`;
     div.innerHTML = `
-        <input type="number" step="any" placeholder="USDT" class="p2p-sell-qty" value="${qty}">
-        <input type="number" step="any" placeholder="Rate ₹" class="p2p-sell-rate" value="${rate}">
-        <input type="number" step="any" placeholder="Fee %" class="p2p-sell-fee" value="${fee}">
-        <button class="remove-row" onclick="this.parentElement.remove()">×</button>
+        <input type="number" placeholder="USDT" class="p2p-sell-qty" step="any" value="${qty}">
+        <input type="number" placeholder="Rate ₹" class="p2p-sell-rate" step="any" value="${rate}">
+        <input type="number" placeholder="Fee %" class="p2p-sell-fee" step="any" value="${fee}">
+        <button class="remove-row" onclick="document.getElementById('p2pSell-${id}').remove()">✕</button>
     `;
     container.appendChild(div);
 }
@@ -4390,73 +4236,63 @@ function addP2PSell(qty="", rate="", fee="0"){
 function calculateP2P(){
     const buyRows = document.querySelectorAll("#p2pBuyRows .p2p-row");
     const sellRows = document.querySelectorAll("#p2pSellRows .p2p-row");
-
-    let totalBuyUSDT = 0;
-    let totalBuyCostINR = 0;
-
-    buyRows.forEach(row=>{
-        const q = Number(row.querySelector(".p2p-buy-qty").value) || 0;
-        const r = Number(row.querySelector(".p2p-buy-rate").value) || 0;
-        const f = Number(row.querySelector(".p2p-buy-fee").value) || 0;
-
-        if(q > 0 && r > 0){
-            const grossINR = q * r;
-            const feeINR = grossINR * (f / 100);
-            totalBuyUSDT += q;
-            totalBuyCostINR += (grossINR + feeINR);
-        }
-    });
-
-    let totalSellUSDT = 0;
-    let totalSellRecINR = 0;
-
-    sellRows.forEach(row=>{
-        const q = Number(row.querySelector(".p2p-sell-qty").value) || 0;
-        const r = Number(row.querySelector(".p2p-sell-rate").value) || 0;
-        const f = Number(row.querySelector(".p2p-sell-fee").value) || 0;
-
-        if(q > 0 && r > 0){
-            const grossINR = q * r;
-            const feeINR = grossINR * (f / 100);
-            totalSellUSDT += q;
-            totalSellRecINR += (grossINR - feeINR);
-        }
-    });
-
     const result = document.getElementById("p2pResult");
 
+    let totalBuyUSDT = 0;
+    let totalBuyCost = 0;
+    let totalSellUSDT = 0;
+    let totalSellRevenue = 0;
+
+    buyRows.forEach(row=>{
+        const qty = Number(row.querySelector(".p2p-buy-qty").value) || 0;
+        const rate = Number(row.querySelector(".p2p-buy-rate").value) || 0;
+        const fee = Number(row.querySelector(".p2p-buy-fee").value) || 0;
+        if(qty > 0 && rate > 0){
+            let cost = qty * rate;
+            cost += cost * fee / 100;
+            totalBuyUSDT += qty;
+            totalBuyCost += cost;
+        }
+    });
+
+    sellRows.forEach(row=>{
+        const qty = Number(row.querySelector(".p2p-sell-qty").value) || 0;
+        const rate = Number(row.querySelector(".p2p-sell-rate").value) || 0;
+        const fee = Number(row.querySelector(".p2p-sell-fee").value) || 0;
+        if(qty > 0 && rate > 0){
+            let rev = qty * rate;
+            rev -= rev * fee / 100;
+            totalSellUSDT += qty;
+            totalSellRevenue += rev;
+        }
+    });
+
     if(totalBuyUSDT === 0 && totalSellUSDT === 0){
-        result.innerHTML = `<div class="empty">Add buy and sell transactions.</div>`;
+        result.innerHTML = `<div class="empty">Add at least one buy or sell transaction.</div>`;
         return;
     }
 
-    const netProfitINR = totalSellRecINR - totalBuyCostINR;
-    const avgBuyRate = totalBuyUSDT > 0 ? (totalBuyCostINR / totalBuyUSDT) : 0;
-    const avgSellRate = totalSellUSDT > 0 ? (totalSellRecINR / totalSellUSDT) : 0;
+    const avgBuyRate = totalBuyUSDT > 0 ? totalBuyCost / totalBuyUSDT : 0;
+    const avgSellRate = totalSellUSDT > 0 ? totalSellRevenue / totalSellUSDT : 0;
+    const profitINR = totalSellRevenue - totalBuyCost;
 
     result.innerHTML = `
         <div class="result-title">P2P Summary</div>
-        <div class="result-main">${netProfitINR >= 0 ? "+" : ""}₹${formatNumber(netProfitINR)}</div>
+        <div class="result-main" style="color:${profitINR >= 0 ? 'var(--accent)' : 'var(--danger)'}">
+            ${profitINR >= 0 ? "+" : ""}₹${formatNumber(profitINR)}
+        </div>
         <div class="stat-grid">
             <div class="stat">
-                <div class="stat-label">Total Bought</div>
-                <div class="stat-value">${formatNumber(totalBuyUSDT)} USDT</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Total Buy Cost</div>
-                <div class="stat-value">₹${formatNumber(totalBuyCostINR)}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Total Sold</div>
-                <div class="stat-value">${formatNumber(totalSellUSDT)} USDT</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Total Sell Rec.</div>
-                <div class="stat-value">₹${formatNumber(totalSellRecINR)}</div>
+                <div class="stat-label">Total Buy USDT</div>
+                <div class="stat-value">${formatNumber(totalBuyUSDT)}</div>
             </div>
             <div class="stat">
                 <div class="stat-label">Avg Buy Rate</div>
                 <div class="stat-value">₹${formatNumber(avgBuyRate)}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Total Sell USDT</div>
+                <div class="stat-value">${formatNumber(totalSellUSDT)}</div>
             </div>
             <div class="stat">
                 <div class="stat-label">Avg Sell Rate</div>
@@ -4470,45 +4306,46 @@ function resetP2P(){
     document.getElementById("p2pBuyRows").innerHTML = "";
     document.getElementById("p2pSellRows").innerHTML = "";
     document.getElementById("p2pResult").innerHTML = `<div class="empty">Add buy and sell transactions.</div>`;
+    addP2PBuy();
+    addP2PSell();
 }
 
 function calculateQuickP2P(){
     const qty = Number(document.getElementById("quickQty").value) || 0;
     const buyRate = Number(document.getElementById("quickBuy").value) || 0;
     const sellRate = Number(document.getElementById("quickSell").value) || 0;
-    const feePct = Number(document.getElementById("quickFee").value) || 0;
-
+    const fee = Number(document.getElementById("quickFee").value) || 0;
     const result = document.getElementById("quickP2PResult");
 
     if(qty <= 0 || buyRate <= 0 || sellRate <= 0){
-        result.innerHTML = `<div class="empty">Enter valid USDT amount and rates.</div>`;
+        result.innerHTML = `<div class="empty">Enter valid amount and rates.</div>`;
         return;
     }
 
-    const buyCost = qty * buyRate;
-    const sellGross = qty * sellRate;
-    const totalFee = (buyCost + sellGross) * (feePct / 100);
-    const netProfit = (sellGross - buyCost) - totalFee;
+    let cost = qty * buyRate;
+    cost += cost * fee / 100;
+    let rev = qty * sellRate;
+    rev -= rev * fee / 100;
+    const profit = rev - cost;
+    const roi = cost > 0 ? (profit / cost) * 100 : 0;
 
     result.innerHTML = `
         <div class="result-title">Quick P2P Profit</div>
-        <div class="result-main">${netProfit >= 0 ? "+" : ""}₹${formatNumber(netProfit)}</div>
+        <div class="result-main" style="color:${profit >= 0 ? 'var(--accent)' : 'var(--danger)'}">
+            ${profit >= 0 ? "+" : ""}₹${formatNumber(profit)}
+        </div>
         <div class="stat-grid">
             <div class="stat">
                 <div class="stat-label">Total Buy Cost</div>
-                <div class="stat-value">₹${formatNumber(buyCost)}</div>
+                <div class="stat-value">₹${formatNumber(cost)}</div>
             </div>
             <div class="stat">
                 <div class="stat-label">Total Sell Revenue</div>
-                <div class="stat-value">₹${formatNumber(sellGross)}</div>
+                <div class="stat-value">₹${formatNumber(rev)}</div>
             </div>
-            <div class="stat">
-                <div class="stat-label">Total Fees</div>
-                <div class="stat-value">₹${formatNumber(totalFee)}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Margin %</div>
-                <div class="stat-value">${formatNumber((netProfit/buyCost)*100)}%</div>
+            <div class="stat" style="grid-column:1/-1">
+                <div class="stat-label">Return on Investment (ROI)</div>
+                <div class="stat-value">${formatNumber(roi)}%</div>
             </div>
         </div>
     `;
@@ -4516,57 +4353,58 @@ function calculateQuickP2P(){
 
 
 /* =========================================================
-   PRIVATE VAULT (IndexedDB)
+   PRIVATE VAULT (INDEXEDDB)
 ========================================================= */
 
-let db = null;
-const DB_NAME = "DilshadVaultDB";
-const STORE_NAME = "vaultImages";
+const VAULT_DB_NAME = "DilshadVaultDB";
+const VAULT_STORE_NAME = "images";
+let vaultDb = null;
+const correctVaultPin = "7860"; // Default vault passcode
 
 function initVaultDB(){
     return new Promise((resolve, reject)=>{
-        const request = indexedDB.open(DB_NAME, 1);
-        request.onupgradeneeded = e =>{
-            const dbInstance = e.target.result;
-            if(!dbInstance.objectStoreNames.contains(STORE_NAME)){
-                dbInstance.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
+        if(vaultDb){
+            resolve(vaultDb);
+            return;
+        }
+        const request = indexedDB.open(VAULT_DB_NAME, 1);
+        request.onerror = e => reject(e);
+        request.onsuccess = e => {
+            vaultDb = e.target.result;
+            resolve(vaultDb);
+        };
+        request.onupgradeneeded = e => {
+            const db = e.target.result;
+            if(!db.objectStoreNames.contains(VAULT_STORE_NAME)){
+                db.createObjectStore(VAULT_STORE_NAME, {autoIncrement:true});
             }
-        };
-        request.onsuccess = e =>{
-            db = e.target.result;
-            resolve(db);
-        };
-        request.onerror = e =>{
-            console.error("IndexedDB error:", e.target.error);
-            reject(e.target.error);
         };
     });
 }
 
 function toggleVault(){
-    const overlay = document.getElementById("vaultOverlay");
-    if(overlay.style.display === "none" || !overlay.style.display){
-        overlay.style.display = "block";
-    }else{
-        closeVault();
-    }
+    document.getElementById("vaultOverlay").style.display = "block";
+    document.getElementById("vaultInput").value = "";
+    document.getElementById("vaultInput").focus();
+    document.getElementById("vaultLockArea").style.display = "block";
+    document.getElementById("vaultContent").classList.remove("show");
+    document.getElementById("vaultMessage").textContent = "";
 }
 
 function closeVault(){
     document.getElementById("vaultOverlay").style.display = "none";
-    document.getElementById("vaultInput").value = "";
-    document.getElementById("vaultMessage").textContent = "";
 }
 
-function unlockVault(){
-    const code = document.getElementById("vaultInput").value;
-    if(code === "1234" || code === "0000" || code.length >= 4){
+async function unlockVault(){
+    const val = document.getElementById("vaultInput").value;
+    const msg = document.getElementById("vaultMessage");
+    if(val === correctVaultPin){
         document.getElementById("vaultLockArea").style.display = "none";
         document.getElementById("vaultContent").classList.add("show");
-        document.getElementById("vaultMessage").textContent = "Vault Unlocked";
-        loadVaultGallery();
+        msg.textContent = "";
+        await loadVaultImages();
     }else{
-        document.getElementById("vaultMessage").textContent = "Invalid vault code. Enter a 4+ digit passcode.";
+        msg.textContent = "Incorrect code. Try again.";
     }
 }
 
@@ -4574,88 +4412,94 @@ function lockVault(){
     document.getElementById("vaultLockArea").style.display = "block";
     document.getElementById("vaultContent").classList.remove("show");
     document.getElementById("vaultInput").value = "";
-    document.getElementById("vaultMessage").textContent = "Vault Locked";
+    document.getElementById("vaultGallery").innerHTML = "";
 }
 
 async function addVaultImages(event){
-    if(!db) await initVaultDB();
-
-    const files = Array.from(event.target.files);
-    if(!files.length) return;
-
-    const tx = db.transaction(STORE_NAME, "readwrite");
-    const store = tx.objectStore(STORE_NAME);
-
-    for(const file of files){
-        const reader = new FileReader();
-        reader.onload = e =>{
-            store.add({
-                dataUrl: e.target.result,
-                name: file.name,
-                timestamp: Date.now()
-            });
-        };
-        reader.readAsDataURL(file);
-    }
-
-    tx.oncomplete = ()=>{
-        loadVaultGallery();
-    };
-}
-
-async function loadVaultGallery(){
-    if(!db) await initVaultDB();
-
-    const gallery = document.getElementById("vaultGallery");
-    const tx = db.transaction(STORE_NAME, "readonly");
-    const store = tx.objectStore(STORE_NAME);
-    const request = store.getAll();
-
-    request.onsuccess = ()=>{
-        const items = request.result;
-        if(!items || items.length === 0){
-            gallery.innerHTML = `<div class="vault-empty">No images in your vault yet.</div>`;
-            return;
+    const files = event.target.files;
+    if(!files || files.length === 0) return;
+    try {
+        const db = await initVaultDB();
+        const tx = db.transaction(VAULT_STORE_NAME, "readwrite");
+        const store = tx.objectStore(VAULT_STORE_NAME);
+        for(let file of files){
+            store.add(file);
         }
-
-        gallery.innerHTML = items.map(item=>`
-            <div class="vault-item">
-                <img src="${item.dataUrl}" alt="Vault Item">
-                <button class="vault-delete" onclick="deleteVaultImage(${item.id})">×</button>
-            </div>
-        `).join("");
-    };
+        tx.oncomplete = async () => {
+            event.target.value = "";
+            await loadVaultImages();
+        };
+    } catch(e){
+        console.error(e);
+        alert("Could not save images.");
+    }
 }
 
-async function deleteVaultImage(id){
-    if(!db) await initVaultDB();
+async function loadVaultImages(){
+    const gallery = document.getElementById("vaultGallery");
+    gallery.innerHTML = "";
+    try {
+        const db = await initVaultDB();
+        const tx = db.transaction(VAULT_STORE_NAME, "readonly");
+        const store = tx.objectStore(VAULT_STORE_NAME);
+        const request = store.openCursor();
+        let count = 0;
 
-    const tx = db.transaction(STORE_NAME, "readwrite");
-    const store = tx.objectStore(STORE_NAME);
-    store.delete(id);
+        request.onsuccess = e => {
+            const cursor = e.target.result;
+            if(cursor){
+                count++;
+                const file = cursor.value;
+                const key = cursor.key;
+                const url = URL.createObjectURL(file);
 
-    tx.oncomplete = ()=>{
-        loadVaultGallery();
-    };
+                const item = document.createElement("div");
+                item.className = "vault-item";
+                item.innerHTML = `
+                    <img src="${url}" alt="Vault Image">
+                    <button class="vault-delete" onclick="deleteVaultImage(${key})">✕</button>
+                `;
+                gallery.appendChild(item);
+                cursor.continue();
+            } else {
+                if(count === 0){
+                    gallery.innerHTML = `<div class="vault-empty">No images in vault yet.</div>`;
+                }
+            }
+        };
+    } catch(e){
+        console.error(e);
+    }
+}
+
+async function deleteVaultImage(key){
+    try {
+        const db = await initVaultDB();
+        const tx = db.transaction(VAULT_STORE_NAME, "readwrite");
+        const store = tx.objectStore(VAULT_STORE_NAME);
+        store.delete(key);
+        tx.oncomplete = async () => {
+            await loadVaultImages();
+        };
+    } catch(e){
+        console.error(e);
+    }
 }
 
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
+// Initialization on startup
 window.addEventListener("DOMContentLoaded", ()=>{
     setupConverters();
     setupVoice();
-    initVaultDB().catch(()=>{});
-
-    addDCARow();
-    addDCARow();
-
-    addP2PBuy();
-    addP2PSell();
-
-    updateDisplay();
+    renderHistory();
+    if(document.getElementById("dcaRows") && document.getElementById("dcaRows").children.length === 0){
+        addDCARow();
+        addDCARow();
+    }
+    if(document.getElementById("p2pBuyRows") && document.getElementById("p2pBuyRows").children.length === 0){
+        addP2PBuy();
+        addP2PSell();
+    }
 });
 
 </script>
